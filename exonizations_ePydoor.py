@@ -1,18 +1,13 @@
 """
 @authors: Juan L. Trincado
 @email: juanluis.trincado@upf.edu
-MxFinder.py: main script. Check github for more details (https://github.com/JLTrincado/MxFinder)
+exonizations_ePydoor.py: get significat exonizations
 """
 
-import sys
-import time
-import re
-
-from argparse import ArgumentParser, RawTextHelpFormatter
-
-import logging, sys, os
-import subprocess
-from lib import *
+from lib.Exonization.extract_exonized_junctions import *
+from lib.Exonization.get_reads_exonizations import *
+from lib.Exonization.overlap_with_repeats import *
+from lib.Exonization.get_significant_exonizations import *
 
 # create logger
 logger = logging.getLogger(__name__)
@@ -45,11 +40,25 @@ def main():
         input_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_George_Peifer_Rudin_Yokota.tab"
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
         max_length = 500
+        threshold = 5
+        repeats_path = "/projects_rg/SCLC_cohorts/cis_analysis/tables/hg19_repeats.bed"
         output_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2"
 
-        # 1. Obtain the exon coordinates from the GTF. Format it in a bed format
+        # 1. Identify the junctions that could generate an exonization
         output_path_aux = output_path+"/new_exonized_junctions.tab"
         extract_exonized_junctions(input_path, gtf_path, max_length, output_path_aux)
+
+        # 2. Given the list with the possible exonizations, get the reads associate to each of them
+        output_path_aux2 = output_path+"/new_exonized_junctions_reads.tab"
+        get_reads_exonizations(output_path_aux, input_path, output_path_aux2)
+
+        # 3. find the overlap between the nex exonizations and repeatitions (RepeatMasker)
+        output_path_aux3 = output_path + "/new_exonized_junctions_reads_repeatitions.tab"
+        overlap_with_repeats(output_path_aux2, repeats_path, output_path_aux3)
+
+        # 4. given the table of the exonizations with the reads counts,get those that are over a threshold
+        output_path_aux4 = output_path + "/exonizations_by_sample.tab"
+        get_significant_exonizations(output_path_aux3, threshold, output_path_aux4)
 
         logger.info("Done. Exiting program.")
 
