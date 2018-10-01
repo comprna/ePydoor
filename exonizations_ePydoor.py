@@ -8,6 +8,7 @@ from lib.Exonization.extract_exonized_junctions import *
 from lib.Exonization.get_reads_exonizations import *
 from lib.Exonization.overlap_with_repeats import *
 from lib.Exonization.get_significant_exonizations import *
+from lib.Exonization.generate_random_intronic_positions import *
 
 # create logger
 logger = logging.getLogger(__name__)
@@ -41,6 +42,7 @@ def main():
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
         max_length = 500
         threshold = 5
+        n_randomizations = 100
         repeats_path = "/projects_rg/SCLC_cohorts/cis_analysis/tables/hg19_repeats.bed"
         output_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2"
 
@@ -59,6 +61,11 @@ def main():
         # 4. given the table of the exonizations with the reads counts,get those that are over a threshold
         output_path_aux4 = output_path + "/exonizations_by_sample.tab"
         get_significant_exonizations(output_path_aux3, threshold, output_path_aux4)
+
+        # 5. generate a number of random position by exonization
+        output_path_aux5 = output_path + "/random_exonizations.gtf"
+        output_path_aux6 = output_path + "/random_exonizations.bed"
+        generate_random_intronic_positions(output_path_aux4, gtf_path, n_randomizations, output_path_aux5, output_path_aux6)
 
         logger.info("Done. Exiting program.")
 
