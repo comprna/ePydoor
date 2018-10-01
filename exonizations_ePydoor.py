@@ -9,6 +9,8 @@ from lib.Exonization.get_reads_exonizations import *
 from lib.Exonization.overlap_with_repeats import *
 from lib.Exonization.get_significant_exonizations import *
 from lib.Exonization.generate_random_intronic_positions import *
+from lib.Exonization.get_coverageBed import *
+from lib.Exonization.check_mutations_nearby import *
 
 # create logger
 logger = logging.getLogger(__name__)
@@ -39,10 +41,12 @@ def main():
         # output_path = sys.argv[4]
 
         input_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_George_Peifer_Rudin_Yokota.tab"
+        coverage_path = "/projects_rg/SCLC_cohorts/coverageBed/"
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
         max_length = 500
         threshold = 5
         n_randomizations = 100
+        mutations_path = "/projects_rg/babita/TCGA/mutation/mut_pipeline/juanlu_sclc/src_files/SCLC_mutations_sorted.bed.mut.out"
         repeats_path = "/projects_rg/SCLC_cohorts/cis_analysis/tables/hg19_repeats.bed"
         output_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2"
 
@@ -66,6 +70,20 @@ def main():
         output_path_aux5 = output_path + "/random_exonizations.gtf"
         output_path_aux6 = output_path + "/random_exonizations.bed"
         generate_random_intronic_positions(output_path_aux4, gtf_path, n_randomizations, output_path_aux5, output_path_aux6)
+
+        # 6. Get the coverage for each exonization
+        output_path_aux7 = output_path + "/exonizations_by_sample_coverage.tab"
+        get_coverageBed(output_path_aux4, output_path_aux6, coverage_path, output_path_aux7)
+
+        # 7. check if in the exonizations there are mutations nearby
+        output_path_aux8 = output_path + "/exonizations_by_sample_coverage_mut.tab"
+        check_mutations_nearby(output_path_aux7, mutations_path, 200, output_path_aux8)
+
+        # 8. Separate between mutated and non-mutated cases
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+
+        command="Rscript "
+        #TODO: finish this part
 
         logger.info("Done. Exiting program.")
 
