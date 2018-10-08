@@ -51,38 +51,50 @@ def main():
         output_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2"
 
         # 1. Identify the junctions that could generate an exonization
+        logger.info("Part1...")
         output_path_aux = output_path+"/new_exonized_junctions.tab"
         extract_exonized_junctions(input_path, gtf_path, max_length, output_path_aux)
 
         # 2. Given the list with the possible exonizations, get the reads associate to each of them
+        logger.info("Part2...")
         output_path_aux2 = output_path+"/new_exonized_junctions_reads.tab"
         get_reads_exonizations(output_path_aux, input_path, output_path_aux2)
 
         # 3. find the overlap between the nex exonizations and repeatitions (RepeatMasker)
+        logger.info("Part3...")
         output_path_aux3 = output_path + "/new_exonized_junctions_reads_repeatitions.tab"
         overlap_with_repeats(output_path_aux2, repeats_path, output_path_aux3)
 
         # 4. given the table of the exonizations with the reads counts,get those that are over a threshold
+        logger.info("Part4...")
         output_path_aux4 = output_path + "/exonizations_by_sample.tab"
         get_significant_exonizations(output_path_aux3, threshold, output_path_aux4)
 
         # 5. generate a number of random position by exonization
+        logger.info("Part5...")
         output_path_aux5 = output_path + "/random_exonizations.gtf"
         output_path_aux6 = output_path + "/random_exonizations.bed"
         generate_random_intronic_positions(output_path_aux4, gtf_path, n_randomizations, output_path_aux5, output_path_aux6)
 
         # 6. Get the coverage for each exonization
+        logger.info("Part6...")
         output_path_aux7 = output_path + "/exonizations_by_sample_coverage.tab"
         get_coverageBed(output_path_aux4, output_path_aux6, coverage_path, output_path_aux7)
 
         # 7. check if in the exonizations there are mutations nearby
+        logger.info("Part7...")
         output_path_aux8 = output_path + "/exonizations_by_sample_coverage_mut.tab"
         check_mutations_nearby(output_path_aux7, mutations_path, 200, output_path_aux8)
 
         # 8. Separate between mutated and non-mutated cases
+        logger.info("Part8...")
         dir_path = os.path.dirname(os.path.realpath(__file__))
+        output_path_aux9 = output_path + "/mutated_exonizations.tab"
+        output_path_aux10 = output_path + "/non_mutated_exonizations.tab"
 
-        command="Rscript "
+        command1="Rscript "+dir_path+"/Exonization/separate_mutated_cases.R "+output_path_aux8+" "+output_path_aux9+" "+output_path_aux10
+        print(command1)
+        os.system(command1)
         #TODO: finish this part
 
         logger.info("Done. Exiting program.")

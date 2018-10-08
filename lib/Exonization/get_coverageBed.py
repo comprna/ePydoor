@@ -128,7 +128,6 @@ def get_coverageBed(input_path, gtf_path, coverage_path, output_path):
         exonizations.to_csv(output_path, sep="\t", index=False)
         logger.info("Saved "+output_path)
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))

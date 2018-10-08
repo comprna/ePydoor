@@ -133,7 +133,6 @@ def get_reads_exonizations(exonization_file, readCounts_file, output_file):
         #     f.write(row)
 
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))

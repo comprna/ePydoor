@@ -155,7 +155,6 @@ def check_mutations_nearby(exonizations_path, mutations_path, window, output_pat
 
         logger.info("Saved "+output_path)
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))

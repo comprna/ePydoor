@@ -196,7 +196,6 @@ def generate_random_intronic_positions(input_path, gtf_path, n, output_path, out
         logger.info("Saved "+output_path)
         logger.info("Saved "+output_path2)
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))

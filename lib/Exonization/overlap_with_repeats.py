@@ -111,7 +111,6 @@ def overlap_with_repeats(input_path, repeats_path, output_path):
         os.remove(path1 + "/aux2.bed")
 
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))

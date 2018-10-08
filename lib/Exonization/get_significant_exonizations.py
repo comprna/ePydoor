@@ -70,7 +70,6 @@ def get_significant_exonizations(exonization_file, threshold, output_file):
         f.close()
         logger.info("Saved "+ output_file)
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))

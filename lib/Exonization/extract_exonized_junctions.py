@@ -386,7 +386,6 @@ def extract_exonized_junctions(input_path, gtf_path, max_length, output_path):
         # os.remove(path1 + "/intersection.bed")
 
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))
