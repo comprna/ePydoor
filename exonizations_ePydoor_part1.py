@@ -4,6 +4,8 @@
 exonizations_ePydoor.py: get significat exonizations
 """
 
+import os
+
 from lib.Exonization.extract_exonized_junctions import *
 from lib.Exonization.get_reads_exonizations import *
 from lib.Exonization.overlap_with_repeats import *
@@ -84,7 +86,6 @@ def main():
         command1="for sample in $(ls "+bam_path+"/*/*.sorted.bam | cut -d\"/\" -f7 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
                 "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed "+dir_path+"/coverageBed.sh "+bam_path+"/$(echo $sample)/*.sorted.bam " \
                  " "+output_path_aux5+" "+output_path+"/$(echo $sample).coverage_sorted;done"
-        # print(command1)
         os.system(command1)
         logger.info("Wait until all jobs have finished. Then, go on with part2")
 

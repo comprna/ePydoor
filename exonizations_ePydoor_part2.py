@@ -4,6 +4,8 @@
 exonizations_ePydoor.py: get significat exonizations
 """
 
+import os
+
 from lib.Exonization.extract_exonized_junctions import *
 from lib.Exonization.get_reads_exonizations import *
 from lib.Exonization.overlap_with_repeats import *
