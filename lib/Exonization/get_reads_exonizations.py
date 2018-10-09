@@ -87,7 +87,7 @@ def get_reads_exonizations(exonization_file, readCounts_file, output_file):
                 #Get the associated reads
                 # If the junctions is not in the junction reads file, assign a 0
                 if(junction in junction_reads):
-                    print("Encontrada junction!!!")
+                    # print("Encontrada junction!!!")
                     readCounts1 = junction_reads[junction]
                 else:
                     readCounts1 = list(np.repeat(0,len(tokens[8:])))
@@ -103,7 +103,7 @@ def get_reads_exonizations(exonization_file, readCounts_file, output_file):
                 #Get the associated reads
                 # If the junctions is not in the junction reads file, assign a 0
                 if(junction in junction_reads):
-                    print("Encontrada junction!!!")
+                    # print("Encontrada junction!!!")
                     readCounts2 = junction_reads[junction]
                 else:
                     readCounts2 = list(np.repeat(0,len(tokens[8:])))

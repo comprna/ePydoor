@@ -52,53 +52,21 @@ def main():
         output_path = "/users/genomics/juanluis/SCLC_cohorts/test"
 
 
-        # 1. Identify the junctions that could generate an exonization
-        logger.info("Part1...")
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        print(dir_path)
-        output_path_aux = output_path+"/new_exonized_junctions.tab"
-        extract_exonized_junctions(readcounts_path, gtf_path, max_length, output_path_aux)
-
-        # 2. Given the list with the possible exonizations, get the reads associate to each of them
-        logger.info("Part2...")
-        output_path_aux2 = output_path+"/new_exonized_junctions_reads.tab"
-        get_reads_exonizations(output_path_aux, readcounts_path, output_path_aux2)
-
-        # 3. find the overlap between the nex exonizations and repeatitions (RepeatMasker)
-        logger.info("Part3...")
-        output_path_aux3 = output_path + "/new_exonized_junctions_reads_repeatitions.tab"
-        overlap_with_repeats(output_path_aux2, repeats_path, output_path_aux3)
-
-        # 4. given the table of the exonizations with the reads counts,get those that are over a threshold
-        logger.info("Part4...")
-        output_path_aux4 = output_path + "/exonizations_by_sample.tab"
-        get_significant_exonizations(output_path_aux3, threshold, output_path_aux4)
-
-        # 5. generate a number of random position by exonization
-        logger.info("Part5...")
-        output_path_aux5 = output_path + "/random_exonizations.gtf"
-        output_path_aux6 = output_path + "/random_exonizations.bed"
-        generate_random_intronic_positions(output_path_aux4, gtf_path, n_randomizations, output_path_aux5, output_path_aux6)
-
-        # 6. Run coverageBed on the samples in the cluster
-        command1="for sample in $(ls "+bam_path+"/*/*.sorted.bam | cut -d\"/\" -f7 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do; " \
-                "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed "+dir_path+"/coverageBed.sh "+bam_path+"/$(echo $sample)/*.sorted.bam " \
-                 " "+output_path_aux5+" "+output_path+"/$(echo $sample).coverage_sorted;done"
-        print(command1)
-        os.system(command1)
-
         # 6. Get the coverage for each exonization
-        logger.info("Part6...")
+        logger.info("Part7...")
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        output_path_aux4 = output_path + "/exonizations_by_sample.tab"
+        output_path_aux6 = output_path + "/random_exonizations.bed"
         output_path_aux7 = output_path + "/exonizations_by_sample_coverage.tab"
         get_coverageBed(output_path_aux4, output_path_aux6, coverage_path, output_path_aux7)
 
         # 7. check if in the exonizations there are mutations nearby
-        logger.info("Part7...")
+        logger.info("Part8...")
         output_path_aux8 = output_path + "/exonizations_by_sample_coverage_mut.tab"
         check_mutations_nearby(output_path_aux7, mutations_path, 200, output_path_aux8)
 
         # 8. Separate between mutated and non-mutated cases
-        logger.info("Part8...")
+        logger.info("Part9...")
         output_path_aux9 = output_path + "/mutated_exonizations.tab"
         output_path_aux10 = output_path + "/non_mutated_exonizations.tab"
 
