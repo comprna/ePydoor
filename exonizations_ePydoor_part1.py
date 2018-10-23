@@ -43,7 +43,8 @@ def main():
         # output_path = sys.argv[4]
 
         readcounts_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_George_Peifer_Rudin_Yokota.tab"
-        bam_path = "/projects_rg/SCLC_cohorts/George/STAR/George_and_Peifer"
+        # bam_path = "/projects_rg/SCLC_cohorts/George/STAR/George_and_Peifer"
+        bam_path = "/projects_rg/SCLC_cohorts/Rudin/STAR/Rudin_Yokota"
         coverage_path = "/projects_rg/SCLC_cohorts/coverageBed/"
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
         max_length = 500
@@ -85,7 +86,10 @@ def main():
         logger.info("Part6...")
         command1="for sample in $(ls "+bam_path+"/*/*.sorted.bam | cut -d\"/\" -f7 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
                 "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed "+dir_path+"/coverageBed.sh "+bam_path+"/$(echo $sample)/*.sorted.bam " \
-                 " "+output_path_aux5+" "+output_path+"/$(echo $sample).coverage_sorted;done"
+                 " "+output_path_aux6+" "+output_path+"/$(echo $sample).coverage_sorted;done"
+        # command1 = "for sample in $(ls " + bam_path + "/*.sorted.bam | cut -d\"/\" -f7 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
+        #                                               "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed " + dir_path + "/coverageBed.sh " + bam_path + "/$(echo $sample).sorted.bam " \
+        #                                                " " + output_path_aux6 + " " + output_path + "/$(echo $sample).coverage_sorted;done"
         os.system(command1)
         logger.info("Wait until all jobs have finished. Then, go on with part2")
 

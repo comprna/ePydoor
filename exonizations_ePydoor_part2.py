@@ -53,7 +53,6 @@ def main():
         repeats_path = "/projects_rg/SCLC_cohorts/cis_analysis/tables/hg19_repeats.bed"
         output_path = "/users/genomics/juanluis/SCLC_cohorts/test"
 
-
         # 6. Get the coverage for each exonization
         logger.info("Part7...")
         dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -73,9 +72,22 @@ def main():
         output_path_aux10 = output_path + "/non_mutated_exonizations.tab"
 
         command2="Rscript "+dir_path+"/Exonization/separate_mutated_cases.R "+output_path_aux8+" "+output_path_aux9+" "+output_path_aux10
-        print(command2)
+        # print(command2)
         os.system(command2)
-        #TODO: finish this part
+
+        # 9. Join the mutated and non_mutated cases
+        logger.info("Part9...")
+        output_path_aux11 = output_path + "/all_exonizations.tab"
+        command3="cat "+output_path_aux9+" > "+output_path_aux11+";tail -n+2 "+output_path_aux10+" >> "+output_path_aux11
+        os.system(command3)
+
+        # 10. Filter the significant results
+        logger.info("Part10...")
+        output_path_aux12 = output_path + "/all_exonizations_filtered.tab"
+        output_path_aux13 = output_path + "/all_exonizations_filtered_peptide_change.tab"
+        command4="Rscript "+dir_path+"/Exonization/filter_results.R "+output_path_aux11+" "+output_path_aux12+" "+output_path_aux13
+        os.system(command4)
+
 
         logger.info("Done. Exiting program.")
 

@@ -13,7 +13,3 @@ exonizations_not_mutated <- exonizations[which(exonizations$mut_coincidence=="Fa
 # write.table(exonizations_not_mutated,file="/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/non_mutated_exonizations.tab",quote=FALSE,sep="\t",row.names=FALSE)
 write.table(exonizations_mutated,file=args[2],quote=FALSE,sep="\t",row.names=FALSE)
 write.table(exonizations_not_mutated,file=args[3],quote=FALSE,sep="\t",row.names=FALSE)
-
-#Run the following for rejoining the files after running filter_exonizations.py
-# cat "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/mutated_exonizations.tab" > "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/all_exonizations.tab";
-# tail -n+2 "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/non_mutated_exonizations_by_sample_filtered.tab" >> "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/all_exonizations.tab"
