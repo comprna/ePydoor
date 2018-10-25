@@ -13,6 +13,10 @@ from lib.Exonization.get_significant_exonizations import *
 from lib.Exonization.generate_random_intronic_positions import *
 from lib.Exonization.get_coverageBed import *
 from lib.Exonization.check_mutations_nearby import *
+from lib.Exonization.select_fasta_candidates import *
+from lib.Exonization.filter_exonizations import *
+from lib.Exonization.filter_exonizations_CHESS import *
+from lib.Exonization.get_peptide_sequence import *
 
 # create logger
 logger = logging.getLogger(__name__)
@@ -44,13 +48,23 @@ def main():
 
         readcounts_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_George_Peifer_Rudin_Yokota.tab"
         bam_path = "/projects_rg/SCLC_cohorts/George/STAR/George_and_Peifer"
-        coverage_path = "/projects_rg/SCLC_cohorts/coverageBed/"
-        gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
+        coverage_path = "/users/genomics/juanluis/SCLC_cohorts/test/coverageBed/"
         max_length = 500
         threshold = 5
         n_randomizations = 100
+        tumor_specific = True
+        transcript_expression_path = "/projects_rg/SCLC_cohorts/George/tables/iso_tpm_George_Peifer_Rudin_Yokota.tab"
+        gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
+        codons_gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.codons.gtf"
         mutations_path = "/projects_rg/babita/TCGA/mutation/mut_pipeline/juanlu_sclc/src_files/SCLC_mutations_sorted.bed.mut.out"
         repeats_path = "/projects_rg/SCLC_cohorts/cis_analysis/tables/hg19_repeats.bed"
+        CHESS_SE_path = "/projects_rg/SCLC_cohorts/annotation/chess2.0_assembly_hg19_CrossMap.events_SE_strict.ioe"
+        mosea = "/genomics/users/juanluis/Software/MoSEA-master/mosea.py"
+        fast_genome = "/genomics/users/juanluis/Software/MoSEA-master/test_files/genome/hg19.fa"
+        orfs_scripts = "/genomics/users/juanluis/comprna/MxFinder/extract_orfs.py"
+        interpro = "/projects_rg/SCLC_cohorts/soft/interproscan-5.30-69.0/interproscan.sh"
+        IUPred = "/projects_rg/SCLC_cohorts/soft/IUPred2A"
+        remove_temp_files = True
         output_path = "/users/genomics/juanluis/SCLC_cohorts/test"
 
         # 6. Get the coverage for each exonization
@@ -71,23 +85,50 @@ def main():
         output_path_aux9 = output_path + "/mutated_exonizations.tab"
         output_path_aux10 = output_path + "/non_mutated_exonizations.tab"
 
-        command2="Rscript "+dir_path+"/Exonization/separate_mutated_cases.R "+output_path_aux8+" "+output_path_aux9+" "+output_path_aux10
+        command2="module load R; Rscript "+dir_path+"/lib/Exonization/separate_mutated_cases.R "+output_path_aux8+" "+output_path_aux9+" "+output_path_aux10
         # print(command2)
         os.system(command2)
 
-        # 9. Join the mutated and non_mutated cases
-        logger.info("Part9...")
-        output_path_aux11 = output_path + "/all_exonizations.tab"
-        command3="cat "+output_path_aux9+" > "+output_path_aux11+";tail -n+2 "+output_path_aux10+" >> "+output_path_aux11
+        # 9. Get the tumor specific events
+        if(tumor_specific):
+            output_Rudin_path_aux4 = output_path + "/exonizations_by_sample_Rudin_normal.tab"
+            output_Intropolis_path_aux4 = output_path + "/exonizations_by_sample_Intropolis.tab"
+            output_path_aux11 = output_path + "/non_mutated_exonizations_filtered.tab"
+            filter_exonizations(output_path_aux10, output_Rudin_path_aux4, output_Intropolis_path_aux4, output_path_aux11, True)
+            output_path_aux12 = output_path + "/non_mutated_exonizations_filtered2.tab"
+            filter_exonizations_CHESS(output_path_aux11, CHESS_SE_path, output_path_aux12)
+
+        # 10. Join the mutated and non_mutated cases
+        logger.info("Part10...")
+        output_path_aux13 = output_path + "/all_exonizations.tab"
+        command3 = "cat " + output_path_aux9 + " > " + output_path_aux13 + ";tail -n+2 " + output_path_aux10 + " >> " + output_path_aux13
         os.system(command3)
 
-        # 10. Filter the significant results
-        logger.info("Part10...")
-        output_path_aux12 = output_path + "/all_exonizations_filtered.tab"
-        output_path_aux13 = output_path + "/all_exonizations_filtered_peptide_change.tab"
-        command4="Rscript "+dir_path+"/Exonization/filter_results.R "+output_path_aux11+" "+output_path_aux12+" "+output_path_aux13
+        # 11. Get the peptide sequence associated
+        logger.info("Part11...")
+        output_path_aux14 = output_path + "/all_exonizations_ORF.tab"
+        output_path_aux15 = output_path + "/all_exonizations_ORF_sequences.tab"
+        output_path_aux16 = output_path + "/all_exonizations_Interpro.tab"
+        output_path_aux17 = output_path + "/all_exonizations_IUPred.tab"
+        get_peptide_sequence(output_path_aux13, transcript_expression_path, gtf_path, codons_gtf_path, output_path_aux14,
+                             output_path_aux15,output_path_aux16,output_path_aux17,mosea,fast_genome,orfs_scripts,interpro,
+                             IUPred,remove_temp_files)
+
+        # 12. Filter the significant results
+        logger.info("Part12...")
+        output_path_aux18 = output_path + "/all_exonizations_filtered.tab"
+        output_path_aux19 = output_path + "/all_exonizations_filtered_peptide_change.tab"
+        command4="module load R; Rscript "+dir_path+"/lib/Exonization/filter_results.R "+output_path_aux11+" "+output_path_aux18+" "+output_path_aux19
         os.system(command4)
 
+        #11. Select the fasta candidates for being run to the epitope analysis
+        logger.info("Part13...")
+        output_path_aux20 = output_path + "/exonizations_peptide_sequence.fa"
+        output_path_aux21 = output_path + "/exonizations_peptide_sequence_filtered.fa"
+        #Create the folder, if it doesn't exists
+        if not os.path.exists(output_path + "/exonization_fasta_files"):
+            os.makedirs(output_path + "/exonization_fasta_files")
+        select_fasta_candidates(output_path_aux19, output_path_aux20, output_path_aux21, output_path + "/exonization_fasta_files")
 
         logger.info("Done. Exiting program.")
 
