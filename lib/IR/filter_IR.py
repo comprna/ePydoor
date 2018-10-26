@@ -57,13 +57,8 @@ def filter_IR(exonizations_path, rudin_path, output_path):
         df.to_csv(output_path, sep="\t", index=False, header=True)
         logger.info("Saved "+output_path)
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))
         logger.error("Aborting execution")
         sys.exit(1)
-
-
-if __name__ == '__main__':
-    main()

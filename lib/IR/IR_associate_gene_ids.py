@@ -120,7 +120,6 @@ def IR_associate_gene_ids(introns_path, gtf_path, output_path):
         outFile.close()
         logger.info("Done. Exiting program.")
 
-        exit(0)
 
     except Exception as error:
         print('ERROR: ' + repr(error))

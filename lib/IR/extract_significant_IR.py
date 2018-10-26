@@ -67,7 +67,6 @@ def extract_significant_IR(input_path, threshold, output_path):
         outfile.close()
         logger.info("Created "+output_path)
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))

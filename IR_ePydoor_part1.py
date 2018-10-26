@@ -41,6 +41,8 @@ def main():
         # output_path = sys.argv[4]
 
         introns_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v5/tables/iso_tpm_introns_George_Peifer_Rudin_Yokota.txt"
+        bam_path = "/projects_rg/SCLC_cohorts/George/STAR/George_and_Peifer"
+        # bam_path = "/projects_rg/SCLC_cohorts/Rudin/STAR/Rudin_Yokota"
         TPM_threshold = 1
         tumor_specific = True
         introns_Normal_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v5/tables/iso_tpm_introns_Rudin_Normal.txt"
@@ -64,9 +66,11 @@ def main():
         # output_path = "/users/genomics/juanluis/SCLC_cohorts/test"
 
         # 1. Get the IR expressed
+        logger.info("Part1...")
         extract_significant_IR(introns_path, TPM_threshold, output_path + "/IR_expressed.tab")
 
         # 2. Obtain the gene ids for the introns
+        logger.info("Part2...")
         IR_associate_gene_ids(output_path + "/IR_expressed.tab", gtf_path, output_path + "/IR_expressed_genes.tab")
 
         # 3. Get the IR tumor specific
@@ -87,65 +91,22 @@ def main():
             output_path_filtered2 = output_path + "/IR_expressed_genes.tab"
 
         # 4. Generate random positions for each intron
+        logger.info("Part4...")
         generate_random_intronic_positions(output_path_filtered2, gtf_protein_coding_path, 100, output_path + "/random_introns.gtf",
                                            output_path + "/random_introns.bed")
 
-
-
-        # # 1. Identify the junctions that could generate an exonization
-        # logger.info("Part1...")
-        # dir_path = os.path.dirname(os.path.realpath(__file__))
-        # output_path_aux = output_path+"/new_exonized_junctions.tab"
-        # extract_exonized_junctions(readcounts_path, gtf_path, max_length, output_path_aux)
-        #
-        # # 2. Given the list with the possible exonizations, get the reads associate to each of them
-        # logger.info("Part2...")
-        # output_path_aux2 = output_path+"/new_exonized_junctions_reads.tab"
-        # get_reads_exonizations(output_path_aux, readcounts_path, output_path_aux2)
-        #
-        # # 3. find the overlap between the nex exonizations and repeatitions (RepeatMasker)
-        # logger.info("Part3...")
-        # output_path_aux3 = output_path + "/new_exonized_junctions_reads_repeatitions.tab"
-        # overlap_with_repeats(output_path_aux2, repeats_path, output_path_aux3)
-        #
-        # # 4. given the table of the exonizations with the reads counts,get those that are over a threshold
-        # logger.info("Part4...")
-        # output_path_aux4 = output_path + "/exonizations_by_sample.tab"
-        # get_significant_exonizations(output_path_aux3, threshold, output_path_aux4)
-        #
-        # # 5. Get also the significant exonizations from Rudin and Intropolis
-        # logger.info("Part5...")
-        # output_Rudin_path_aux2 = output_path + "/new_exonized_junctions_Rudin_normal_reads.tab"
-        # readCounts_Rudin_path = "/projects_rg/SCLC_cohorts/Rudin/STAR/v1/normal_readCounts.tab"
-        # get_reads_exonizations(output_path_aux, readCounts_Rudin_path, output_Rudin_path_aux2)
-        # output_Rudin_path_aux3 = output_path + "/new_exonized_junctions_Rudin_normal_reads_repeatitions.tab"
-        # overlap_with_repeats(output_Rudin_path_aux2, repeats_path, output_Rudin_path_aux3)
-        # output_Rudin_path_aux4 = output_path + "/exonizations_by_sample_Rudin_normal.tab"
-        # get_significant_exonizations(output_Rudin_path_aux3, threshold2, output_Rudin_path_aux4)
-        #
-        # output_Intropolis_path_aux2 = output_path + "/new_exonized_junctions_Intropolis_reads.tab"
-        # get_reads_exonizations(output_path_aux, readcounts_path, output_Intropolis_path_aux2)
-        # output_Intropolis_path_aux3 = output_path + "/new_exonized_junctions_Intropolis_reads_repeatitions.tab"
-        # overlap_with_repeats(output_Intropolis_path_aux2, repeats_path, output_Intropolis_path_aux3)
-        # output_Intropolis_path_aux4 = output_path + "/exonizations_by_sample_Intropolis.tab"
-        # get_significant_exonizations(output_Intropolis_path_aux3, threshold2, output_Intropolis_path_aux4)
-        #
-        # # 6. generate a number of random position by exonization
-        # logger.info("Part6...")
-        # output_path_aux5 = output_path + "/random_exonizations.gtf"
-        # output_path_aux6 = output_path + "/random_exonizations.bed"
-        # generate_random_intronic_positions(output_path_aux4, gtf_path, n_randomizations, output_path_aux5, output_path_aux6)
-        #
-        # # 7. Run coverageBed on the samples in the cluster
-        # logger.info("Part7...")
-        # command1="for sample in $(ls "+bam_path+"/*/*.sorted.bam | cut -d\"/\" -f7 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
-        #         "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed "+dir_path+"/coverageBed.sh "+bam_path+"/$(echo $sample)/*.sorted.bam " \
-        #          " "+output_path_aux6+" "+output_path+"/$(echo $sample).coverage_sorted;done"
-        # # command1 = "for sample in $(ls " + bam_path + "/*.sorted.bam | cut -d\"/\" -f7 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
-        # #                                               "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed " + dir_path + "/coverageBed.sh " + bam_path + "/$(echo $sample).sorted.bam " \
-        # #                                                " " + output_path_aux6 + " " + output_path + "/$(echo $sample).coverage_sorted;done"
-        # os.system(command1)
-        # logger.info("Wait until all jobs have finished. Then, go on with part2")
+        # 5. Run coverageBed on the samples in the cluster
+        logger.info("Part5...")
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        command1 = "for sample in $(ls " + bam_path + "/*/*.sorted.bam | cut -d\"/\" -f7 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
+                                                      "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed " + dir_path + "/coverageBed.sh " + bam_path + "/$(echo $sample)/*.sorted.bam " \
+                                                           " " + output_path + "/random_introns.bed " + \
+                                                    output_path + "/$(echo $sample).coverage_sorted;done"
+        # command1 = "for sample in $(ls " + bam_path + "/*.sorted.bam | cut -d\"/\" -f7 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
+        #                                               "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed " + dir_path + "/coverageBed.sh " + bam_path + "/$(echo $sample).sorted.bam " \
+        #                                                " " + output_path_aux6 + " " + output_path + "/$(echo $sample).coverage_sorted;done"
+        os.system(command1)
+        logger.info("Wait until all jobs have finished. Then, go on with part2")
 
         exit(0)
 

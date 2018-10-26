@@ -101,7 +101,6 @@ def filter_IR_CHESS(IR_path, CHESS_RI_path, output_path):
 
         outfile.close()
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))
