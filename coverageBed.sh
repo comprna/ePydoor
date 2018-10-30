@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#SBATCH --partition=normal
+#SBATCH --partition=short
 #SBATCH --mem 10000
 
 module load BEDTools

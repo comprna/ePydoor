@@ -29,19 +29,19 @@ ch.setFormatter(formatter)
 # add ch to logger
 logger.addHandler(ch)
 
-description = \
-    "Description:\n\n"
-
-parser = ArgumentParser(description=description, formatter_class=RawTextHelpFormatter,
-                        add_help=True)
-parser.add_argument("-i", "--input", required=True,
-                    help="Input file")
-parser.add_argument("-g", "--gtf", required=True,
-                    help="Gtf file")
-parser.add_argument("-c", "--coverage", required=True,
-                    help="Coverage file")
-parser.add_argument("-o", "--output", required=True,
-                    help="Output file")
+# description = \
+#     "Description:\n\n"
+#
+# parser = ArgumentParser(description=description, formatter_class=RawTextHelpFormatter,
+#                         add_help=True)
+# parser.add_argument("-i", "--input", required=True,
+#                     help="Input file")
+# parser.add_argument("-g", "--gtf", required=True,
+#                     help="Gtf file")
+# parser.add_argument("-c", "--coverage", required=True,
+#                     help="Coverage file")
+# parser.add_argument("-o", "--output", required=True,
+#                     help="Output file")
 
 def extract_number(id):
     '''

@@ -31,7 +31,23 @@ ch.setFormatter(formatter)
 # add ch to logger
 logger.addHandler(ch)
 
-def IR_associate_gene_ids(introns_path, gtf_path, output_path):
+# description = \
+#     "Description:\n\n" + \
+#     "with the list of event_zscores, we are gonna recover the mutations falling on each event \n" \
+#     "and check if this associations are unique"
+#
+# parser = ArgumentParser(description=description, formatter_class=RawTextHelpFormatter,
+#                         add_help=True)
+# parser.add_argument("-i", "--introns", required=True,
+#                     help="Input file with the introns")
+# parser.add_argument("-g", "--gtf", required=True,
+#                     help="Gtf")
+# parser.add_argument("-o", "--output", required=True, help="Output file")
+
+
+def IR_kma_associate_gene_ids(introns_path, gtf_path, output_path):
+
+    # args = parser.parse_args()
 
     try:
         logger.info("Starting execution")
@@ -39,7 +55,11 @@ def IR_associate_gene_ids(introns_path, gtf_path, output_path):
         # introns_path = sys.argv[1]
         # gtf_path = sys.argv[2]
         # output_path = sys.argv[3]
-        #
+
+        # introns_path = "/projects_rg/SCLC_cohorts/Breast_cancer_cell_lines/ePydoor/IR/IR_significant.txt"
+        # gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
+        # output_path = "/projects_rg/SCLC_cohorts/Breast_cancer_cell_lines/ePydoor/IR/IR_significant_genes.txt"
+
         # introns_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v3/tables/event_zscores_signif_enriched_coverage_significant_CULO.tab"
         # gtf_path = "/genomics/users/juanluis/FastQTL_analysis/annotation/Homo_sapiens.GRCh37.75.formatted.gtf"
         # output_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v3/tables/event_zscores_signif_enriched_coverage_significant_CULO2.tab"
@@ -75,17 +95,27 @@ def IR_associate_gene_ids(introns_path, gtf_path, output_path):
 
         # 3. Read the created file, saving all the genes associated to each intron
         logger.info("Formatting bedtools output...")
-        dict_introns1, dict_introns2 = {}, {}
+        dict_introns1, dict_introns2, dict_intron_strand = {}, {}, {}
+        dict_introns_flag_5ss, dict_introns_flag_3ss = {}, {}
+        # cont = 0
         for line in open("/".join(output_path.split("/")[:-1]) + "/input_bedtools2.bed"):
             tokens = line.rstrip().split("\t")
-            if(int(tokens[15])!=0):
-                intron_id = tokens[3]
-                intron_strand = intron_id.split("(")[1].split(")")[0]
-                gene_name = tokens[14].split("gene_name")[1].split(";")[0].replace("\"", "")[1:]
-                gene_id = tokens[14].split("gene_id")[1].split(";")[0].replace("\"", "")[1:]
-                gene_strand = tokens[12]
-                #Add the gene only if the strand of the gene and the intron are the same
-                if(intron_strand==gene_strand):
+            intron_id = tokens[3]
+            # print(str(cont))
+            # cont += 1
+            #Check if the intron overlaps on any exon
+            if(int(tokens[15])!=0):  # (int(tokens[1])+40==int(tokens[9]) and int(tokens[2])-39)==int(tokens[10])):
+                if(intron_id in dict_introns_flag_5ss and intron_id in dict_introns_flag_3ss):
+                    continue
+                elif(intron_id not in dict_introns_flag_5ss and int(tokens[1])+40==int(tokens[10])):
+                    dict_introns_flag_5ss[intron_id] = True
+                elif(intron_id not in dict_introns_flag_3ss and int(tokens[2])-39==int(tokens[9])):
+                    dict_introns_flag_3ss[intron_id] = True
+
+                if(intron_id in dict_introns_flag_5ss and intron_id in dict_introns_flag_3ss):
+                    gene_name = tokens[14].split("gene_name")[1].split(";")[0].replace("\"", "")[1:]
+                    gene_id = tokens[14].split("gene_id")[1].split(";")[0].replace("\"", "")[1:]
+                    #Get the gene and the strands
                     if(intron_id not in dict_introns1):
                         dict_introns1[intron_id] = [gene_name]
                     elif(gene_name not in dict_introns1[intron_id]):
@@ -94,8 +124,11 @@ def IR_associate_gene_ids(introns_path, gtf_path, output_path):
                         dict_introns2[intron_id] = [gene_id]
                     elif(gene_id not in dict_introns2[intron_id]):
                         dict_introns2[intron_id].append(gene_id)
-                else:
-                    pass
+                    if(intron_id not in dict_intron_strand):
+                        dict_intron_strand[intron_id] = tokens[12]
+                    elif(dict_intron_strand[intron_id] != tokens[12]):
+                        logger.error("Different strands associated to the same intron")
+                    # raise Exception ("Different strands associated to the same intron")
 
         # 4. Read the initial file assigning the genes to each intron id
         # Read the events file
@@ -107,15 +140,21 @@ def IR_associate_gene_ids(introns_path, gtf_path, output_path):
             outFile.write(header[0]+"\tGene_name\tGene_id\t"+"\t".join(header[1:])+"\n")
             for line in e:
                 tokens = line.rstrip().split("\t")
-                if(tokens[0] in dict_introns1):
-                    gene_names = ",".join(dict_introns1[tokens[0]])
+                intron_id = tokens[0]
+                strand = intron_id.split("(")[1].split(")")[0]
+                if(intron_id in dict_introns1):
+                    gene_names = ",".join(dict_introns1[intron_id])
                 else:
                     gene_names = "No gene"
-                if(tokens[0] in dict_introns2):
-                    gene_ids = ",".join(dict_introns2[tokens[0]])
+                if(intron_id in dict_introns2):
+                    gene_ids = ",".join(dict_introns2[intron_id])
                 else:
                     gene_ids = "No gene"
-                outFile.write(tokens[0] + "\t" + gene_names + "\t" + gene_ids + "\t" + "\t".join(tokens[1:]) + "\n")
+                #Extract the strand
+                if(intron_id in dict_intron_strand):
+                    if(strand != dict_intron_strand[intron_id]):
+                        intron_id = tokens[0].split("(")[0]+"("+dict_intron_strand[intron_id]+"):"+tokens[0].split(":")[-1]
+                outFile.write(intron_id + "\t" + gene_names + "\t" + gene_ids + "\t" + "\t".join(tokens[1:]) + "\n")
 
         # 5. Remove auxiliary files before closing
         # os.remove("/".join(output_path.split("/")[:-1]) + "/input_bedtools.bed")

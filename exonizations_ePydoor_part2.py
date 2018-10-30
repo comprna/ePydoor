@@ -130,6 +130,8 @@ def main():
             os.makedirs(output_path + "/exonization_fasta_files")
         select_fasta_candidates(output_path_aux19, output_path_aux20, output_path_aux21, output_path + "/exonization_fasta_files")
 
+        #12. Run netMHC (TODO)
+
         logger.info("Done. Exiting program.")
 
         exit(0)

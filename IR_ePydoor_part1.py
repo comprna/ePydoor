@@ -8,6 +8,7 @@ import os
 
 from lib.IR.extract_significant_IR import *
 from lib.IR.IR_associate_gene_ids import *
+from lib.IR.IR_kma_associate_gene_ids import *
 from lib.IR.filter_IR import *
 from lib.IR.filter_IR_CHESS import *
 from lib.IR.generate_random_intronic_positions import *
@@ -44,12 +45,12 @@ def main():
         bam_path = "/projects_rg/SCLC_cohorts/George/STAR/George_and_Peifer"
         # bam_path = "/projects_rg/SCLC_cohorts/Rudin/STAR/Rudin_Yokota"
         TPM_threshold = 1
-        tumor_specific = True
+        tumor_specific = False
         introns_Normal_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v5/tables/iso_tpm_introns_Rudin_Normal.txt"
         introns_GTEX_path = "/projects_rg/SCLC_cohorts/annotation/chess2.0_assembly_hg19_CrossMap.events_RI_strict.ioe"
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.gtf"
         gtf_protein_coding_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
-        output_path = "/users/genomics/juanluis/SCLC_cohorts/test"
+        output_path = "/users/genomics/juanluis/SCLC_cohorts/test2"
 
 
         # readcounts_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_George_Peifer_Rudin_Yokota.tab"
@@ -69,9 +70,19 @@ def main():
         logger.info("Part1...")
         extract_significant_IR(introns_path, TPM_threshold, output_path + "/IR_expressed.tab")
 
-        # 2. Obtain the gene ids for the introns
+        # 2. Obtain the gene ids for the introns.
         logger.info("Part2...")
-        IR_associate_gene_ids(output_path + "/IR_expressed.tab", gtf_path, output_path + "/IR_expressed_genes.tab")
+        # Separate between introns from kma (U2) and U12
+        command1="head -n1 "+output_path + "/IR_expressed.tab > "+output_path + "/IR_kma_expressed.tab; grep kma_introns "\
+                 +output_path + "/IR_expressed.tab >> "+output_path + "/IR_kma_expressed.tab"
+        os.system(command1)
+        command2 = "grep -v kma_introns "+output_path + "/IR_expressed.tab > "+output_path + "/IR_no_kma_expressed.tab"
+        os.system(command2)
+        IR_associate_gene_ids(output_path + "/IR_no_kma_expressed.tab", gtf_path, output_path + "/IR_no_kma_expressed_genes.tab")
+        IR_kma_associate_gene_ids(output_path + "/IR_kma_expressed.tab", gtf_path, output_path + "/IR_kma_expressed_genes.tab")
+        command3 = "cat "+output_path + "/IR_kma_expressed_genes.tab > "+output_path + "/IR_expressed_genes.tab; tail n+2 "\
+                   +output_path + "/IR_no_kma_expressed_genes.tab >> "+output_path + "/IR_expressed_genes.tab"
+        os.system(command3)
 
         # 3. Get the IR tumor specific
         if(tumor_specific):
@@ -98,14 +109,14 @@ def main():
         # 5. Run coverageBed on the samples in the cluster
         logger.info("Part5...")
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        command1 = "for sample in $(ls " + bam_path + "/*/*.sorted.bam | cut -d\"/\" -f7 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
+        command3 = "for sample in $(ls " + bam_path + "/*/*.sorted.bam | cut -d\"/\" -f7 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
                                                       "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed " + dir_path + "/coverageBed.sh " + bam_path + "/$(echo $sample)/*.sorted.bam " \
                                                            " " + output_path + "/random_introns.bed " + \
                                                     output_path + "/$(echo $sample).coverage_sorted;done"
         # command1 = "for sample in $(ls " + bam_path + "/*.sorted.bam | cut -d\"/\" -f7 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
         #                                               "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed " + dir_path + "/coverageBed.sh " + bam_path + "/$(echo $sample).sorted.bam " \
         #                                                " " + output_path_aux6 + " " + output_path + "/$(echo $sample).coverage_sorted;done"
-        os.system(command1)
+        os.system(command3)
         logger.info("Wait until all jobs have finished. Then, go on with part2")
 
         exit(0)
