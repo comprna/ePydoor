@@ -11,11 +11,6 @@ import logging, sys, os, re
 import subprocess
 from Bio.Seq import Seq
 from Bio.Alphabet import IUPAC
-import matplotlib as mtplot
-mtplot.use('Agg')
-import matplotlib.pyplot as plt
-import seaborn as sns
-sns.set(color_codes=True)
 import random
 import copy
 
