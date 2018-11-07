@@ -36,22 +36,27 @@ def main():
 
         logger.info("Starting execution")
 
-        # readcounts_path = sys.argv[1]
-        # gtf_path = sys.argv[2]
-        # max_length = sys.argv[3]
-        # output_path = sys.argv[4]
-
-        introns_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v5/tables/iso_tpm_introns_George_Peifer_Rudin_Yokota.txt"
-        bam_path = "/projects_rg/SCLC_cohorts/George/STAR/George_and_Peifer"
+        introns_path = "/homes/users/jtrincado/scratch/test_Junckey/iso_tpm_introns_George_Peifer_Rudin_Yokota.txt"
+        bam_path = "/homes/users/jtrincado/scratch/test_Junckey/George_and_Peifer"
         # bam_path = "/projects_rg/SCLC_cohorts/Rudin/STAR/Rudin_Yokota"
         TPM_threshold = 1
         tumor_specific = False
-        introns_Normal_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v5/tables/iso_tpm_introns_Rudin_Normal.txt"
-        introns_GTEX_path = "/projects_rg/SCLC_cohorts/annotation/chess2.0_assembly_hg19_CrossMap.events_RI_strict.ioe"
-        gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.gtf"
-        gtf_protein_coding_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
-        output_path = "/users/genomics/juanluis/SCLC_cohorts/test2"
+        introns_Normal_path = "/homes/users/jtrincado/scratch/test_Junckey/iso_tpm_introns_Rudin_Normal.txt"
+        introns_GTEX_path = "/homes/users/jtrincado/scratch/test_Junckey/chess2.0_assembly_hg19_CrossMap.events_RI_strict.ioe"
+        gtf_path = "/homes/users/jtrincado/scratch/test_Junckey/Homo_sapiens.GRCh37.75.formatted.gtf"
+        gtf_protein_coding_path = "/homes/users/jtrincado/scratch/test_Junckey/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
+        output_path = "/homes/users/jtrincado/scratch/test_Junckey/test2"
 
+        # introns_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v5/tables/iso_tpm_introns_George_Peifer_Rudin_Yokota.txt"
+        # bam_path = "/projects_rg/SCLC_cohorts/George/STAR/George_and_Peifer"
+        # # bam_path = "/projects_rg/SCLC_cohorts/Rudin/STAR/Rudin_Yokota"
+        # TPM_threshold = 1
+        # tumor_specific = False
+        # introns_Normal_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v5/tables/iso_tpm_introns_Rudin_Normal.txt"
+        # introns_GTEX_path = "/projects_rg/SCLC_cohorts/annotation/chess2.0_assembly_hg19_CrossMap.events_RI_strict.ioe"
+        # gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.gtf"
+        # gtf_protein_coding_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
+        # output_path = "/users/genomics/juanluis/SCLC_cohorts/test2"
 
         # readcounts_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_George_Peifer_Rudin_Yokota.tab"
         # # bam_path = "/projects_rg/SCLC_cohorts/George/STAR/George_and_Peifer"
@@ -80,7 +85,7 @@ def main():
         os.system(command2)
         IR_associate_gene_ids(output_path + "/IR_no_kma_expressed.tab", gtf_path, output_path + "/IR_no_kma_expressed_genes.tab")
         IR_kma_associate_gene_ids(output_path + "/IR_kma_expressed.tab", gtf_path, output_path + "/IR_kma_expressed_genes.tab")
-        command3 = "cat "+output_path + "/IR_kma_expressed_genes.tab > "+output_path + "/IR_expressed_genes.tab; tail n+2 "\
+        command3 = "cat "+output_path + "/IR_kma_expressed_genes.tab > "+output_path + "/IR_expressed_genes.tab; tail -n+2 "\
                    +output_path + "/IR_no_kma_expressed_genes.tab >> "+output_path + "/IR_expressed_genes.tab"
         os.system(command3)
 
@@ -101,6 +106,7 @@ def main():
         else:
             output_path_filtered2 = output_path + "/IR_expressed_genes.tab"
 
+        output_path_filtered2 = output_path + "/IR_expressed_genes.tab"
         # 4. Generate random positions for each intron
         logger.info("Part4...")
         generate_random_intronic_positions(output_path_filtered2, gtf_protein_coding_path, 100, output_path + "/random_introns.gtf",

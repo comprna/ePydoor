@@ -71,6 +71,7 @@ def get_coordinates(values):
 
 
 def generate_random_intronic_positions(input_path, gtf_path, n, output_path, output_path2):
+# def generate_random_intronic_positions():
 
     try:
         logger.info("Starting execution")
@@ -81,11 +82,11 @@ def generate_random_intronic_positions(input_path, gtf_path, n, output_path, out
         # output_path = sys.argv[4]
         # output_path2 = sys.argv[5]
         #
-        # input_path = "/projects_rg/SCLC_cohorts/Smart/IR/IR_significant_genes.txt"
+        # input_path = "/projects_rg/test_ePydoor/IR_expressed_genes.tab"
         # gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
         # n = 100
-        # output_path = "/projects_rg/SCLC_cohorts/Smart/IR_v2/random_introns.gtf"
-        # output_path2 = "/projects_rg/SCLC_cohorts/Smart/IR_v2/random_introns.bed"
+        # output_path = "/projects_rg/test_ePydoor/random_introns.gtf"
+        # output_path2 = "/projects_rg/test_ePydoor/random_introns.bed"
 
         # Read the GTF data. Save the info of the exons by gene
         logger.info("Loading GTF...")
@@ -129,7 +130,7 @@ def generate_random_intronic_positions(input_path, gtf_path, n, output_path, out
                     logger.info("Repeated gene "+key+"!!!")
 
         #Read the input data
-
+        logger.info("Loading input data...")
         # Load the table using pandas
         input = pd.read_table(input_path, delimiter="\t")
         # Get the unique values of the Event_id,gene
@@ -150,8 +151,11 @@ def generate_random_intronic_positions(input_path, gtf_path, n, output_path, out
         #         gene = tokens[Gene_id_pos]
 
         for i in range(0,len(unique_values.index)):
+            logger.info("i: "+str(i))
             id = unique_values.Event_id.iloc[i]
             gene = unique_values.Gene_id.iloc[i]
+            logger.info("id: " + id)
+            logger.info("gene: " + gene)
             #If there are more than one gene, take the one with the greatest interval
             flag_found_gene = False
             if(len(gene.split(","))==1):
@@ -169,9 +173,11 @@ def generate_random_intronic_positions(input_path, gtf_path, n, output_path, out
             #If the intron is not repeated and the gene is presented in the gtf, generate randomizations
             # Generate a random number of positions.
             if(id not in introns_dict and flag_found_gene):
-                if(gene=="ENSG00000168806"):
-                    print("iuguoh")
                 cont += 1
+                # print(str(cont))
+                # print(str(id))
+                # if(id=="chrY:9311665-9323642(-):kma_introns"):
+                #     print("jobuoñbo")
                 chr = id.split(":")[0]
                 start = id.split(":")[1].split("(")[0].split("-")[0]
                 end = id.split(":")[1].split("(")[0].split("-")[1]
@@ -222,12 +228,14 @@ def generate_random_intronic_positions(input_path, gtf_path, n, output_path, out
                 introns_dict[id] = new_name
             else:
                 if(gene not in gene_start_end):
-                    logger.info("Gene "+gene+" not in gtf")
+                    # logger.info("Gene "+gene+" not in gtf")
+                    pass
 
         output_file.close()
         output_file2.close()
 
         #Load the file again and sort it by chromosome, start and end
+        logger.info("Sort the file by chromosome...")
         file = pd.read_table(output_path2, delimiter="\t")
         file.columns = ["chr","start","end","id","strand","score"]
         file["chr_num"] = file["chr"].apply(get_hg_chromosome_id)
@@ -249,3 +257,6 @@ def generate_random_intronic_positions(input_path, gtf_path, n, output_path, out
         logger.error('ERROR: ' + repr(error))
         logger.error("Aborting execution")
         sys.exit(1)
+
+# if __name__ == '__main__':
+#     generate_random_intronic_positions()
