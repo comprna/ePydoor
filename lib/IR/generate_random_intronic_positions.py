@@ -149,8 +149,6 @@ def generate_random_intronic_positions(input_path, gtf_path, n, output_path, out
             logger.info("i: "+str(i))
             id = unique_values.Event_id.iloc[i]
             gene = unique_values.Gene_id.iloc[i]
-            logger.info("id: " + id)
-            logger.info("gene: " + gene)
             #If there are more than one gene, take the one with the greatest interval
             flag_found_gene = False
             if(len(gene.split(","))==1):
@@ -182,7 +180,6 @@ def generate_random_intronic_positions(input_path, gtf_path, n, output_path, out
                     raise Exception("Interval incorrect for id "+id)
                 #Check if any of the positions are overlapping nor the exons in the GTF neither the exonization
                 coordinates = gene_start_end[gene]
-                logger.info(str(cont)+": Gene "+gene+"...")
                 cont2 = 0
                 cont3 = 0
                 flag_escape = False

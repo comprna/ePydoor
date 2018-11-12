@@ -115,13 +115,15 @@ def main():
         # 5. Run coverageBed on the samples in the cluster
         logger.info("Part5...")
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        command3 = "for sample in $(ls " + bam_path + "/*/*.sorted.bam | cut -d\"/\" -f7 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
+        # command3 = "for sample in $(ls " + bam_path + "/*/*.sorted.bam | cut -d\"/\" -f7 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
+        #                                               "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed " + dir_path + "/coverageBed.sh " + bam_path + "/$(echo $sample)/*.sorted.bam " \
+        #                                                    " " + output_path + "/random_introns.bed " + \
+        #                                             output_path + "/$(echo $sample).coverage_sorted;done"
+        #Just for MARVIN
+        command3 = "for sample in $(ls " + bam_path + "/*/*.sorted.bam | cut -d\"/\" -f8 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
                                                       "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed " + dir_path + "/coverageBed.sh " + bam_path + "/$(echo $sample)/*.sorted.bam " \
-                                                           " " + output_path + "/random_introns.bed " + \
-                                                    output_path + "/$(echo $sample).coverage_sorted;done"
-        # command1 = "for sample in $(ls " + bam_path + "/*.sorted.bam | cut -d\"/\" -f7 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
-        #                                               "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed " + dir_path + "/coverageBed.sh " + bam_path + "/$(echo $sample).sorted.bam " \
-        #                                                " " + output_path_aux6 + " " + output_path + "/$(echo $sample).coverage_sorted;done"
+                                                                                                                                                                                       " " + output_path + "/random_introns.bed " + \
+                   output_path + "/$(echo $sample).coverage_sorted;done"
         os.system(command3)
         logger.info("Wait until all jobs have finished. Then, go on with part2")
 
