@@ -12,6 +12,7 @@ from lib.IR.filter_IR import *
 from lib.IR.filter_IR_CHESS import *
 from lib.IR.generate_random_intronic_positions import *
 from lib.IR.get_coverageBed import *
+from lib.IR.get_coverageBed_adapter import *
 from lib.IR.get_peptide_sequence_RI import *
 from lib.IR.select_fasta_candidates import *
 from lib.IR.run_netMHC_classI_slurm_part1 import *
@@ -98,8 +99,12 @@ def main():
 
         # 7. Get the coverage for each exonization
         logger.info("Part7...")
-        get_coverageBed(output_path + "/IR_expressed_genes.tab", output_path + "/random_introns.bed",
-                        output_path + "/coverageBed", output_path + "/IR_expressed_genes2.tab", True)
+        # get_coverageBed(output_path + "/IR_expressed_genes.tab", output_path + "/random_introns.bed",
+        #                 output_path + "/coverageBed", output_path + "/IR_expressed_genes2.tab", True)
+        get_coverageBed_adapter(output_path + "/IR_expressed_genes.tab", output_path + "/random_introns.bed",
+                        output_path + "/coverageBed", output_path)
+
+        exit()
 
         # 8.  Get the peptide sequence associated
         logger.info("Part8...")
