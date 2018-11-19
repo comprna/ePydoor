@@ -67,6 +67,7 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path):
         introns = pd.read_table(input_path, delimiter="\t")
         unique_introns = introns.drop_duplicates(['Sample_id'])
         unique_sample_ids = unique_introns.loc[:,"Sample_id"].tolist()
+        dir_path = os.path.dirname(os.path.realpath(__file__))
 
         # Split the input_path and the gtf_path by sample
         for sample in unique_sample_ids:
@@ -76,15 +77,8 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path):
                 continue
             # Remove T's and X's and replace _ by .
             sample_formatted = sample.replace("T","").replace("X","").replace(".","-")
-            # command1="head -1 "+input_path+" > "+temp_path+"/input.aux."+sample_formatted+".tab" +";grep \""+sample_formatted+"\" "+input_path+\
-            #          " >> "+temp_path+"/input.aux."+sample_formatted+".tab"
-            # command1 = "head -1 " + input_path + " > " + temp_path + "/input.aux." + sample_formatted + ".tab" + ";" \
-            #             "awk '{if ($4==\"" + sample + "\") print }' " + input_path + " >> " + temp_path + "/input.aux." \
-            #            + sample_formatted + ".tab"
-            # print(command1)
-            # os.system(command1)
             # Create an auxiliary script
-            command3 = "module load Python; python /genomics/users/juanluis/FastQTL_analysis/scripts/get_coverageBed.py " \
+            command3 = "module load Python; python "+dir_path+"/get_coverageBed.py " \
                        + output_path+"/input.aux."+sample_formatted+".tab " + gtf_path + " " + coverage_path + " " + \
                        output_path + "/get_coverageBed_results." + sample_formatted + ".tab"
             print(command3)
