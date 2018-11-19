@@ -154,7 +154,18 @@ def get_coverageBed(input_path, gtf_path, coverage_path, output_path, sclc_flag)
         logger.info("Saved "+output_path)
         logger.info("Done. Exiting program.")
 
+        exit(0)
+
     except Exception as error:
         logger.error('ERROR: ' + repr(error))
         logger.error("Aborting execution")
         sys.exit(1)
+
+
+if __name__ == '__main__':
+    input_path = sys.argv[1]
+    gtf_path = sys.argv[2]
+    coverage_path = sys.argv[3]
+    output_path = sys.argv[4]
+    sclc_flag = sys.argv[5]
+    get_coverageBed(input_path, gtf_path, coverage_path, output_path, sclc_flag)
