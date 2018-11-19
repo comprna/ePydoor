@@ -77,11 +77,18 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path):
                 continue
             # Remove T's and X's and replace _ by .
             sample_formatted = sample.replace("T","").replace("X","").replace(".","-")
+            # command1="head -1 "+input_path+" > "+output_path+"/input.aux."+sample_formatted+".tab" +";grep \""+sample_formatted+"\" "+input_path+\
+            #          " >> "+output_path+"/input.aux."+sample_formatted+".tab"
+            command1 = "head -1 " + input_path + " > " + output_path + "/input.aux." + sample_formatted + ".tab" + ";" \
+                        "awk '{if ($4==\"" + sample + "\") print }' " + input_path + " >> " + output_path + "/input.aux." \
+                       + sample_formatted + ".tab"
+            # print(command1)
+            os.system(command1)
             # Create an auxiliary script
             command3 = "module load Python; python "+dir_path+"/get_coverageBed.py " \
                        + output_path+"/input.aux."+sample_formatted+".tab " + gtf_path + " " + coverage_path + " " + \
                        output_path + "/get_coverageBed_results." + sample_formatted + ".tab"
-            print(command3)
+            # print(command3)
             open_peptides_file = open(output_path + "/aux.sh", "w")
             open_peptides_file.write("#!/bin/sh\n")
             open_peptides_file.write("#SBATCH --partition=normal\n")
