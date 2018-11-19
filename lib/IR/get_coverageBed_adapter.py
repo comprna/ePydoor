@@ -87,7 +87,7 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path):
             # Create an auxiliary script
             command3 = "module load Python; python "+dir_path+"/get_coverageBed.py " \
                        + output_path+"/input.aux."+sample_formatted+".tab " + gtf_path + " " + coverage_path + " " + \
-                       output_path + "/get_coverageBed_results." + sample_formatted + ".tab"
+                       output_path + "/get_coverageBed_results." + sample_formatted + ".tab True;"
             # print(command3)
             open_peptides_file = open(output_path + "/aux.sh", "w")
             open_peptides_file.write("#!/bin/sh\n")
@@ -97,7 +97,7 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path):
             open_peptides_file.write("#SBATCH -o " + output_path + "/" + "get_coverageBed" + "_" + sample_formatted + ".out" + "\n")
             open_peptides_file.write(command3 + ";\n")
             open_peptides_file.close()
-            command4 = "sbatch -J "+sample_formatted+"_coverageBed " + output_path + "/aux.sh; sleep 0.5"
+            command4 = "sbatch -J "+sample_formatted+"_coverageBed " + output_path + "/aux.sh; sleep 0.5;"
             os.system(command4)
 
         logger.info("Done. When all jobs finished, pool all results into single file")
