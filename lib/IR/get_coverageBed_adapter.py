@@ -10,6 +10,8 @@ import pandas as pd
 from argparse import ArgumentParser, RawTextHelpFormatter
 import logging, sys, os, re
 from statsmodels.distributions.empirical_distribution import ECDF
+import subprocess
+
 
 
 # create logger
@@ -38,6 +40,10 @@ def extract_number(id):
         return int(id.split("_")[3])
     except:
         return 0
+
+# def get_job_ids(list):
+#     for x in list:
+
 
 
 def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path):
@@ -70,6 +76,7 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path):
         dir_path = os.path.dirname(os.path.realpath(__file__))
 
         # Split the input_path and the gtf_path by sample
+        dict_jobs = {}
         for sample in unique_sample_ids:
             # Format the sample
             # Only the samples ont from George or Peifer
@@ -84,6 +91,7 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path):
                        + sample_formatted + ".tab"
             # print(command1)
             os.system(command1)
+            sample_formatted = "CULO"
             # Create an auxiliary script
             command3 = "module load Python; python "+dir_path+"/get_coverageBed.py " \
                        + output_path+"/input.aux."+sample_formatted+".tab " + gtf_path + " " + coverage_path + " " + \
@@ -98,9 +106,24 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path):
             open_peptides_file.write(command3 + ";\n")
             open_peptides_file.close()
             command4 = "sbatch -J "+sample_formatted+"_coverageBed " + output_path + "/aux.sh; sleep 0.5;"
-            os.system(command4)
+            # os.system(command4)
+            job_message = subprocess.check_output(command4, shell=True)
+            #Get the job id and store it
+            job_id = (str(job_message).rstrip().split(" ")[-1])[:-3]
+            dict_jobs[job_id] = 1
 
-        logger.info("Done. When all jobs finished, pool all results into single file")
+            break
+
+        logger.info("Waiting for all the jobs to finished")
+        flag_exit = False
+        while(not flag_exit):
+            #TODO: use subprocess.Popen instead
+            squeue_cluster = subprocess.check_output("sleep 1; squeue -u jtrincado", shell=True)
+            #Process the info
+            squeue_cluster_list = str(squeue_cluster).split("\n")
+            #Take all the id jobs and save it
+            logger.info("Printing squeue: "+str(squeue_cluster_list[0]))
+
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))
