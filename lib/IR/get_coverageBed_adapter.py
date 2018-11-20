@@ -89,18 +89,15 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path, na
             command1 = "head -1 " + input_path + " > " + output_path + "/input.aux." + sample_formatted + ".tab" + ";" \
                         "awk '{if ($4==\"" + sample + "\") print }' " + input_path + " >> " + output_path + "/input.aux." \
                        + sample_formatted + ".tab"
-            # print(command1)
             os.system(command1)
-            sample_formatted = "CULO"
             # Create an auxiliary script
             command3 = "module load Python; python "+dir_path+"/get_coverageBed.py " \
                        + output_path+"/input.aux."+sample_formatted+".tab " + gtf_path + " " + coverage_path + " " + \
                        output_path + "/get_coverageBed_results." + sample_formatted + ".tab True"
-            # print(command3)
             open_peptides_file = open(output_path + "/aux.sh", "w")
             open_peptides_file.write("#!/bin/sh\n")
             open_peptides_file.write("#SBATCH --partition=normal\n")
-            open_peptides_file.write("#SBATCH --mem 10000\n")
+            open_peptides_file.write("#SBATCH --mem 1000\n")
             open_peptides_file.write("#SBATCH -e " + output_path + "/" + "get_coverageBed" + "_" + sample_formatted + ".err" + "\n")
             open_peptides_file.write("#SBATCH -o " + output_path + "/" + "get_coverageBed" + "_" + sample_formatted + ".out" + "\n")
             open_peptides_file.write(command3 + ";\n")
@@ -123,25 +120,22 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path, na
             logger.info("Sleeping 10 seconds...")
             os.system("sleep 10")
             p = subprocess.Popen(["squeue","-u", name_user], stdout=subprocess.PIPE)
-            # out = p.stdout.read()
-            # logger.info("Printing squeue: "+str(out))
-            while True:
+            # Skip the first line (the header)
+            line = p.stdout.readline()
+            for line in p.stdout:
+                flag_exit = True
                 logger.info("Entering second loop...")
-                line = p.stdout.readline()
+                # line = p.stdout.readline()
                 logger.info("Line: "+str(line))
-                if line != '':
-                    #Get the id of the job
-                    job_id_aux = (str(job_message).rstrip().split(" ")[-1])[:-3]
-                    logger.info("job_id cluster:" + str(job_id_aux))
-                    #Save the id of the jobs
-                    pending_jobs[job_id_aux] = 1
-                    #If there is any job on the cluster on dict_jobs, break the loop and wait for another 10 seconds
-                    # to check the status of the jobs in the cluster
-                    if(job_id_aux in dict_jobs):
-                        break
-                else:
-                    #If we have reach the end of the status and there is no job pending, end the execution
-                    flag_exit = True
+                #Get the id of the job
+                job_id_aux = str(line).rstrip().split()[1]
+                logger.info("job_id cluster:" + str(job_id_aux))
+                #Save the id of the jobs
+                pending_jobs[job_id_aux] = 1
+                #If there is any job on the cluster on dict_jobs, break the loop and wait for another 10 seconds
+                # to check the status of the jobs in the cluster
+                if(job_id_aux in dict_jobs):
+                    flag_exit = False
                     break
 
         logger.info("All jobs finished.")
