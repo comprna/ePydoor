@@ -110,8 +110,6 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path, na
             dict_jobs[job_id] = 1
             logger.info("job_id run:" + str(job_id))
 
-            break
-
         logger.info("Waiting for all the jobs to finished...")
         flag_exit = False
         while(not flag_exit):
