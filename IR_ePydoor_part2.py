@@ -90,22 +90,20 @@ def main():
         # repeats_path = "/projects_rg/SCLC_cohorts/cis_analysis/tables/hg19_repeats.bed"
         # output_path = "/users/genomics/juanluis/SCLC_cohorts/test"
 
-        # 6. Create the folder, if it doesn't exists
-        logger.info("Part6...")
-        if not os.path.exists(output_path + "/coverageBed"):
-            os.makedirs(output_path + "/coverageBed")
-        # Move all the coverage.sorted files to the created directory
-        command1="mv "+output_path+"/*coverage_sorted "+output_path + "/coverageBed/"
-        os.system(command1)
-
-        # 7. Get the coverage for each exonization
-        logger.info("Part7...")
-        # get_coverageBed(output_path + "/IR_expressed_genes.tab", output_path + "/random_introns.bed",
-        #                 output_path + "/coverageBed", output_path + "/IR_expressed_genes2.tab", True)
-        get_coverageBed_adapter(output_path + "/IR_expressed_genes.tab", output_path + "/random_introns.bed",
-                        output_path + "/coverageBed", output_path, name_user)
-
-        exit()
+        # # 6. Create the folder, if it doesn't exists
+        # logger.info("Part6...")
+        # if not os.path.exists(output_path + "/coverageBed"):
+        #     os.makedirs(output_path + "/coverageBed")
+        # # Move all the coverage.sorted files to the created directory
+        # command1="mv "+output_path+"/*coverage_sorted "+output_path + "/coverageBed/"
+        # os.system(command1)
+        #
+        # # 7. Get the coverage for each exonization
+        # logger.info("Part7...")
+        # # get_coverageBed(output_path + "/IR_expressed_genes.tab", output_path + "/random_introns.bed",
+        # #                 output_path + "/coverageBed", output_path + "/IR_expressed_genes2.tab", True)
+        # get_coverageBed_adapter(output_path + "/IR_expressed_genes.tab", output_path + "/random_introns.bed",
+        #                 output_path + "/coverageBed", output_path, name_user)
 
         # 8.  Get the peptide sequence associated
         logger.info("Part8...")
