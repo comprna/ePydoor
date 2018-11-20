@@ -90,22 +90,22 @@ def main():
         # repeats_path = "/projects_rg/SCLC_cohorts/cis_analysis/tables/hg19_repeats.bed"
         # output_path = "/users/genomics/juanluis/SCLC_cohorts/test"
 
-        # 6. Create the folder, if it doesn't exists
-        logger.info("Part6...")
-        if not os.path.exists(output_path + "/coverageBed"):
-            os.makedirs(output_path + "/coverageBed")
-        # Move all the coverage.sorted files to the created directory
-        command1="mv "+output_path+"/*coverage_sorted "+output_path + "/coverageBed/"
-        os.system(command1)
-
-        # 7.1. Get the coverage for each exonization
-        logger.info("Part7...")
-        get_coverageBed_adapter(output_path + "/IR_expressed_genes.tab", output_path + "/random_introns.bed",
-                        output_path + "/coverageBed", output_path, name_user)
-
-        # 7.2. Assemble all pieces into one single file
-        command2="awk 'FNR==1 && NR!=1{next;}{print}' "+output_path+"/get_coverageBed_results.*.tab > "+output_path+"/get_coverageBed_results.tab"
-        os.system(command2)
+        # # 6. Create the folder, if it doesn't exists
+        # logger.info("Part6...")
+        # if not os.path.exists(output_path + "/coverageBed"):
+        #     os.makedirs(output_path + "/coverageBed")
+        # # Move all the coverage.sorted files to the created directory
+        # command1="mv "+output_path+"/*coverage_sorted "+output_path + "/coverageBed/"
+        # os.system(command1)
+        #
+        # # 7.1. Get the coverage for each exonization
+        # logger.info("Part7...")
+        # get_coverageBed_adapter(output_path + "/IR_expressed_genes.tab", output_path + "/random_introns.bed",
+        #                 output_path + "/coverageBed", output_path, name_user)
+        #
+        # # 7.2. Assemble all pieces into one single file
+        # command2="awk 'FNR==1 && NR!=1{next;}{print}' "+output_path+"/get_coverageBed_results.*.tab > "+output_path+"/get_coverageBed_results.tab"
+        # os.system(command2)
 
         # 7.3. Get the introns with a significant p_value
         command3="head -n1 "+output_path+"/get_coverageBed_results.tab > "+output_path+"/IR_significant_introns.tab; " \

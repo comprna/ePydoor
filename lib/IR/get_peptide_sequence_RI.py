@@ -314,6 +314,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
         index_DNA_ref, index_DNA_ex, index_AA_ref, index_AA_ex = {}, {}, {}, {}
         exonization_transcript = {}
         path1 = "/".join(output_peptide_path.split("/")[:-1])
+        logger.info("path1: "+path1)
         outFile_peptide = open(output_peptide_path, 'w')
         outFile_sequence = open(output_sequence_path, 'w')
         outFile_peptide_Interpro = open(path1 + "/IR_peptide_sequence_Interpro.temp", 'w')
@@ -487,7 +488,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                 bed_file.to_csv(path1 + "/aux_reference_IR.bed", sep="\t", index=False, header=False)
 
                 # 5.2.2. Get the sequence from Mosea
-                # logger.info("Obtaining fasta exonizations sequence...")
+                logger.info("Obtaining fasta exonizations sequence...")
                 command1 = "module load Python/2.7.11; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
                            path1 + "/aux_exonization_IR.bed --genome " + fast_genome + " --output " + path1 + \
                            "/aux_exonization_IR.fa" + "; module unload Python/2.7.11"
@@ -502,7 +503,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                 os.system(command2)
 
                 # 5.3 Get the peptidic sequence
-                # logger.info("Obtaining peptidic exonizations sequence...")
+                logger.info("Obtaining peptidic exonizations sequence...")
 
                 # 5.3.1. Get the reference ORF using the information from the GTF with the start and stop codons
                 # Read the DNA reference file
@@ -547,6 +548,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                     continue
                 else:
                     # 5.3.1.2. Get the reference sequence given by the start and stop codons from the GTF
+                    logger.info("5.3.1.2...")
                     cont2 = 0
                     flag_start, flag_end, flag_same_exons = False, False, True
                     sequence_total_REF, sequence_similar = "", ""
@@ -652,6 +654,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
 
                     # 5.3.2. Get the ORFs associated to the exonization DNA sequence
                     # If this is strand negative, we have to reverse the sequences before
+                    logger.info("5.3.2...")
                     sequence_total_EX = ""
                     with open(path1 + "/aux_exonization_IR.fa") as f:
                         for line in f:
@@ -674,6 +677,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
 
                     # 5.3.2.1. Run extract_orfs.py for obtaining all possible ORFs in the sequence
                     # logger.info("Obtaining ORFs...")
+                    logger.info("5.3.2.1...")
                     command1 = "module load Python/2.7.11; python " + orfs_scripts + " " + path1 + \
                                "/aux_sequence_total_EX_IR.fa" + " 50 > " + path1 + "/aux_sequence_total_EX_ORF_IR.fa" \
                                + " ; module unload Python/2.7.11"
@@ -701,6 +705,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                     # no ORF with the starting similar sequence, then there is no stop codon (ribosome stalling)
                     # Check the file from the end
                     # If the gene is in reverse, get the rev_compl from the sequence_similar
+                    logger.info("5.3.2.2...")
                     if (IR_strand == "-"):
                         my_seq = Seq(sequence_similar)
                         sequence_similar = my_seq.reverse_complement()
