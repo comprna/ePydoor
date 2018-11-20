@@ -76,6 +76,10 @@ def main():
         coverage_path = "/homes/users/jtrincado/scratch/test_Junckey/test2/coverageBed/"
         output_path = "/homes/users/jtrincado/scratch/test_Junckey/test2"
         name_user = "jtrincado"
+        # ONLY FOR MARVIN
+        python2 = "Python/2.7.14-foss-2017b"
+        # ONLY FOR HYDRA
+        #python2 = "Python/2.7.11"
 
         # readcounts_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_George_Peifer_Rudin_Yokota.tab"
         # # bam_path = "/projects_rg/SCLC_cohorts/George/STAR/George_and_Peifer"
@@ -117,7 +121,8 @@ def main():
         get_peptide_sequence(output_path + "/IR_significant_introns.tab", transcript_expression_path, gtf_path, codons_gtf_path,
                              output_path + "/IR_peptide_sequence.fa", output_path + "/IR_fasta_sequence.fa",
                              output_path + "/IR_ORF.tab", output_path + "/IR_ORF_sequences.tab", output_path + "/IR_Interpro.tab",
-                             output_path + "/IR_IUPred.tab", mosea, fast_genome, orfs_scripts, interpro,IUPred, remove_temp_files)
+                             output_path + "/IR_IUPred.tab", mosea, fast_genome, orfs_scripts, interpro,IUPred, remove_temp_files,
+                             python2)
 
         # 9. Filter the significant results
         logger.info("Part9...")

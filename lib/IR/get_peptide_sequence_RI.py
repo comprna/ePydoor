@@ -96,7 +96,7 @@ def get_expression(sample_id,transcript_id,transcript_expression):
 
 def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path, codons_gtf_path, output_peptide_path,
                          output_sequence_path, output_path2, output_path3, output_path4, output_path5, mosea,
-                         fast_genome, orfs_scripts, interpro, IUPred, remove_temp_files):
+                         fast_genome, orfs_scripts, interpro, IUPred, remove_temp_files, python2):
 
     try:
         logger.info("Starting execution")
@@ -489,16 +489,21 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
 
                 # 5.2.2. Get the sequence from Mosea
                 logger.info("Obtaining fasta exonizations sequence...")
-                command1 = "module load Python/2.7.13; module load BEDTools; module load zlib; python " + mosea + " getfasta --bedfile " + \
+                #ONLY FOR MARVIN
+                # command1 = "module load Python/2.7.15-foss-2018b; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
+                #            path1 + "/aux_exonization_IR.bed --genome " + fast_genome + " --output " + path1 + \
+                #            "/aux_exonization_IR.fa" + "; module unload Python/2.7.15-foss-2018b"
+                #ONLY FOR MARVIN
+                command1 = "module load " + python2 + "; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
                            path1 + "/aux_exonization_IR.bed --genome " + fast_genome + " --output " + path1 + \
-                           "/aux_exonization_IR.fa" + "; module unload Python/2.7.13"
+                           "/aux_exonization_IR.fa" + "; module unload " + python2
                 # print(command1)
                 os.system(command1)
 
                 # logger.info("Obtaining fasta reference sequence...")
-                command2 = "module load Python/2.7.13; module load BEDTools; module load zlib; python " + mosea + " getfasta --bedfile " + \
+                command2 = "module load " + python2 + "; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
                            path1 + "/aux_reference_IR.bed --genome " + fast_genome + " --output " + path1 + \
-                           "/aux_reference_IR.fa" + "; module unload Python/2.7.13"
+                           "/aux_reference_IR.fa" + "; module unload " + python2
                 # print(command2)
                 os.system(command2)
 
@@ -682,9 +687,9 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                     # 5.3.2.1. Run extract_orfs.py for obtaining all possible ORFs in the sequence
                     # logger.info("Obtaining ORFs...")
                     logger.info("5.3.2.1...")
-                    command1 = "module load Python/2.7.13; python " + orfs_scripts + " " + path1 + \
+                    command1 = "module load " + python2 + "; python " + orfs_scripts + " " + path1 + \
                                "/aux_sequence_total_EX_IR.fa" + " 50 > " + path1 + "/aux_sequence_total_EX_ORF_IR.fa" \
-                               + " ; module unload Python/2.7.13"
+                               + " ; module unload " + python2
                     # print(command1)
                     os.system(command1)
 
