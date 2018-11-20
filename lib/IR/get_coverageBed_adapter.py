@@ -108,26 +108,20 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path, na
             #Get the job id and store it
             job_id = (str(job_message).rstrip().split(" ")[-1])[:-3]
             dict_jobs[job_id] = 1
-            logger.info("job_id run:" + str(job_id))
 
         logger.info("Waiting for all the jobs to finished...")
         flag_exit = False
         while(not flag_exit):
             # Initialize the dictionary with the pending jobs in the cluster
             pending_jobs = {}
-            logger.info("Sleeping 10 seconds...")
             os.system("sleep 10")
             p = subprocess.Popen(["squeue","-u", name_user], stdout=subprocess.PIPE)
             # Skip the first line (the header)
             line = p.stdout.readline()
             for line in p.stdout:
                 flag_exit = True
-                logger.info("Entering second loop...")
-                # line = p.stdout.readline()
-                logger.info("Line: "+str(line))
                 #Get the id of the job
                 job_id_aux = str(line).rstrip().split()[1]
-                logger.info("job_id cluster:" + str(job_id_aux))
                 #Save the id of the jobs
                 pending_jobs[job_id_aux] = 1
                 #If there is any job on the cluster on dict_jobs, break the loop and wait for another 10 seconds

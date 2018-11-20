@@ -60,10 +60,6 @@ def get_coverageBed(input_path, gtf_path, coverage_path, output_path, sclc_flag)
     try:
         logger.info("Starting execution")
 
-        #BORRAR ESTO!!!!!!
-        os.system("sleep 100")
-        exit()
-
         # input_path = sys.argv[1]
         # gtf_path = sys.argv[2]
         # coverage_path = sys.argv[3]
