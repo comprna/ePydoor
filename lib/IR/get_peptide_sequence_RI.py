@@ -491,14 +491,14 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                 logger.info("Obtaining fasta exonizations sequence...")
                 command1 = "module load Python/2.7.9; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
                            path1 + "/aux_exonization_IR.bed --genome " + fast_genome + " --output " + path1 + \
-                           "/aux_exonization_IR.fa" + "; module unload Python/2.7.11"
+                           "/aux_exonization_IR.fa" + "; module unload Python/2.7.9"
                 # print(command1)
                 os.system(command1)
 
                 # logger.info("Obtaining fasta reference sequence...")
                 command2 = "module load Python/2.7.9; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
                            path1 + "/aux_reference_IR.bed --genome " + fast_genome + " --output " + path1 + \
-                           "/aux_reference_IR.fa" + "; module unload Python/2.7.11"
+                           "/aux_reference_IR.fa" + "; module unload Python/2.7.9"
                 # print(command2)
                 os.system(command2)
 
@@ -684,7 +684,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                     logger.info("5.3.2.1...")
                     command1 = "module load Python/2.7.9; python " + orfs_scripts + " " + path1 + \
                                "/aux_sequence_total_EX_IR.fa" + " 50 > " + path1 + "/aux_sequence_total_EX_ORF_IR.fa" \
-                               + " ; module unload Python/2.7.11"
+                               + " ; module unload Python/2.7.9"
                     # print(command1)
                     os.system(command1)
 
