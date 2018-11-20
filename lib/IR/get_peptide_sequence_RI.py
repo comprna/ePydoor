@@ -489,14 +489,14 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
 
                 # 5.2.2. Get the sequence from Mosea
                 logger.info("Obtaining fasta exonizations sequence...")
-                command1 = "module load Python/2.7.11; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
+                command1 = "module load Python/2.7.9; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
                            path1 + "/aux_exonization_IR.bed --genome " + fast_genome + " --output " + path1 + \
                            "/aux_exonization_IR.fa" + "; module unload Python/2.7.11"
                 # print(command1)
                 os.system(command1)
 
                 # logger.info("Obtaining fasta reference sequence...")
-                command2 = "module load Python/2.7.11; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
+                command2 = "module load Python/2.7.9; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
                            path1 + "/aux_reference_IR.bed --genome " + fast_genome + " --output " + path1 + \
                            "/aux_reference_IR.fa" + "; module unload Python/2.7.11"
                 # print(command2)
@@ -513,6 +513,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                 else:
                     # 5.3.1.1. Check how many initial exons are similar. We will do this in order to obtain the part of the ORF
                     # reference that should be in common with the ORF exonization
+                    logger.info("5.3.1.1...")
                     cont_same_exons = 0
                     cont_start_codon = 0
                     counter = 0
@@ -521,8 +522,10 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                         start_codon = transcript_start_codon[transcript_id][0]
                     else:
                         start_codon = transcript_start_codon[transcript_id][1]
+                    logger.info("5.3.1.1_ass...")
                     with open(path1 + "/aux_exonization_IR.fa") as f1, open(path1 + "/aux_reference_IR.fa") as f2:
                         for x, y in zip(f1, f2):
+                            logger.info("5.3.1.1_ass2...")
                             if (re.search(">", x)):
                                 # coordinates = x.split(":")[3]
                                 coordinates = x.split(":")[5]
@@ -545,6 +548,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
 
                 # If the start codon is after the exonization, the ORFs will be similar and there wont be any peptide change
                 if (cont_start_codon > cont_same_exons):
+                    logger.info("Fuck you...")
                     continue
                 else:
                     # 5.3.1.2. Get the reference sequence given by the start and stop codons from the GTF
@@ -678,7 +682,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                     # 5.3.2.1. Run extract_orfs.py for obtaining all possible ORFs in the sequence
                     # logger.info("Obtaining ORFs...")
                     logger.info("5.3.2.1...")
-                    command1 = "module load Python/2.7.11; python " + orfs_scripts + " " + path1 + \
+                    command1 = "module load Python/2.7.9; python " + orfs_scripts + " " + path1 + \
                                "/aux_sequence_total_EX_IR.fa" + " 50 > " + path1 + "/aux_sequence_total_EX_ORF_IR.fa" \
                                + " ; module unload Python/2.7.11"
                     # print(command1)
