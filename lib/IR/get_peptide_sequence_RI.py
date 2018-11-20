@@ -489,16 +489,16 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
 
                 # 5.2.2. Get the sequence from Mosea
                 logger.info("Obtaining fasta exonizations sequence...")
-                command1 = "module load Python/2.7.9; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
+                command1 = "module load Python/2.7.13; module load BEDTools; module load zlib; python " + mosea + " getfasta --bedfile " + \
                            path1 + "/aux_exonization_IR.bed --genome " + fast_genome + " --output " + path1 + \
-                           "/aux_exonization_IR.fa" + "; module unload Python/2.7.9"
+                           "/aux_exonization_IR.fa" + "; module unload Python/2.7.13"
                 # print(command1)
                 os.system(command1)
 
                 # logger.info("Obtaining fasta reference sequence...")
-                command2 = "module load Python/2.7.9; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
+                command2 = "module load Python/2.7.13; module load BEDTools; module load zlib; python " + mosea + " getfasta --bedfile " + \
                            path1 + "/aux_reference_IR.bed --genome " + fast_genome + " --output " + path1 + \
-                           "/aux_reference_IR.fa" + "; module unload Python/2.7.9"
+                           "/aux_reference_IR.fa" + "; module unload Python/2.7.13"
                 # print(command2)
                 os.system(command2)
 
@@ -682,9 +682,9 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                     # 5.3.2.1. Run extract_orfs.py for obtaining all possible ORFs in the sequence
                     # logger.info("Obtaining ORFs...")
                     logger.info("5.3.2.1...")
-                    command1 = "module load Python/2.7.9; python " + orfs_scripts + " " + path1 + \
+                    command1 = "module load Python/2.7.13; python " + orfs_scripts + " " + path1 + \
                                "/aux_sequence_total_EX_IR.fa" + " 50 > " + path1 + "/aux_sequence_total_EX_ORF_IR.fa" \
-                               + " ; module unload Python/2.7.9"
+                               + " ; module unload Python/2.7.13"
                     # print(command1)
                     os.system(command1)
 
