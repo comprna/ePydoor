@@ -100,12 +100,14 @@ def main():
         #
         # # 7. Get the coverage for each exonization
         # logger.info("Part7...")
-        # # get_coverageBed(output_path + "/IR_expressed_genes.tab", output_path + "/random_introns.bed",
-        # #                 output_path + "/coverageBed", output_path + "/IR_expressed_genes2.tab", True)
         # get_coverageBed_adapter(output_path + "/IR_expressed_genes.tab", output_path + "/random_introns.bed",
         #                 output_path + "/coverageBed", output_path, name_user)
+        #
+        # # Assemble all pieces into one single file
+        # command2="awk 'FNR==1 && NR!=1{next;}{print}' "+output_path+"/get_coverageBed_results.*.tab > "+output_path+"/get_coverageBed_results.tab"
+        # os.system(command2)
 
-        # 8.  Get the peptide sequence associated
+        # 8. Get the peptide sequence associated
         logger.info("Part8...")
         get_peptide_sequence(output_path + "/IR_expressed_genes2.tab", transcript_expression_path, gtf_path, codons_gtf_path,
                              output_path + "/IR_ORF.tab",output_path + "/IR_ORF_sequences.tab", output_path + "/IR_Inerpro.tab",
@@ -114,11 +116,9 @@ def main():
         # 9. Filter the significant results
         logger.info("Part9...")
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        output_path_aux18 = output_path + "/IR_ORF_filtered.tab"
-        output_path_aux19 = output_path + "/IR_ORF_filtered_peptide_change.tab"
-        command4="module load R; Rscript "+dir_path+"/lib/IR/filter_results.R "+output_path + "/IR_ORF.tab"+" "+ \
+        command3="module load R; Rscript "+dir_path+"/lib/IR/filter_results.R "+output_path + "/IR_ORF.tab"+" "+ \
                  output_path + "/IR_ORF_filtered.tab" +" "+output_path + "/IR_ORF_filtered_peptide_change.tab"
-        os.system(command4)
+        os.system(command3)
 
         # 10. Select the fasta candidates for being run to the epitope analysis
         logger.info("Part10...")
