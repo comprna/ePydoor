@@ -46,7 +46,7 @@ def extract_number(id):
 
 
 
-def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path):
+def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path, name_user):
 
     try:
         logger.info("Starting execution")
@@ -111,18 +111,40 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path):
             #Get the job id and store it
             job_id = (str(job_message).rstrip().split(" ")[-1])[:-3]
             dict_jobs[job_id] = 1
+            logger.info("job_id run:" + str(job_id))
 
             break
 
-        logger.info("Waiting for all the jobs to finished")
+        logger.info("Waiting for all the jobs to finished...")
         flag_exit = False
         while(not flag_exit):
-            #TODO: use subprocess.Popen instead
-            squeue_cluster = subprocess.check_output("sleep 1; squeue -u jtrincado", shell=True)
-            #Process the info
-            squeue_cluster_list = str(squeue_cluster).split("\n")
-            #Take all the id jobs and save it
-            logger.info("Printing squeue: "+str(squeue_cluster_list[0]))
+            # Initialize the dictionary with the pending jobs in the cluster
+            pending_jobs = {}
+            logger.info("Sleeping 10 seconds...")
+            os.system("sleep 10")
+            p = subprocess.Popen(["squeue","-u", name_user], stdout=subprocess.PIPE)
+            # out = p.stdout.read()
+            # logger.info("Printing squeue: "+str(out))
+            while True:
+                logger.info("Entering second loop...")
+                line = p.stdout.readline()
+                logger.info("Line: "+str(line))
+                if line != '':
+                    #Get the id of the job
+                    job_id_aux = (str(job_message).rstrip().split(" ")[-1])[:-3]
+                    logger.info("job_id cluster:" + str(job_id_aux))
+                    #Save the id of the jobs
+                    pending_jobs[job_id_aux] = 1
+                    #If there is any job on the cluster on dict_jobs, break the loop and wait for another 10 seconds
+                    # to check the status of the jobs in the cluster
+                    if(job_id_aux in dict_jobs):
+                        break
+                else:
+                    #If we have reach the end of the status and there is no job pending, end the execution
+                    flag_exit = True
+                    break
+
+        logger.info("All jobs finished.")
 
 
     except Exception as error:

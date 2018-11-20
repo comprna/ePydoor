@@ -75,6 +75,7 @@ def main():
         remove_temp_files = True
         coverage_path = "/homes/users/jtrincado/scratch/test_Junckey/test2/coverageBed/"
         output_path = "/homes/users/jtrincado/scratch/test_Junckey/test2"
+        name_user = "jtrincado"
 
         # readcounts_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_George_Peifer_Rudin_Yokota.tab"
         # # bam_path = "/projects_rg/SCLC_cohorts/George/STAR/George_and_Peifer"
@@ -102,7 +103,7 @@ def main():
         # get_coverageBed(output_path + "/IR_expressed_genes.tab", output_path + "/random_introns.bed",
         #                 output_path + "/coverageBed", output_path + "/IR_expressed_genes2.tab", True)
         get_coverageBed_adapter(output_path + "/IR_expressed_genes.tab", output_path + "/random_introns.bed",
-                        output_path + "/coverageBed", output_path)
+                        output_path + "/coverageBed", output_path, name_user)
 
         exit()
 
