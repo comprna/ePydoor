@@ -489,22 +489,15 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
 
                 # 5.2.2. Get the sequence from Mosea
                 logger.info("Obtaining fasta exonizations sequence...")
-                #ONLY FOR MARVIN
-                # command1 = "module load Python/2.7.15-foss-2018b; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
-                #            path1 + "/aux_exonization_IR.bed --genome " + fast_genome + " --output " + path1 + \
-                #            "/aux_exonization_IR.fa" + "; module unload Python/2.7.15-foss-2018b"
-                #ONLY FOR MARVIN
                 command1 = "module load " + python2 + "; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
                            path1 + "/aux_exonization_IR.bed --genome " + fast_genome + " --output " + path1 + \
                            "/aux_exonization_IR.fa" + "; module unload " + python2
-                # print(command1)
                 os.system(command1)
 
                 # logger.info("Obtaining fasta reference sequence...")
                 command2 = "module load " + python2 + "; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
                            path1 + "/aux_reference_IR.bed --genome " + fast_genome + " --output " + path1 + \
                            "/aux_reference_IR.fa" + "; module unload " + python2
-                # print(command2)
                 os.system(command2)
 
                 # 5.3 Get the peptidic sequence
@@ -518,7 +511,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                 else:
                     # 5.3.1.1. Check how many initial exons are similar. We will do this in order to obtain the part of the ORF
                     # reference that should be in common with the ORF exonization
-                    logger.info("5.3.1.1...")
                     cont_same_exons = 0
                     cont_start_codon = 0
                     counter = 0
@@ -527,13 +519,10 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                         start_codon = transcript_start_codon[transcript_id][0]
                     else:
                         start_codon = transcript_start_codon[transcript_id][1]
-                    logger.info("5.3.1.1_ass...")
                     with open(path1 + "/aux_exonization_IR.fa") as f1, open(path1 + "/aux_reference_IR.fa") as f2:
                         for x, y in zip(f1, f2):
-                            logger.info("5.3.1.1_ass2...")
                             if (re.search(">", x)):
-                                # coordinates = x.split(":")[3]
-                                coordinates = x.split(":")[5]
+                                coordinates = x.split(":")[1]
                                 start_coordinates = coordinates.split("-")[0]
                                 end_coordinates = coordinates.split("-")[1][:-4]
                                 if (int(start_coordinates) <= int(start_codon) <= int(end_coordinates)):
@@ -553,11 +542,9 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
 
                 # If the start codon is after the exonization, the ORFs will be similar and there wont be any peptide change
                 if (cont_start_codon > cont_same_exons):
-                    logger.info("Fuck you...")
                     continue
                 else:
                     # 5.3.1.2. Get the reference sequence given by the start and stop codons from the GTF
-                    logger.info("5.3.1.2...")
                     cont2 = 0
                     flag_start, flag_end, flag_same_exons = False, False, True
                     sequence_total_REF, sequence_similar = "", ""
@@ -574,8 +561,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                 # If its header, pass the line
                                 if (re.search(">", line)):
                                     cont2 += 1
-                                    # coordinates = line.split(":")[3]
-                                    coordinates = line.split(":")[5]
+                                    coordinates = x.split(":")[1]
                                     start_coordinates = coordinates.split("-")[0]
                                     end_coordinates = coordinates.split("-")[1][:-4]
                                     offset1 = -1
@@ -620,8 +606,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                 # If its header, pass the line
                                 if (re.search(">", line)):
                                     cont2 += 1
-                                    # coordinates = line.split(":")[3]
-                                    coordinates = line.split(":")[5]
+                                    coordinates = x.split(":")[1]
                                     start_coordinates = coordinates.split("-")[0]
                                     end_coordinates = coordinates.split("-")[1][:-4]
                                     offset1 = -1
@@ -832,8 +817,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                 # Count the lines with a header
                                 if (re.search(">", line)):
                                     n_exons += 1
-                                    # coordinates = line.split(":")[3]
-                                    coordinates = line.split(":")[5]
+                                    coordinates = x.split(":")[1]
                                     start_coordinates = coordinates.split("-")[0]
                                     end_coordinates = coordinates.split("-")[1][:-4]
                                     if (int(start_coordinates) <= int(start_codon) <= int(end_coordinates)):
@@ -852,8 +836,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                 # If its header, pass the line
                                 if (re.search(">", line)):
                                     cont3 += 1
-                                    # coordinates = line.split(":")[3]
-                                    coordinates = line.split(":")[5]
+                                    coordinates = x.split(":")[1]
                                     start_coordinates = coordinates.split("-")[0]
                                     end_coordinates = coordinates.split("-")[1][:-4]
                                     offset1 = -1
