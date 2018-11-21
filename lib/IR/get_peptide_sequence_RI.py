@@ -349,14 +349,15 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
             for line in f:
                 tokens = line.rstrip().split("\t")
                 gene = tokens[gene_id_pos]
-                gene = "TRMT12"
+                # gene = "TRMT12"
                 exonization = tokens[ir_id]
-                exonization = "chr8:125465222-125474307(+):kma_introns"
+                # exonization = "chr8:125465222-125474307(+):kma_introns"
                 sample_id = tokens[Sample_id_pos]
-                sample_id = "S00022"
+                # sample_id = "S00022"
                 flag_exit = False
                 cont1+=1
                 logger.info(str(cont1))
+                logger.info(str(exonization))
                 # if(cont1==25):
                 #     break
                 # Intitialize the dictionaries if the exonizations has not been explored yet
