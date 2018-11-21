@@ -349,15 +349,11 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
             for line in f:
                 tokens = line.rstrip().split("\t")
                 gene = tokens[gene_id_pos]
-                # gene = "TRMT12"
                 exonization = tokens[ir_id]
-                # exonization = "chr8:125465222-125474307(+):kma_introns"
                 sample_id = tokens[Sample_id_pos]
-                # sample_id = "S00022"
                 flag_exit = False
                 cont1+=1
                 logger.info(str(cont1))
-                logger.info(str(exonization))
                 # if(cont1==25):
                 #     break
                 # Intitialize the dictionaries if the exonizations has not been explored yet
@@ -505,7 +501,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                 os.system(command2)
 
                 # 5.3 Get the peptidic sequence
-                logger.info("Obtaining peptidic exonizations sequence...")
+                # logger.info("Obtaining peptidic exonizations sequence...")
 
                 # 5.3.1. Get the reference ORF using the information from the GTF with the start and stop codons
                 # Read the DNA reference file
@@ -513,7 +509,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                 if (transcript_id not in transcript_start_codon or transcript_id not in transcript_stop_codon):
                     continue
                 else:
-                    logger.info("5.3.1.1...")
                     # 5.3.1.1. Check how many initial exons are similar. We will do this in order to obtain the part of the ORF
                     # reference that should be in common with the ORF exonization
                     cont_same_exons = 0
@@ -549,7 +544,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                 if (cont_start_codon > cont_same_exons):
                     continue
                 else:
-                    logger.info("5.3.1.2...")
                     # 5.3.1.2. Get the reference sequence given by the start and stop codons from the GTF
                     cont2 = 0
                     flag_start, flag_end, flag_same_exons = False, False, True
@@ -567,9 +561,12 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                 # If its header, pass the line
                                 if (re.search(">", line)):
                                     cont2 += 1
-                                    coordinates = x.split(":")[1]
+                                    coordinates = line.split(":")[1]
+                                    logger.info("coordinates:"+coordinates)
                                     start_coordinates = coordinates.split("-")[0]
+                                    logger.info("start:"+start_coordinates)
                                     end_coordinates = coordinates.split("-")[1][:-4]
+                                    logger.info("end:"+end_coordinates)
                                     offset1 = -1
                                     offset2 = -1
                                     pass
@@ -612,7 +609,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                 # If its header, pass the line
                                 if (re.search(">", line)):
                                     cont2 += 1
-                                    coordinates = x.split(":")[1]
+                                    coordinates = line.split(":")[1]
                                     start_coordinates = coordinates.split("-")[0]
                                     end_coordinates = coordinates.split("-")[1][:-4]
                                     offset1 = -1
@@ -654,7 +651,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
 
                     # 5.3.2. Get the ORFs associated to the exonization DNA sequence
                     # If this is strand negative, we have to reverse the sequences before
-                    logger.info("5.3.2...")
                     sequence_total_EX = ""
                     with open(path1 + "/aux_exonization_IR.fa") as f:
                         for line in f:
@@ -677,7 +673,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
 
                     # 5.3.2.1. Run extract_orfs.py for obtaining all possible ORFs in the sequence
                     # logger.info("Obtaining ORFs...")
-                    logger.info("5.3.2.1...")
                     command1 = "module load " + python2 + "; python " + orfs_scripts + " " + path1 + \
                                "/aux_sequence_total_EX_IR.fa" + " 50 > " + path1 + "/aux_sequence_total_EX_ORF_IR.fa" \
                                + " ; module unload " + python2
@@ -688,7 +683,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                     # no ORF with the starting similar sequence, then there is no stop codon (ribosome stalling)
                     # Check the file from the end
                     # If the gene is in reverse, get the rev_compl from the sequence_similar
-                    logger.info("5.3.2.2...")
                     if (IR_strand == "-"):
                         my_seq = Seq(sequence_similar)
                         sequence_similar = my_seq.reverse_complement()
@@ -804,7 +798,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                 # Count the lines with a header
                                 if (re.search(">", line)):
                                     n_exons += 1
-                                    coordinates = x.split(":")[1]
+                                    coordinates = line.split(":")[1]
                                     start_coordinates = coordinates.split("-")[0]
                                     end_coordinates = coordinates.split("-")[1][:-4]
                                     if (int(start_coordinates) <= int(start_codon) <= int(end_coordinates)):
@@ -823,7 +817,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                 # If its header, pass the line
                                 if (re.search(">", line)):
                                     cont3 += 1
-                                    coordinates = x.split(":")[1]
+                                    coordinates = line.split(":")[1]
                                     start_coordinates = coordinates.split("-")[0]
                                     end_coordinates = coordinates.split("-")[1][:-4]
                                     offset1 = -1
