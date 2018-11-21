@@ -488,7 +488,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                 bed_file.to_csv(path1 + "/aux_reference_IR.bed", sep="\t", index=False, header=False)
 
                 # 5.2.2. Get the sequence from Mosea
-                logger.info("Obtaining fasta exonizations sequence...")
+                # logger.info("Obtaining fasta exonizations sequence...")
                 command1 = "module load " + python2 + "; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
                            path1 + "/aux_exonization_IR.bed --genome " + fast_genome + " --output " + path1 + \
                            "/aux_exonization_IR.fa" + "; module unload " + python2
@@ -501,7 +501,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                 os.system(command2)
 
                 # 5.3 Get the peptidic sequence
-                logger.info("Obtaining peptidic exonizations sequence...")
+                # logger.info("Obtaining peptidic exonizations sequence...")
 
                 # 5.3.1. Get the reference ORF using the information from the GTF with the start and stop codons
                 # Read the DNA reference file
