@@ -349,8 +349,11 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
             for line in f:
                 tokens = line.rstrip().split("\t")
                 gene = tokens[gene_id_pos]
+                gene = "TRMT12"
                 exonization = tokens[ir_id]
+                exonization = "chr8:125465222-125474307(+):kma_introns"
                 sample_id = tokens[Sample_id_pos]
+                sample_id = "S00022"
                 flag_exit = False
                 cont1+=1
                 logger.info(str(cont1))
@@ -501,14 +504,15 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                 os.system(command2)
 
                 # 5.3 Get the peptidic sequence
-                # logger.info("Obtaining peptidic exonizations sequence...")
+                logger.info("Obtaining peptidic exonizations sequence...")
 
                 # 5.3.1. Get the reference ORF using the information from the GTF with the start and stop codons
                 # Read the DNA reference file
-                # If the transcript is not in the gtf, there wont be no change
+                # If the transcript is not in the gtf, there wont be change
                 if (transcript_id not in transcript_start_codon or transcript_id not in transcript_stop_codon):
                     continue
                 else:
+                    logger.info("5.3.1.1...")
                     # 5.3.1.1. Check how many initial exons are similar. We will do this in order to obtain the part of the ORF
                     # reference that should be in common with the ORF exonization
                     cont_same_exons = 0
@@ -544,6 +548,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                 if (cont_start_codon > cont_same_exons):
                     continue
                 else:
+                    logger.info("5.3.1.2...")
                     # 5.3.1.2. Get the reference sequence given by the start and stop codons from the GTF
                     cont2 = 0
                     flag_start, flag_end, flag_same_exons = False, False, True

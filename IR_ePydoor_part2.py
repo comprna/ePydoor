@@ -127,9 +127,9 @@ def main():
         # 9. Filter the significant results
         logger.info("Part9...")
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        command3="module load R; Rscript "+dir_path+"/lib/IR/filter_results.R "+output_path + "/IR_ORF.tab"+" "+ \
+        command4="module load R; Rscript "+dir_path+"/lib/IR/filter_results.R "+output_path + "/IR_ORF.tab"+" "+ \
                  output_path + "/IR_ORF_filtered.tab" +" "+output_path + "/IR_ORF_filtered_peptide_change.tab"
-        os.system(command3)
+        os.system(command4)
 
         # 10. Select the fasta candidates for being run to the epitope analysis
         logger.info("Part10...")
