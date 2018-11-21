@@ -678,23 +678,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                     # print(command1)
                     os.system(command1)
 
-                    # # 5.3.2.2. Get the ORF with the shortest length that includes the sequence_similar. Check if both peptides has the same ORF
-                    # # Check the file from the end
-                    # # If the gene is in reverse, get the rev_compl from the sequence_similar
-                    # if (IR_strand == "-"):
-                    #     my_seq = Seq(sequence_similar)
-                    #     sequence_similar = my_seq.reverse_complement()
-                    #
-                    # for line in reversed(list(open(path1 + "/aux_sequence_total_EX_ORF_IR.fa"))):
-                    #     if (re.search(">", line)):
-                    #         pass
-                    #     else:
-                    #         if (re.search(str(sequence_similar), line.rstrip())):
-                    #             ORF_EX = line.rstrip()
-                    #             break
-
-                    ########################
-                    #TEST
                     # 5.3.2.2. Get the ORF with the shortest length that starts with the sequence_similar. If there is
                     # no ORF with the starting similar sequence, then there is no stop codon (ribosome stalling)
                     # Check the file from the end
@@ -719,8 +702,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                         #No stop codon
                         Stalling[exonization] = True
                         continue
-
-                    ########################
 
                     # 5.3.3. Get the translation from the ORFs (reference and exonization)
                     ORF_EX_f = ORF_EX.replace("T", "U")
