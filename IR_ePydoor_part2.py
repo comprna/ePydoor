@@ -118,7 +118,7 @@ def main():
 
         # 8. Get the peptide sequence associated
         logger.info("Part8...")
-        get_peptide_sequence(output_path + "/IR_significant_introns.tab", transcript_expression_path, gtf_path, codons_gtf_path,
+        get_peptide_sequence(output_path + "/IR_significant_introns_TEST.tab", transcript_expression_path, gtf_path, codons_gtf_path,
                              output_path + "/IR_peptide_sequence.fa", output_path + "/IR_fasta_sequence.fa",
                              output_path + "/IR_ORF.tab", output_path + "/IR_ORF_sequences.tab", output_path + "/IR_Interpro.tab",
                              output_path + "/IR_IUPred.tab", mosea, fast_genome, orfs_scripts, interpro,IUPred, remove_temp_files,
@@ -145,7 +145,8 @@ def main():
         run_netMHC_classI_slurm_part1(output_path + "/IR_ORF_filtered_peptide_change.tab", HLAclass_path, HLAtypes_path,
                                       output_path + "/IR_fasta_files",output_path + "/IR_NetMHC-4.0_files", output_path + "/IR_NetMHC-4.0_neoantigens_type_3.tab",
                                       output_path + "/IR_NetMHC-4.0_neoantigens_type_3_all.tab", output_path + "/IR_NetMHC-4.0_neoantigens_type_2.tab",
-                                      output_path + "/IR_NetMHC-4.0_neoantigens_type_2_all.tab", netMHC_path)
+                                      output_path + "/IR_NetMHC-4.0_neoantigens_type_2_all.tab", output_path + "/IR_NetMHC-4.0_junctions_ORF_neoantigens.tab",
+                                      netMHC_path)
 
         #12. Run netMHCpan-4.0
         logger.info("Part12...")
@@ -154,7 +155,8 @@ def main():
         run_netMHCpan_classI_slurm_part1(output_path + "/IR_ORF_filtered_peptide_change.tab", HLAclass_path, HLAtypes_pan_path,
                                       output_path + "/IR_fasta_files",output_path + "/IR_NetMHCpan-4.0_files", output_path + "/IR_NetMHCpan-4.0_neoantigens_type_3.tab",
                                       output_path + "/IR_NetMHCpan-4.0_neoantigens_type_3_all.tab", output_path + "/IR_NetMHCpan-4.0_neoantigens_type_2.tab",
-                                      output_path + "/IR_NetMHCpan-4.0_neoantigens_type_2_all.tab", netMHC_pan_path)
+                                      output_path + "/IR_NetMHCpan-4.0_neoantigens_type_2_all.tab", output_path + "/IR_NetMHCpan-4.0_junctions_ORF_neoantigens.tab",
+                                      netMHC_pan_path)
         logger.info("Wait until all jobs have finished. Then, go on with part3")
 
         exit(0)
