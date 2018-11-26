@@ -472,16 +472,21 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                 # remember to substract 1 to the start position
                 path1 = "/".join(output_peptide_path.split("/")[:-1])
                 exons_associated_with_exonization['start'] = exons_associated_with_exonization['start'].apply(lambda x: str(int(x) - 1))
+                #Include in the id the start and end of the exon
+                exonization_formatted = exons_associated_with_exonization.apply(lambda x: exonization+":"+x['chr']+":"+
+                                                                                  str(x['start'])+"-"+str(x['end']),axis=1)
                 bed = [("chr", exons_associated_with_exonization['chr']), ("start", exons_associated_with_exonization['start']),
-                ("end", exons_associated_with_exonization['end']), ("id", exonization),
+                ("end", exons_associated_with_exonization['end']), ("id", exonization_formatted),
                 ("strand", exons_associated_with_exonization['strand'])]
                 bed_file = pd.DataFrame.from_items(bed)
                 bed_file['score'] = 0
                 bed_file.to_csv(path1 + "/aux_exonization_IR.bed", sep="\t", index=False, header=False)
                 # Format the reference transcript in a bed format
                 exons_associated['start'] = exons_associated['start'].apply(lambda x: str(int(x) - 1))
+                exonization_formatted = exons_associated.apply(lambda x: exonization+":"+x['chr']+":"+
+                                                                                  str(x['start'])+"-"+str(x['end']),axis=1)
                 bed = [("chr", exons_associated['chr']), ("start", exons_associated['start']),
-                ("end", exons_associated['end']), ("id", exonization),
+                ("end", exons_associated['end']), ("id", exonization_formatted),
                 ("strand", exons_associated['strand'])]
                 bed_file = pd.DataFrame.from_items(bed)
                 bed_file['score'] = 0
@@ -522,7 +527,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                     with open(path1 + "/aux_exonization_IR.fa") as f1, open(path1 + "/aux_reference_IR.fa") as f2:
                         for x, y in zip(f1, f2):
                             if (re.search(">", x)):
-                                coordinates = x.split(":")[1]
+                                coordinates = x.split(":")[4]
                                 start_coordinates = coordinates.split("-")[0]
                                 end_coordinates = coordinates.split("-")[1][:-4]
                                 if (int(start_coordinates) <= int(start_codon) <= int(end_coordinates)):
@@ -561,7 +566,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                 # If its header, pass the line
                                 if (re.search(">", line)):
                                     cont2 += 1
-                                    coordinates = line.split(":")[1]
+                                    coordinates = line.split(":")[4]
                                     logger.info("coordinates:"+coordinates)
                                     start_coordinates = coordinates.split("-")[0]
                                     logger.info("start:"+start_coordinates)
@@ -609,7 +614,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                 # If its header, pass the line
                                 if (re.search(">", line)):
                                     cont2 += 1
-                                    coordinates = line.split(":")[1]
+                                    coordinates = line.split(":")[4]
                                     start_coordinates = coordinates.split("-")[0]
                                     end_coordinates = coordinates.split("-")[1][:-4]
                                     offset1 = -1
@@ -798,7 +803,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                 # Count the lines with a header
                                 if (re.search(">", line)):
                                     n_exons += 1
-                                    coordinates = line.split(":")[1]
+                                    coordinates = line.split(":")[4]
                                     start_coordinates = coordinates.split("-")[0]
                                     end_coordinates = coordinates.split("-")[1][:-4]
                                     if (int(start_coordinates) <= int(start_codon) <= int(end_coordinates)):
@@ -817,7 +822,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                 # If its header, pass the line
                                 if (re.search(">", line)):
                                     cont3 += 1
-                                    coordinates = line.split(":")[1]
+                                    coordinates = line.split(":")[4]
                                     start_coordinates = coordinates.split("-")[0]
                                     end_coordinates = coordinates.split("-")[1][:-4]
                                     offset1 = -1
