@@ -43,11 +43,6 @@ def main():
 
         logger.info("Starting execution")
 
-        # readcounts_path = sys.argv[1]
-        # gtf_path = sys.argv[2]
-        # max_length = sys.argv[3]
-        # output_path = sys.argv[4]
-
         introns_path = "/homes/users/jtrincado/scratch/test_Junckey/iso_tpm_introns_George_Peifer_Rudin_Yokota.txt"
         bam_path = "/homes/users/jtrincado/scratch/test_Junckey/George_and_Peifer"
         # bam_path = "/projects_rg/SCLC_cohorts/Rudin/STAR/Rudin_Yokota"

@@ -567,11 +567,8 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                 if (re.search(">", line)):
                                     cont2 += 1
                                     coordinates = line.split(":")[4]
-                                    logger.info("coordinates:"+coordinates)
                                     start_coordinates = coordinates.split("-")[0]
-                                    logger.info("start:"+start_coordinates)
                                     end_coordinates = coordinates.split("-")[1][:-4]
-                                    logger.info("end:"+end_coordinates)
                                     offset1 = -1
                                     offset2 = -1
                                     pass
