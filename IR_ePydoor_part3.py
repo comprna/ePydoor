@@ -19,6 +19,7 @@ from lib.IR.run_netMHC_classI_slurm_part1 import *
 from lib.IR.run_netMHC_classI_slurm_part2 import *
 from lib.IR.run_netMHCpan_classI_slurm_part1 import *
 from lib.IR.run_netMHCpan_classI_slurm_part2 import *
+from lib.IR.format_to_SPADA import *
 
 # create logger
 logger = logging.getLogger(__name__)
@@ -91,6 +92,12 @@ def main():
                                       output_path + "/IR_NetMHCpan-4.0_neoantigens_type_3_all.tab", output_path + "/IR_NetMHCpan-4.0_neoantigens_type_2.tab",
                                       output_path + "/IR_NetMHCpan-4.0_neoantigens_type_2_all.tab", output_path + "/IR_NetMHCpan-4.0_junctions_ORF_neoantigens.tab",
                                       netMHC_pan_path)
+
+        # 15. Run format_to_SPADA
+        logger.info("Part15...")
+        format_to_SPADA(output_path + "/IR_ORF.tab", output_path + "/IR_ORF_sequences.tab", output_path + "/IR_ORF_Interpro.tab",
+                        output_path + "/IR_ORF_IUPred.tab", output_path + "/IR_SPADA.tab", output_path + "/IR_SPADA.fasta",
+                        output_path + "/IR_SPADA_features.tab")
 
         logger.info("Done.")
 
