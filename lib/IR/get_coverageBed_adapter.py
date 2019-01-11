@@ -79,7 +79,7 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path, na
         dict_jobs = {}
         for sample in unique_sample_ids:
             # Format the sample
-            # Only the samples ont from George or Peifer
+            # Only the samples from George or Peifer
             if(sample[0:2]=="SM" or sample[0]=="X"):
                 continue
             # Remove T's and X's and replace _ by .
