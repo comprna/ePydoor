@@ -38,7 +38,6 @@ def main():
 
         introns_path = "/homes/users/jtrincado/scratch/test_Junckey/iso_tpm_introns_George_Peifer_Rudin_Yokota.txt"
         bam_path = "/homes/users/jtrincado/scratch/test_Junckey/George_and_Peifer"
-        # bam_path = "/projects_rg/SCLC_cohorts/Rudin/STAR/Rudin_Yokota"
         TPM_threshold = 1
         tumor_specific = False
         introns_Normal_path = "/homes/users/jtrincado/scratch/test_Junckey/iso_tpm_introns_Rudin_Normal.txt"

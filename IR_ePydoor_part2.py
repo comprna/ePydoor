@@ -68,7 +68,6 @@ def main():
         netMHC_path = "/homes/users/jtrincado/scratch/Software/netMHC-4.0/netMHC"
         netMHC_pan_path = "/homes/users/jtrincado/scratch/Software/netMHCpan-4.0/netMHCpan"
         remove_temp_files = True
-        coverage_path = "/homes/users/jtrincado/scratch/test_Junckey/test2/coverageBed/"
         output_path = "/homes/users/jtrincado/scratch/test_Junckey/test2"
         name_user = "jtrincado"
         # ONLY FOR MARVIN
