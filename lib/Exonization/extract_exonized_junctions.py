@@ -321,11 +321,19 @@ def extract_exonized_junctions(input_path, gtf_path, max_length, output_path):
         bed5_file = pd.DataFrame.from_items(bed5)
         bed5_file['id'] = exonizations_filtered["New_exon"]
         bed5_file['score'] = 0
+        #Resort the columns
+        cols = bed5_file.columns.tolist()
+        cols = cols[0:3] + cols[4:6] + [cols[3]]
+        bed5_file = bed5_file[cols]
 
         bed3 = [("chr", chr), ("start", end), ("end", end2), ("strand", strand)]
         bed3_file = pd.DataFrame.from_items(bed3)
         bed3_file['id'] = exonizations_filtered["New_exon"]
         bed3_file['score'] = 0
+        #Resort the columns
+        cols = bed3_file.columns.tolist()
+        cols = cols[0:3] + cols[4:6] + [cols[3]]
+        bed3_file = bed3_file[cols]
 
         # Save this variables as bed file
         path1 = "/".join(output_path.split("/")[:-1])
@@ -343,6 +351,7 @@ def extract_exonized_junctions(input_path, gtf_path, max_length, output_path):
                            "--output " + path1 + "/bed3.fasta"
         os.system(command2)
 
+        logger.info("Obtaining the splice sites...")
         #Load the motifs and associate it to the exons. Make it a table
         motif5, position5 = [], []
         with open(path1 + "/bed5.fasta") as f:

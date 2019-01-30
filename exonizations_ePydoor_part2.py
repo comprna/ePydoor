@@ -18,6 +18,8 @@ from lib.Exonization.select_fasta_candidates import *
 from lib.Exonization.filter_exonizations import *
 from lib.Exonization.filter_exonizations_CHESS import *
 from lib.Exonization.get_peptide_sequence import *
+from lib.Exonization.run_netMHC_classI_slurm_part1 import *
+from lib.Exonization.run_netMHCpan_classI_slurm_part1 import *
 
 # create logger
 logger = logging.getLogger(__name__)
@@ -65,6 +67,11 @@ def main():
         orfs_scripts = "/genomics/users/juanluis/comprna/MxFinder/extract_orfs.py"
         interpro = "/projects_rg/SCLC_cohorts/soft/interproscan-5.30-69.0/interproscan.sh"
         IUPred = "/projects_rg/SCLC_cohorts/soft/IUPred2A"
+        HLAclass_path = "/homes/users/jtrincado/scratch/test_Junckey/PHLAT_summary_ClassI_all_samples.out"
+        HLAtypes_path = "/homes/users/jtrincado/scratch/test_Junckey/NetMHC-4.0_HLA_types_accepted.tab"
+        HLAtypes_pan_path = "/homes/users/jtrincado/scratch/test_Junckey/NetMHCpan-4.0_HLA_types_accepted.tab"
+        netMHC_path = "/homes/users/jtrincado/scratch/Software/netMHC-4.0/netMHC"
+        netMHC_pan_path = "/homes/users/jtrincado/scratch/Software/netMHCpan-4.0/netMHCpan"
         remove_temp_files = True
         output_path = "/users/genomics/juanluis/SCLC_cohorts/test"
         name_user = "jtrincado"
@@ -139,26 +146,24 @@ def main():
             os.makedirs(output_path + "/exonization_fasta_files")
         select_fasta_candidates(output_path_aux19, output_path_aux20, output_path_aux21, output_path + "/exonization_fasta_files")
 
-        # 15. Run netMHC (TODO)
-
         # 15. Run netMHC-4.0_part1
         logger.info("Part14...")
         if not os.path.exists(output_path + "/exonization_NetMHC-4.0_files"):
-            os.makedirs(output_path + "/IR_NetMHC-4.0_files")
-        run_netMHC_classI_slurm_part1(output_path + "/IR_ORF_filtered_peptide_change.tab", HLAclass_path, HLAtypes_path,
-                                      output_path + "/IR_fasta_files",output_path + "/IR_NetMHC-4.0_files", output_path + "/IR_NetMHC-4.0_neoantigens_type_3.tab",
-                                      output_path + "/IR_NetMHC-4.0_neoantigens_type_3_all.tab", output_path + "/IR_NetMHC-4.0_neoantigens_type_2.tab",
-                                      output_path + "/IR_NetMHC-4.0_neoantigens_type_2_all.tab", output_path + "/IR_NetMHC-4.0_junctions_ORF_neoantigens.tab",
+            os.makedirs(output_path + "/exonizations_NetMHC-4.0_files")
+        run_netMHC_classI_slurm_part1(output_path + "/all_exonizations_ORF_filtered_peptide_change.tab", HLAclass_path, HLAtypes_path,
+                                      output_path + "/exonization_fasta_files",output_path + "/exonizations_NetMHC-4.0_files", output_path + "/exonizations_NetMHC-4.0_neoantigens_type_3.tab",
+                                      output_path + "/exonizations_NetMHC-4.0_neoantigens_type_3_all.tab", output_path + "/exonizations_NetMHC-4.0_neoantigens_type_2.tab",
+                                      output_path + "/exonizations_NetMHC-4.0_neoantigens_type_2_all.tab", output_path + "/exonizations_NetMHC-4.0_junctions_ORF_neoantigens.tab",
                                       netMHC_path)
 
         # 16. Run netMHCpan-4.0_part1
         logger.info("Part15...")
-        if not os.path.exists(output_path + "/IR_NetMHCpan-4.0_files"):
-            os.makedirs(output_path + "/IR_NetMHCpan-4.0_files")
-        run_netMHCpan_classI_slurm_part1(output_path + "/IR_ORF_filtered_peptide_change.tab", HLAclass_path, HLAtypes_pan_path,
-                                      output_path + "/IR_fasta_files",output_path + "/IR_NetMHCpan-4.0_files", output_path + "/IR_NetMHCpan-4.0_neoantigens_type_3.tab",
-                                      output_path + "/IR_NetMHCpan-4.0_neoantigens_type_3_all.tab", output_path + "/IR_NetMHCpan-4.0_neoantigens_type_2.tab",
-                                      output_path + "/IR_NetMHCpan-4.0_neoantigens_type_2_all.tab", output_path + "/IR_NetMHCpan-4.0_junctions_ORF_neoantigens.tab",
+        if not os.path.exists(output_path + "/exonization_NetMHCpan-4.0_files"):
+            os.makedirs(output_path + "/exonizations_NetMHCpan-4.0_files")
+        run_netMHCpan_classI_slurm_part1(output_path + "/all_exonizations_ORF_filtered_peptide_change.tab", HLAclass_path, HLAtypes_pan_path,
+                                      output_path + "/exonization_fasta_files",output_path + "/exonizations_NetMHCpan-4.0_files", output_path + "/exonizations_NetMHCpan-4.0_neoantigens_type_3.tab",
+                                      output_path + "/exonizations_NetMHCpan-4.0_neoantigens_type_3_all.tab", output_path + "/exonizations_NetMHCpan-4.0_neoantigens_type_2.tab",
+                                      output_path + "/exonizations_NetMHCpan-4.0_neoantigens_type_2_all.tab", output_path + "/exonizations_NetMHCpan-4.0_junctions_ORF_neoantigens.tab",
                                       netMHC_pan_path)
         logger.info("Wait until all jobs have finished. Then, go on with part3")
 

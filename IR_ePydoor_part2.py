@@ -43,22 +43,11 @@ def main():
 
         logger.info("Starting execution")
 
-        introns_path = "/homes/users/jtrincado/scratch/test_Junckey/iso_tpm_introns_George_Peifer_Rudin_Yokota.txt"
-        bam_path = "/homes/users/jtrincado/scratch/test_Junckey/George_and_Peifer"
-        # bam_path = "/projects_rg/SCLC_cohorts/Rudin/STAR/Rudin_Yokota"
-        TPM_threshold = 1
-        tumor_specific = True
         transcript_expression_path = "/homes/users/jtrincado/scratch/test_Junckey/iso_tpm_George_Peifer_Rudin_Yokota.tab"
-        introns_Normal_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v5/tables/iso_tpm_introns_Rudin_Normal.txt"
-        introns_GTEX_path = "/projects_rg/SCLC_cohorts/annotation/chess2.0_assembly_hg19_CrossMap.events_RI_strict.ioe"
         gtf_path = "/homes/users/jtrincado/scratch/test_Junckey/Homo_sapiens.GRCh37.75.formatted.gtf"
-        gtf_protein_coding_path = "/homes/users/jtrincado/scratch/test_Junckey/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
         codons_gtf_path = "/homes/users/jtrincado/scratch/test_Junckey/Homo_sapiens.GRCh37.75.codons.gtf"
-        mutations_path = "/projects_rg/babita/TCGA/mutation/mut_pipeline/juanlu_sclc/src_files/SCLC_mutations_sorted.bed.mut.out"
-        repeats_path = "/homes/users/jtrincado/scratch/test_Junckey/hg19_repeats.bed"
-        CHESS_SE_path = "/homes/users/jtrincado/scratch/test_Junckey/chess2.0_assembly_hg19_CrossMap.events_SE_strict.ioe"
         mosea = "/homes/users/jtrincado/scratch/Software/MoSEA-master/mosea.py"
-        fast_genome = "/homes/users/jtrincado/scratch/Software/MoSEA-master/test_files/genome/hg19.fa"
+        fasta_genome = "/homes/users/jtrincado/scratch/Software/MoSEA-master/test_files/genome/hg19.fa"
         orfs_scripts = "/homes/users/jtrincado/scratch/Software/MxFinder/extract_orfs.py"
         interpro = "/homes/users/jtrincado/scratch/Software/interproscan-5.30-69.0/interproscan.sh"
         IUPred = "/homes/users/jtrincado/scratch/Software/IUPred2A"
@@ -74,19 +63,6 @@ def main():
         python2 = "Python/2.7.14-foss-2017b"
         # ONLY FOR HYDRA
         #python2 = "Python/2.7.11"
-
-        # readcounts_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_George_Peifer_Rudin_Yokota.tab"
-        # # bam_path = "/projects_rg/SCLC_cohorts/George/STAR/George_and_Peifer"
-        # bam_path = "/projects_rg/SCLC_cohorts/Rudin/STAR/Rudin_Yokota"
-        # coverage_path = "/projects_rg/SCLC_cohorts/coverageBed/"
-        # gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
-        # max_length = 500
-        # threshold = 5
-        # threshold2 = 10
-        # n_randomizations = 100
-        # mutations_path = "/projects_rg/babita/TCGA/mutation/mut_pipeline/juanlu_sclc/src_files/SCLC_mutations_sorted.bed.mut.out"
-        # repeats_path = "/projects_rg/SCLC_cohorts/cis_analysis/tables/hg19_repeats.bed"
-        # output_path = "/users/genomics/juanluis/SCLC_cohorts/test"
 
         # 6. Create the folder, if it doesn't exists
         logger.info("Part6...")
@@ -115,7 +91,7 @@ def main():
         get_peptide_sequence(output_path + "/IR_significant_introns_TEST.tab", transcript_expression_path, gtf_path, codons_gtf_path,
                              output_path + "/IR_peptide_sequence.fa", output_path + "/IR_fasta_sequence.fa",
                              output_path + "/IR_ORF.tab", output_path + "/IR_ORF_sequences.tab", output_path + "/IR_Interpro.tab",
-                             output_path + "/IR_IUPred.tab", mosea, fast_genome, orfs_scripts, interpro,IUPred, remove_temp_files,
+                             output_path + "/IR_IUPred.tab", mosea, fasta_genome, orfs_scripts, interpro,IUPred, remove_temp_files,
                              python2)
 
         # 9. Filter the significant results
