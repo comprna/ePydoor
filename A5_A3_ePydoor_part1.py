@@ -7,6 +7,8 @@ A5_A3_ePydoor.py: get significant alternative splice site events
 import os
 
 from lib.A5_A3.extract_exonized_junctions import *
+from lib.A5_A3.get_reads_exonizations import *
+from lib.A5_A3.overlap_with_repeats import *
 
 # create logger
 logger = logging.getLogger(__name__)
@@ -51,6 +53,16 @@ def main():
         dir_path = os.path.dirname(os.path.realpath(__file__))
         output_path_aux = output_path+"/new_A5_A3_junctions.tab"
         extract_exonized_junctions(readcounts_path, gtf_path, max_length, output_path_aux)
+
+        # 2. Given the list with the possible exonizations, get the reads associate to each of them
+        logger.info("Part2...")
+        output_path_aux2 = output_path+"/new_A5_A3_junctions_reads.tab"
+        get_reads_exonizations(output_path_aux, readcounts_path, output_path_aux2)
+
+        # 3. find the overlap between the nex exonizations and repeatitions (RepeatMasker)
+        logger.info("Part3...")
+        output_path_aux3 = output_path + "/new_A5_A3_junctions_reads_repeatitions.tab"
+        overlap_with_repeats(output_path_aux2, repeats_path, output_path_aux3)
 
         logger.info("Wait until all jobs have finished. Then, go on with part2")
 
