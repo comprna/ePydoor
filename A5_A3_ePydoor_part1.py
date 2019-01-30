@@ -9,6 +9,7 @@ import os
 from lib.A5_A3.extract_exonized_junctions import *
 from lib.A5_A3.get_reads_exonizations import *
 from lib.A5_A3.overlap_with_repeats import *
+from lib.A5_A3.get_significant_exonizations import *
 
 # create logger
 logger = logging.getLogger(__name__)
@@ -63,6 +64,11 @@ def main():
         logger.info("Part3...")
         output_path_aux3 = output_path + "/new_A5_A3_junctions_reads_repeatitions.tab"
         overlap_with_repeats(output_path_aux2, repeats_path, output_path_aux3)
+
+        # 4. given the table of the exonizations with the reads counts,get those that are over a threshold
+        logger.info("Part4...")
+        output_path_aux4 = output_path + "/exonizations_by_sample.tab"
+        get_significant_exonizations(output_path_aux3, threshold, output_path_aux4)
 
         logger.info("Wait until all jobs have finished. Then, go on with part2")
 
