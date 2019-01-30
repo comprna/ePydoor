@@ -44,7 +44,7 @@ def main():
         threshold2 = 10
         n_randomizations = 100
         repeats_path = "/projects_rg/SCLC_cohorts/cis_analysis/tables/hg19_repeats.bed"
-        output_path = "/users/genomics/juanluis/test_Junckey"
+        output_path = "/users/genomics/juanluis/test_Junckey_v2"
 
         # 1. Identify the junctions that could generate an alternative splice site
         logger.info("Part1...")
