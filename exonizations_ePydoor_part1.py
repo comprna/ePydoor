@@ -43,14 +43,12 @@ def main():
         # output_path = sys.argv[4]
 
         readcounts_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_George_Peifer_Rudin_Yokota.tab"
-        bam_path = "/projects_rg/SCLC_cohorts/Rudin/STAR/Rudin_Yokota"
-        coverage_path = "/projects_rg/SCLC_cohorts/coverageBed/"
+        bam_path = "/projects_rg/SCLC_cohorts/George/STAR/George_and_Peifer"
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
         max_length = 500
         threshold = 5
         threshold2 = 10
         n_randomizations = 100
-        mutations_path = "/projects_rg/babita/TCGA/mutation/mut_pipeline/juanlu_sclc/src_files/SCLC_mutations_sorted.bed.mut.out"
         repeats_path = "/projects_rg/SCLC_cohorts/cis_analysis/tables/hg19_repeats.bed"
         output_path = "/users/genomics/juanluis/test_Junckey"
 

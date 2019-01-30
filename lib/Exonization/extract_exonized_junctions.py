@@ -43,20 +43,8 @@ logger.addHandler(ch)
 
 def extract_exonized_junctions(input_path, gtf_path, max_length, output_path):
 
-    # args = parser.parse_args()
-
     try:
         logger.info("Starting execution")
-
-        # input_path = args.input
-        # gtf_path = args.gtf
-        # max_length = int(args.length)
-        # output_path = args.output
-
-        # input_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_George_Peifer_Rudin_Yokota.tab"
-        # gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
-        # max_length = 500
-        # output_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_exonized_junctions.tab"
 
         #Load the gtf file
         gene_exons, gene_strand, gene_chr = {},{},{}
@@ -357,12 +345,13 @@ def extract_exonized_junctions(input_path, gtf_path, max_length, output_path):
         with open(path1 + "/bed5.fasta") as f:
             for line in f:
                 if(line[0]==">"):
-                    strand = line.rstrip()[1]
-                    aux = line.rstrip()[4:-3]
-                    chr = aux.split(":")[0]
-                    start = aux.split(":")[1].split("-")[0]
-                    end = aux.split(":")[1].split("-")[1]
-                    id = chr + ";" + start + ";" + end + ";" + strand
+                    # strand = line.rstrip()[1]
+                    # aux = line.rstrip()[4:-3]
+                    # chr = aux.split(":")[0]
+                    # start = aux.split(":")[1].split("-")[0]
+                    # end = aux.split(":")[1].split("-")[1]
+                    # id = chr + ";" + start + ";" + end + ";" + strand
+                    id = line.rstrip()[1:-3]
                     position5.append(id)
                 else:
                     motif5.append(line.rstrip())
@@ -371,12 +360,13 @@ def extract_exonized_junctions(input_path, gtf_path, max_length, output_path):
         with open(path1 + "/bed3.fasta") as f:
             for line in f:
                 if(line[0]==">"):
-                    strand = line.rstrip()[1]
-                    aux = line.rstrip()[4:-3]
-                    chr = aux.split(":")[0]
-                    start = aux.split(":")[1].split("-")[0]
-                    end = aux.split(":")[1].split("-")[1]
-                    id = chr + ";" + start + ";" + end + ";" + strand
+                    # strand = line.rstrip()[1]
+                    # aux = line.rstrip()[4:-3]
+                    # chr = aux.split(":")[0]
+                    # start = aux.split(":")[1].split("-")[0]
+                    # end = aux.split(":")[1].split("-")[1]
+                    # id = chr + ";" + start + ";" + end + ";" + strand
+                    id = line.rstrip()[1:-3]
                     position3.append(id)
                 else:
                     motif3.append(line.rstrip())
