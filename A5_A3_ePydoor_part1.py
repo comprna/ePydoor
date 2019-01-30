@@ -10,6 +10,7 @@ from lib.A5_A3.extract_exonized_junctions import *
 from lib.A5_A3.get_reads_exonizations import *
 from lib.A5_A3.overlap_with_repeats import *
 from lib.A5_A3.get_significant_exonizations import *
+from lib.A5_A3.compare_reads_random_junctions import *
 
 # create logger
 logger = logging.getLogger(__name__)
@@ -67,8 +68,14 @@ def main():
 
         # 4. given the table of the exonizations with the reads counts,get those that are over a threshold
         logger.info("Part4...")
-        output_path_aux4 = output_path + "/exonizations_by_sample.tab"
+        output_path_aux4 = output_path + "/A5_A3_by_sample.tab"
         get_significant_exonizations(output_path_aux3, threshold, output_path_aux4)
+
+        # 5. for applying some filtering on the list of A5_A3 junctions, we are gonna compare the readcounts for each
+        # junction against other new junctions associated to the same gene
+        logger.info("Part5...")
+        output_path_aux4 = output_path + "/A5_A3_by_sample_coverage.tab"
+        compare_reads_random_junctions(output_path + "/A5_A3_by_sample.tab", readcounts_path, gtf_path, output_path_aux4)
 
         logger.info("Wait until all jobs have finished. Then, go on with part2")
 
