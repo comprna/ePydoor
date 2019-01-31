@@ -69,25 +69,6 @@ def check_IR(IR, exons, IR_strand):
         flag_exit = True
         return True
 
-# def get_expression(sample_id,transcript_id,CA46,HL_60,THP_1):
-#     if(sample_id=="CA46"):
-#         if(transcript_id in CA46):
-#             return CA46[transcript_id]
-#         else:
-#             return -1
-#     elif(sample_id=="HL.60"):
-#         if(transcript_id in HL_60):
-#             return HL_60[transcript_id]
-#         else:
-#             return -1
-#     elif(sample_id == "THP.1"):
-#         if (transcript_id in THP_1):
-#             return THP_1[transcript_id]
-#         else:
-#             return -1
-#     else:
-#         return -1
-
 def get_expression(sample_id,transcript_id,transcript_expression):
     if (transcript_id in transcript_expression[sample_id]):
         return transcript_expression[sample_id][transcript_id]
@@ -100,136 +81,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
 
     try:
         logger.info("Starting execution")
-
-        # exonizations_path = sys.argv[1]
-        # transcript_expression_path = sys.argv[2]
-        # gtf_path = sys.argv[3]
-        # codons_gtf_path = sys.argv[4]
-        # output_peptide_path = sys.argv[5]
-        # output_sequence_path = sys.argv[6]
-        # output_path2 = sys.argv[7]
-        # output_path3 = sys.argv[8]
-        # output_path4 = sys.argv[9]
-        # output_path5 = sys.argv[10]
-        # mosea = sys.argv[11]
-        # fast_genome = sys.argv[12]
-        # orfs_scripts = sys.argv[13]
-        # interpro = sys.argv[14]
-        # IUPred = sys.argv[15]
-        # remove_temp_files = sys.argv[16]
-
-        # exonizations_path = "/projects_rg/SCLC_cohorts/Smart/IR/IR_significant_genes_filtered4.tab"
-        # transcript_expression_path = "/projects_rg/SCLC_cohorts/Smart/Salmon/iso_mean_tpm.txt"
-        # gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.gtf"
-        # codons_gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.codons.gtf"
-        # output_peptide_path = "/projects_rg/SCLC_cohorts/Smart/IR/IR_peptide_sequence.fa_BORRAR"
-        # output_sequence_path = "/projects_rg/SCLC_cohorts/Smart/IR/IR_fasta_sequence.fa_BORRAR"
-        # output_path2 = "/projects_rg/SCLC_cohorts/Smart/IR/IR_ORF.tab_BORRAR"
-        # output_path3 = "/projects_rg/SCLC_cohorts/Smart/IR/IR_ORF_sequences.tab_BORRAR"
-        # output_path4 = "/projects_rg/SCLC_cohorts/Smart/IR/IR_Interpro.tab_BORRAR"
-        # output_path5 = "/projects_rg/SCLC_cohorts/Smart/IR/IR_IUPred.tab_BORRAR"
-        # mosea = "/genomics/users/juanluis/Software/MoSEA-master/mosea.py"
-        # fast_genome = "/genomics/users/juanluis/Software/MoSEA-master/test_files/genome/hg19.fa"
-        # orfs_scripts = "/genomics/users/juanluis/comprna/MxFinder/extract_orfs.py"
-        # interpro = "/projects_rg/SCLC_cohorts/soft/interproscan-5.30-69.0/interproscan.sh"
-        # IUPred = "/projects_rg/SCLC_cohorts/soft/IUPred2A"
-        # remove_temp_files = True
-
-        # exonizations_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v5/tables/IR_significant_genes_filtered4.tab"
-        # transcript_expression_path = "/projects_rg/SCLC_cohorts/George/tables/iso_mean_tpm_George_Peifer_Rudin_Yokota.tab"
-        # gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.gtf"
-        # codons_gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.codons.gtf"
-        # output_peptide_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v5/tables/IR_peptide_sequence.fa"
-        # output_sequence_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v5/tables/IR_fasta_sequence.fa"
-        # output_path2 = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v5/tables/IR_ORF.tab"
-        # output_path3 = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v5/tables/IR_ORF_sequences.tab"
-        # output_path4 = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v5/tables/IR_Interpro.tab"
-        # output_path5 = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v5/tables/IR_IUPred.tab"
-        # mosea = "/genomics/users/juanluis/Software/MoSEA-master/mosea.py"
-        # fast_genome = "/genomics/users/juanluis/Software/MoSEA-master/test_files/genome/hg19.fa"
-        # orfs_scripts = "/genomics/users/juanluis/comprna/MxFinder/extract_orfs.py"
-        # interpro = "/projects_rg/SCLC_cohorts/soft/interproscan-5.30-69.0/interproscan.sh"
-        # IUPred = "/projects_rg/SCLC_cohorts/soft/IUPred2A"
-        # remove_temp_files = True
-
-        # exonizations_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v4/tables/event_zscores_signif_enriched_coverage_significant.tab"
-        # main_iso_path = "/projects_rg/SCLC_cohorts/George/tables/main_isoform_George_Peifer_Rudin_Yokota.tab"
-        # gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.gtf"
-        # codons_gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.codons.gtf"
-        # output_peptide_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v4/tables/IR_peptide_sequence.fa"
-        # output_sequence_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v4/tables/IR_fasta_sequence.fa"
-        # output_path2 = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v4/tables/IR_ORF.tab"
-        # output_path3 = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v4/tables/IR_ORF_sequences.tab"
-        # output_path4 = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v4/tables/IR_Interpro.tab"
-        # output_path5 = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v4/tables/IR_IUPred.tab"
-        # mosea = "/genomics/users/juanluis/Software/MoSEA-master/mosea.py"
-        # fast_genome = "/genomics/users/juanluis/Software/MoSEA-master/test_files/genome/hg19.fa"
-        # orfs_scripts = "/genomics/users/juanluis/comprna/MxFinder/extract_orfs.py"
-        # interpro = "/projects_rg/SCLC_cohorts/soft/interproscan-5.30-69.0/interproscan.sh"
-        # IUPred = "/projects_rg/SCLC_cohorts/soft/IUPred2A"
-        # remove_temp_files = True
-
-        # # 1. Load the exonizations with the gene associated
-        # exonizations_gene = {}
-        # with open(exonizations_path) as f:
-        #     logger.info("Processing intron retention file...")
-        #     header = next(f).rstrip().split("\t")
-        #     gene_id_pos = header.index("Gene_id")
-        #     # ir_id = header.index("IR")
-        #     ir_id = header.index("Event_id")
-        #     for line in f:
-        #         tokens = line.rstrip().split("\t")
-        #         gene = tokens[gene_id_pos]
-        #         exonization = tokens[ir_id]
-        #         if(exonization not in exonizations_gene):
-        #             exonizations_gene[exonization] = gene
-        #         else:
-        #             # logger.info("Repeated exonization " + str(exonization))
-        #             pass
-        #
-        # # 2. Get the principal transcript from each gene (from get_main_isoform.R)
-        # # Only include genes
-        # gene_main_transcript, transcript_tpm = {},{}
-        # with open(main_iso_path) as f:
-        #     logger.info("Processing main isoforms file...")
-        #     next(f)
-        #     for line in f:
-        #         tokens = line.rstrip().split("\t")
-        #         gene = tokens[0]
-        #         transcript = tokens[2]
-        #         tpm = tokens[1]
-        #         if(gene not in gene_main_transcript):
-        #             gene_main_transcript[gene] = transcript
-        #         else:
-        #             logger.info("Repeated gene " + str(gene))
-        #         if(transcript not in transcript_tpm):
-        #             transcript_tpm[transcript] = tpm
-        #         else:
-        #             logger.info("Repeated transcript" + str(transcript))
-
-        # # 1. Load the expression associated to each transcript
-        # # Smart version: we are gonna create a dict per cell line
-        # logger.info("Load the expression associated to each transcript...")
-        # CA46_transcript_expression, HL_60_transcript_expression, THP_1_transcript_expression = {}, {}, {}
-        # with open(transcript_expression_path) as f:
-        #     header = next(f)
-        #     for line in f:
-        #         tokens = line.rstrip().split("\t")
-        #         transcript = tokens[0]
-        #         tpm = tokens[1:]
-        #         # Save the values
-        #         if (transcript not in CA46_transcript_expression):
-        #             CA46_transcript_expression[transcript] = float(tpm[0])
-        #         else:
-        #             logger.info("Repeated transcript " + transcript + " in transcript_expression")
-        #         if (transcript not in HL_60_transcript_expression):
-        #             HL_60_transcript_expression[transcript] = float(tpm[1])
-        #         else:
-        #             logger.info("Repeated transcript " + transcript + " in transcript_expression")
-        #         if (transcript not in THP_1_transcript_expression):
-        #             THP_1_transcript_expression[transcript] = float(tpm[2])
-        #         else:
-        #             logger.info("Repeated transcript " + transcript + " in transcript_expression")
 
         # Create a dict per cell line
         logger.info("Load the expression associated to each transcript...")
@@ -322,22 +173,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
         outFile_IUPred.write("transcript\tfeatureType\tfeature_id\tstart\tend\n")
         cont1 = 0
         index = 0
-        # for exonization,gene in exonizations_gene.items():
-        #     flag_exit = False
-        #     cont1+=1
-        #     logger.info(str(cont1))
-        #     # if(cont==5):
-        #     #     break
-        #     # logger.info(gene)
-        #     if(gene in gene_main_transcript):
-        #         main_transcript = gene_main_transcript[gene]
-        #     else:
-        #         logger.info("Gene "+gene+" not in gene_main_transcript")
-        #         peptide_change[exonization] = False
-        #         NMD[exonization] = False
-        #         frame_shift[exonization] = False
-        #         Stalling[exonization] = False
-        #         continue
 
         with open(exonizations_path) as f:
             logger.info("Processing exonizations file...")
@@ -779,10 +614,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                                                  "\t" + str(end) + "\n")
 
                     # 5.5. If there is a peptide change, check if the exonized sequence will go to NMD
-                    # if(exonization not in peptide_change or exonization not in NMD):
-                    #     peptide_change[exonization] = (not peptide_reference==peptide_exonizations)
-                    # else:
-                    #     raise Exception("Repeated exonization "+exonization)
                     peptide_change[exonization] = (not peptide_reference==peptide_exonizations)
                     if(peptide_reference==peptide_exonizations):
                         NMD[exonization] = False
