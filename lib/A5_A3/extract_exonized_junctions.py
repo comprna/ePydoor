@@ -415,7 +415,6 @@ def extract_exonized_junctions(input_path, gtf_path, max_length, output_path):
 
         logger.info("Saved " + output_path)
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))
