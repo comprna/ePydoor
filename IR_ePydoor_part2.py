@@ -88,7 +88,7 @@ def main():
 
         # 8. Get the peptide sequence associated
         logger.info("Part8...")
-        get_peptide_sequence(output_path + "/IR_significant_introns_TEST.tab", transcript_expression_path, gtf_path, codons_gtf_path,
+        get_peptide_sequence(output_path + "/IR_significant_introns.tab", transcript_expression_path, gtf_path, codons_gtf_path,
                              output_path + "/IR_peptide_sequence.fa", output_path + "/IR_fasta_sequence.fa",
                              output_path + "/IR_ORF.tab", output_path + "/IR_ORF_sequences.tab", output_path + "/IR_Interpro.tab",
                              output_path + "/IR_IUPred.tab", mosea, fasta_genome, orfs_scripts, interpro,IUPred, remove_temp_files,

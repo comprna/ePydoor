@@ -91,7 +91,7 @@ def main():
                  + output_path + "/A5_A3_mutated.tab " + output_path + "/A5_A3_non_mutated.tab "
         os.system(command1)
 
-        # 10. Get the tumor specific events
+        # 8. Get the tumor specific events
         if(tumor_specific):
 
             # Get also the significant A5_A3 from Rudin and Intropolis
@@ -116,6 +116,14 @@ def main():
             filter_exonizations(output_path + "/non_mutated_A5_A3.tab", output_Rudin_path_aux4, output_Intropolis_path_aux4, output_path_aux11, True)
             output_path_aux12 = output_path + "/non_mutated_A5_A3_filtered2.tab"
             filter_exonizations_CHESS(output_path_aux11, CHESS_SE_path, output_path_aux12)
+
+        # 9. Get the peptide sequence associated
+        logger.info("Part8...")
+        get_peptide_sequence(output_path + "/IR_significant_introns_TEST.tab", transcript_expression_path, gtf_path, codons_gtf_path,
+                             output_path + "/IR_peptide_sequence.fa", output_path + "/IR_fasta_sequence.fa",
+                             output_path + "/IR_ORF.tab", output_path + "/IR_ORF_sequences.tab", output_path + "/IR_Interpro.tab",
+                             output_path + "/IR_IUPred.tab", mosea, fasta_genome, orfs_scripts, interpro,IUPred, remove_temp_files,
+                             python2)
 
         logger.info("Wait until all jobs have finished. Then, go on with part2")
 
