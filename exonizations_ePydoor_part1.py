@@ -37,17 +37,11 @@ def main():
 
         logger.info("Starting execution")
 
-        # readcounts_path = sys.argv[1]
-        # gtf_path = sys.argv[2]
-        # max_length = sys.argv[3]
-        # output_path = sys.argv[4]
-
         readcounts_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_George_Peifer_Rudin_Yokota.tab"
         bam_path = "/projects_rg/SCLC_cohorts/George/STAR/George_and_Peifer"
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
         max_length = 500
         threshold = 5
-        threshold2 = 10
         n_randomizations = 100
         repeats_path = "/projects_rg/SCLC_cohorts/cis_analysis/tables/hg19_repeats.bed"
         output_path = "/users/genomics/juanluis/test_Junckey"
@@ -73,31 +67,14 @@ def main():
         output_path_aux4 = output_path + "/exonizations_by_sample.tab"
         get_significant_exonizations(output_path_aux3, threshold, output_path_aux4)
 
-        # 5. Get also the significant exonizations from Rudin and Intropolis
+        # 5. generate a number of random position by exonization
         logger.info("Part5...")
-        output_Rudin_path_aux2 = output_path + "/new_exonized_junctions_Rudin_normal_reads.tab"
-        readCounts_Rudin_path = "/projects_rg/SCLC_cohorts/Rudin/STAR/v1/normal_readCounts.tab"
-        get_reads_exonizations(output_path_aux, readCounts_Rudin_path, output_Rudin_path_aux2)
-        output_Rudin_path_aux3 = output_path + "/new_exonized_junctions_Rudin_normal_reads_repeatitions.tab"
-        overlap_with_repeats(output_Rudin_path_aux2, repeats_path, output_Rudin_path_aux3)
-        output_Rudin_path_aux4 = output_path + "/exonizations_by_sample_Rudin_normal.tab"
-        get_significant_exonizations(output_Rudin_path_aux3, threshold2, output_Rudin_path_aux4)
-
-        output_Intropolis_path_aux2 = output_path + "/new_exonized_junctions_Intropolis_reads.tab"
-        get_reads_exonizations(output_path_aux, readcounts_path, output_Intropolis_path_aux2)
-        output_Intropolis_path_aux3 = output_path + "/new_exonized_junctions_Intropolis_reads_repeatitions.tab"
-        overlap_with_repeats(output_Intropolis_path_aux2, repeats_path, output_Intropolis_path_aux3)
-        output_Intropolis_path_aux4 = output_path + "/exonizations_by_sample_Intropolis.tab"
-        get_significant_exonizations(output_Intropolis_path_aux3, threshold2, output_Intropolis_path_aux4)
-
-        # 6. generate a number of random position by exonization
-        logger.info("Part6...")
         output_path_aux5 = output_path + "/random_exonizations.gtf"
         output_path_aux6 = output_path + "/random_exonizations.bed"
         generate_random_intronic_positions(output_path_aux4, gtf_path, n_randomizations, output_path_aux5, output_path_aux6)
 
-        # 7. Run coverageBed on the samples in the cluster
-        logger.info("Part7...")
+        # 6. Run coverageBed on the samples in the cluster
+        logger.info("Part6...")
         command1="for sample in $(ls "+bam_path+"/*/*.sorted.bam | cut -d\"/\" -f7 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
                 "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed "+dir_path+"/coverageBed.sh "+bam_path+"/$(echo $sample)/*.sorted.bam " \
                  " "+output_path_aux6+" "+output_path+"/$(echo $sample).coverage_sorted;done"

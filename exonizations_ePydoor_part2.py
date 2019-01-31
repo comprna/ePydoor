@@ -44,18 +44,8 @@ def main():
 
         logger.info("Starting execution")
 
-        # readcounts_path = sys.argv[1]
-        # gtf_path = sys.argv[2]
-        # max_length = sys.argv[3]
-        # output_path = sys.argv[4]
-
-        readcounts_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_George_Peifer_Rudin_Yokota.tab"
-        bam_path = "/projects_rg/SCLC_cohorts/George/STAR/George_and_Peifer"
-        coverage_path = "/users/genomics/juanluis/SCLC_cohorts/test/coverageBed/"
-        max_length = 500
-        threshold = 5
-        n_randomizations = 100
         tumor_specific = True
+        readcounts_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_George_Peifer_Rudin_Yokota.tab"
         transcript_expression_path = "/projects_rg/SCLC_cohorts/George/tables/iso_tpm_George_Peifer_Rudin_Yokota.tab"
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
         codons_gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.codons.gtf"
@@ -67,14 +57,15 @@ def main():
         orfs_scripts = "/genomics/users/juanluis/comprna/MxFinder/extract_orfs.py"
         interpro = "/projects_rg/SCLC_cohorts/soft/interproscan-5.30-69.0/interproscan.sh"
         IUPred = "/projects_rg/SCLC_cohorts/soft/IUPred2A"
-        HLAclass_path = "/homes/users/jtrincado/scratch/test_Junckey/PHLAT_summary_ClassI_all_samples.out"
-        HLAtypes_path = "/homes/users/jtrincado/scratch/test_Junckey/NetMHC-4.0_HLA_types_accepted.tab"
-        HLAtypes_pan_path = "/homes/users/jtrincado/scratch/test_Junckey/NetMHCpan-4.0_HLA_types_accepted.tab"
-        netMHC_path = "/homes/users/jtrincado/scratch/Software/netMHC-4.0/netMHC"
-        netMHC_pan_path = "/homes/users/jtrincado/scratch/Software/netMHCpan-4.0/netMHCpan"
+        HLAclass_path = "/projects_rg/SCLC_cohorts/Smart/PHLAT/PHLAT_summary_ClassI.out"
+        HLAtypes_path = "/projects_rg/SCLC_cohorts/tables/NetMHC-4.0_HLA_types_accepted.tab"
+        HLAtypes_pan_path = "/projects_rg/SCLC_cohorts/tables/NetMHCpan-4.0_HLA_types_accepted.tab"
+        netMHC_path = "/projects_rg/SCLC_cohorts/soft/netMHC-4.0/netMHC"
+        netMHC_pan_path = "/projects_rg/SCLC_cohorts/soft/netMHCpan-4.0/netMHCpan"
         remove_temp_files = True
-        output_path = "/users/genomics/juanluis/SCLC_cohorts/test"
+        threshold2 = 10
         name_user = "jtrincado"
+        output_path = "/users/genomics/juanluis/test_Junckey"
 
         # 6. Create the folder, if it doesn't exists
         logger.info("Part6...")
@@ -88,10 +79,10 @@ def main():
         logger.info("Part7...")
         dir_path = os.path.dirname(os.path.realpath(__file__))
         get_coverageBed_adapter(output_path + "/exonizations_by_sample.tab", output_path + "/random_exonizations.bed",
-                        output_path + "/coverageBed", output_path + "/exonizations_by_sample_coverage.tab", name_user)
+                        output_path + "/coverageBed", output_path, name_user)
 
         # 7.2. Assemble all pieces into one single file
-        command2 = "awk 'FNR==1 && NR!=1{next;}{print}' " + output_path + "/get_coverageBed_*.tab > " + output_path + "/get_coverageBed_results.tab"
+        command2 = "awk 'FNR==1 && NR!=1{next;}{print}' " + output_path + "/get_coverageBed_*.tab > " + output_path + "/exonizations_by_sample_coverage.tab"
         os.system(command2)
 
         # 8. Check if in the exonizations there are mutations nearby
@@ -107,6 +98,23 @@ def main():
 
         # 10. Get the tumor specific events
         if(tumor_specific):
+
+            # Get also the significant exonizations from Rudin and Intropolis
+            output_Rudin_path_aux2 = output_path + "/new_exonized_junctions_Rudin_normal_reads.tab"
+            readCounts_Rudin_path = "/projects_rg/SCLC_cohorts/Rudin/STAR/v1/normal_readCounts.tab"
+            get_reads_exonizations(output_path+"/new_exonized_junctions.tab", readCounts_Rudin_path, output_Rudin_path_aux2)
+            output_Rudin_path_aux3 = output_path + "/new_exonized_junctions_Rudin_normal_reads_repeatitions.tab"
+            overlap_with_repeats(output_Rudin_path_aux2, repeats_path, output_Rudin_path_aux3)
+            output_Rudin_path_aux4 = output_path + "/exonizations_by_sample_Rudin_normal.tab"
+            get_significant_exonizations(output_Rudin_path_aux3, threshold2, output_Rudin_path_aux4)
+
+            output_Intropolis_path_aux2 = output_path + "/new_exonized_junctions_Intropolis_reads.tab"
+            get_reads_exonizations(output_path+"/new_exonized_junctions.tab", readcounts_path, output_Intropolis_path_aux2)
+            output_Intropolis_path_aux3 = output_path + "/new_exonized_junctions_Intropolis_reads_repeatitions.tab"
+            overlap_with_repeats(output_Intropolis_path_aux2, repeats_path, output_Intropolis_path_aux3)
+            output_Intropolis_path_aux4 = output_path + "/exonizations_by_sample_Intropolis.tab"
+            get_significant_exonizations(output_Intropolis_path_aux3, threshold2, output_Intropolis_path_aux4)
+
             output_Rudin_path_aux4 = output_path + "/exonizations_by_sample_Rudin_normal.tab"
             output_Intropolis_path_aux4 = output_path + "/exonizations_by_sample_Intropolis.tab"
             output_path_aux11 = output_path + "/non_mutated_exonizations_filtered.tab"

@@ -11,6 +11,9 @@ from lib.A5_A3.get_reads_exonizations import *
 from lib.A5_A3.overlap_with_repeats import *
 from lib.A5_A3.get_significant_exonizations import *
 from lib.A5_A3.compare_reads_random_junctions import *
+from lib.A5_A3.check_mutations_nearby import *
+from lib.A5_A3.filter_exonizations import *
+from lib.A5_A3.filter_exonizations_CHESS import *
 
 # create logger
 logger = logging.getLogger(__name__)
@@ -48,7 +51,10 @@ def main():
         threshold2 = 10
         n_randomizations = 100
         repeats_path = "/projects_rg/SCLC_cohorts/cis_analysis/tables/hg19_repeats.bed"
+        mutations_path = "/projects_rg/babita/TCGA/mutation/mut_pipeline/juanlu_sclc/src_files/SCLC_mutations_sorted.bed.mut.out"
+        CHESS_SE_path = "/projects_rg/SCLC_cohorts/annotation/chess2.0_assembly_hg19_CrossMap.events_SE_strict.ioe"
         output_path = "/users/genomics/juanluis/test_Junckey_v2"
+        tumor_specific = True
 
         # 1. Identify the junctions that could generate an alternative splice site
         logger.info("Part1...")
@@ -68,14 +74,48 @@ def main():
 
         # 4. given the table of the exonizations with the reads counts,get those that are over a threshold
         logger.info("Part4...")
-        output_path_aux4 = output_path + "/A5_A3_by_sample.tab"
-        get_significant_exonizations(output_path_aux3, threshold, output_path_aux4)
+        get_significant_exonizations(output_path_aux3, threshold, output_path + "/A5_A3_by_sample.tab")
 
         # 5. for applying some filtering on the list of A5_A3 junctions, we are gonna compare the readcounts for each
         # junction against other new junctions associated to the same gene
         logger.info("Part5...")
-        output_path_aux4 = output_path + "/A5_A3_by_sample_coverage.tab"
-        compare_reads_random_junctions(output_path + "/A5_A3_by_sample.tab", readcounts_path, gtf_path, output_path_aux4)
+        compare_reads_random_junctions(output_path + "/A5_A3_by_sample.tab", readcounts_path, gtf_path, output_path + "/A5_A3_by_sample_coverage.tab")
+
+        # 6. Check if in the exonizations there are mutations nearby
+        logger.info("Part6...")
+        check_mutations_nearby(output_path + "/A5_A3_by_sample_coverage.tab", mutations_path, 200, output_path + "/A5_A3_by_sample_coverage_mut.tab")
+
+        # 7. Separate the mutated from the non-mutated cases
+        logger.info("Part7...")
+        command1="module load R; Rscript "+dir_path+"/lib/A5_A3/separate_mutated_cases.R "+ output_path + "/A5_A3_by_sample_coverage_mut.tab " \
+                 + output_path + "/A5_A3_mutated.tab " + output_path + "/A5_A3_non_mutated.tab "
+        os.system(command1)
+
+        # 10. Get the tumor specific events
+        if(tumor_specific):
+
+            # Get also the significant A5_A3 from Rudin and Intropolis
+            output_Rudin_path_aux2 = output_path + "/new_A5_A3_junctions_Rudin_normal_reads.tab"
+            readCounts_Rudin_path = "/projects_rg/SCLC_cohorts/Rudin/STAR/v1/normal_readCounts.tab"
+            get_reads_exonizations(output_path+"/new_A5_A3_junctions.tab", readCounts_Rudin_path, output_Rudin_path_aux2)
+            output_Rudin_path_aux3 = output_path + "/new_A5_A3_junctions_Rudin_normal_reads_repeatitions.tab"
+            overlap_with_repeats(output_Rudin_path_aux2, repeats_path, output_Rudin_path_aux3)
+            output_Rudin_path_aux4 = output_path + "/A5_A3_by_sample_Rudin_normal.tab"
+            get_significant_exonizations(output_Rudin_path_aux3, threshold2, output_Rudin_path_aux4)
+
+            output_Intropolis_path_aux2 = output_path + "/new_A5_A3_junctions_Intropolis_reads.tab"
+            get_reads_exonizations(output_path+"/new_A5_A3_junctions.tab", readcounts_path, output_Intropolis_path_aux2)
+            output_Intropolis_path_aux3 = output_path + "/new_A5_A3_junctions_Intropolis_reads_repeatitions.tab"
+            overlap_with_repeats(output_Intropolis_path_aux2, repeats_path, output_Intropolis_path_aux3)
+            output_Intropolis_path_aux4 = output_path + "/A5_A3_by_sample_Intropolis.tab"
+            get_significant_exonizations(output_Intropolis_path_aux3, threshold2, output_Intropolis_path_aux4)
+
+            output_Rudin_path_aux4 = output_path + "/A5_A3_by_sample_Rudin_normal.tab"
+            output_Intropolis_path_aux4 = output_path + "/A5_A3_by_sample_Intropolis.tab"
+            output_path_aux11 = output_path + "/non_mutated_A5_A3_filtered.tab"
+            filter_exonizations(output_path + "/non_mutated_A5_A3.tab", output_Rudin_path_aux4, output_Intropolis_path_aux4, output_path_aux11, True)
+            output_path_aux12 = output_path + "/non_mutated_A5_A3_filtered2.tab"
+            filter_exonizations_CHESS(output_path_aux11, CHESS_SE_path, output_path_aux12)
 
         logger.info("Wait until all jobs have finished. Then, go on with part2")
 
