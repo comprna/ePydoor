@@ -145,8 +145,7 @@ def main():
         get_peptide_sequence(output_path_aux13, transcript_expression_path, gtf_path, codons_gtf_path,
                              output_path + "/IR_peptide_sequence.fa", output_path + "/IR_fasta_sequence.fa",
                              output_path + "/IR_ORF.tab", output_path + "/IR_ORF_sequences.tab", output_path + "/IR_Interpro.tab",
-                             output_path + "/IR_IUPred.tab", mosea, fasta_genome, orfs_scripts, interpro,IUPred, remove_temp_files,
-                             python2)
+                             output_path + "/IR_IUPred.tab", mosea, fasta_genome, orfs_scripts, interpro,IUPred, remove_temp_files)
 
         logger.info("Wait until all jobs have finished. Then, go on with part2")
 
