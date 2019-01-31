@@ -96,7 +96,7 @@ def check_exonization(id, exons):
 
 def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path, codons_gtf_path, output_peptide_path,
                          output_sequence_path, output_path2, output_path3, output_path4, output_path5, mosea,
-                         fast_genome, orfs_scripts, interpro, IUPred, remove_temp_files, python2):
+                         fast_genome, orfs_scripts, interpro, IUPred, remove_temp_files):
 
     try:
         logger.info("Starting execution")

@@ -14,6 +14,7 @@ from lib.A5_A3.compare_reads_random_junctions import *
 from lib.A5_A3.check_mutations_nearby import *
 from lib.A5_A3.filter_exonizations import *
 from lib.A5_A3.filter_exonizations_CHESS import *
+from lib.A5_A3.get_peptide_sequence import *
 
 # create logger
 logger = logging.getLogger(__name__)
@@ -44,8 +45,10 @@ def main():
         # output_path = sys.argv[4]
 
         readcounts_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_George_Peifer_Rudin_Yokota.tab"
+        transcript_expression_path = "/projects_rg/SCLC_cohorts/George/tables/iso_tpm_George_Peifer_Rudin_Yokota.tab"
         bam_path = "/projects_rg/SCLC_cohorts/George/STAR/George_and_Peifer"
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
+        codons_gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.codons.gtf"
         max_length = 500
         threshold = 5
         threshold2 = 10
@@ -55,6 +58,12 @@ def main():
         CHESS_SE_path = "/projects_rg/SCLC_cohorts/annotation/chess2.0_assembly_hg19_CrossMap.events_SE_strict.ioe"
         output_path = "/users/genomics/juanluis/test_Junckey_v2"
         tumor_specific = True
+        mosea = "/genomics/users/juanluis/Software/MoSEA-master/mosea.py"
+        fasta_genome = "/genomics/users/juanluis/Software/MoSEA-master/test_files/genome/hg19.fa"
+        orfs_scripts = "/genomics/users/juanluis/comprna/MxFinder/extract_orfs.py"
+        interpro = "/projects_rg/SCLC_cohorts/soft/interproscan-5.30-69.0/interproscan.sh"
+        IUPred = "/projects_rg/SCLC_cohorts/soft/IUPred2A"
+        remove_temp_files = True
 
         # 1. Identify the junctions that could generate an alternative splice site
         logger.info("Part1...")
@@ -117,9 +126,23 @@ def main():
             output_path_aux12 = output_path + "/non_mutated_A5_A3_filtered2.tab"
             filter_exonizations_CHESS(output_path_aux11, CHESS_SE_path, output_path_aux12)
 
-        # 9. Get the peptide sequence associated
-        logger.info("Part8...")
-        get_peptide_sequence(output_path + "/IR_significant_introns_TEST.tab", transcript_expression_path, gtf_path, codons_gtf_path,
+            # 9. Join the mutated and non_mutated cases
+            logger.info("Part8...")
+            output_path_aux13 = output_path + "/all_A5_A3.tab"
+            command3 = "cat " + output_path + "/A5_A3_mutated.tab" + " > " + output_path_aux13 + ";tail -n+2 " + output_path_aux12 + " >> " + output_path_aux13
+            os.system(command3)
+
+        else:
+
+            # 9. Join the mutated and non_mutated cases
+            logger.info("Part8...")
+            output_path_aux13 = output_path + "/all_A5_A3.tab"
+            command3 = "cat " + output_path + "/A5_A3_mutated.tab" + " > " + output_path_aux13 + ";tail -n+2 " + output_path + "/A5_A3_non_mutated.tab" + " >> " + output_path_aux13
+            os.system(command3)
+
+        # 10. Get the peptide sequence associated
+        logger.info("Part9...")
+        get_peptide_sequence(output_path_aux13, transcript_expression_path, gtf_path, codons_gtf_path,
                              output_path + "/IR_peptide_sequence.fa", output_path + "/IR_fasta_sequence.fa",
                              output_path + "/IR_ORF.tab", output_path + "/IR_ORF_sequences.tab", output_path + "/IR_Interpro.tab",
                              output_path + "/IR_IUPred.tab", mosea, fasta_genome, orfs_scripts, interpro,IUPred, remove_temp_files,

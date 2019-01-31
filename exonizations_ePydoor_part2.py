@@ -122,11 +122,19 @@ def main():
             output_path_aux12 = output_path + "/non_mutated_exonizations_filtered2.tab"
             filter_exonizations_CHESS(output_path_aux11, CHESS_SE_path, output_path_aux12)
 
-        # 11. Join the mutated and non_mutated cases
-        logger.info("Part10...")
-        output_path_aux13 = output_path + "/all_exonizations.tab"
-        command3 = "cat " + output_path + "/mutated_exonizations.tab" + " > " + output_path_aux13 + ";tail -n+2 " + output_path + "/non_mutated_exonizations.tab" + " >> " + output_path_aux13
-        os.system(command3)
+            # 11. Join the mutated and non_mutated cases
+            logger.info("Part10...")
+            output_path_aux13 = output_path + "/all_exonizations.tab"
+            command3 = "cat " + output_path + "/mutated_exonizations.tab" + " > " + output_path_aux13 + ";tail -n+2 " + output_path_aux12 + " >> " + output_path_aux13
+            os.system(command3)
+
+        else:
+
+            # 11. Join the mutated and non_mutated cases
+            logger.info("Part10...")
+            output_path_aux13 = output_path + "/all_exonizations.tab"
+            command3 = "cat " + output_path + "/mutated_exonizations.tab" + " > " + output_path_aux13 + ";tail -n+2 " + output_path + "/non_mutated_exonizations.tab" + " >> " + output_path_aux13
+            os.system(command3)
 
         # 12. Get the peptide sequence associated
         logger.info("Part11...")
