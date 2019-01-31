@@ -181,4 +181,3 @@ def check_mutations_nearby(exonizations_path, mutations_path, window, output_pat
         logger.error('ERROR: ' + repr(error))
         logger.error("Aborting execution")
         sys.exit(1)
-)
