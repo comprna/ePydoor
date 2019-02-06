@@ -64,7 +64,7 @@ def main():
         netMHC_pan_path = "/projects_rg/SCLC_cohorts/soft/netMHCpan-4.0/netMHCpan"
         remove_temp_files = True
         threshold2 = 10
-        name_user = "jtrincado"
+        name_user = "juanluis"
         output_path = "/users/genomics/juanluis/test_Junckey"
 
         # 6. Create the folder, if it doesn't exists
