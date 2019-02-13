@@ -37,14 +37,14 @@ def main():
 
         logger.info("Starting execution")
 
-        readcounts_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_George_Peifer_Rudin_Yokota.tab"
-        bam_path = "/projects_rg/SCLC_cohorts/George/STAR/George_and_Peifer"
+        readcounts_path = "/projects_rg/SCLC_cohorts/Hugo/STAR/readCounts.tab"
+        bam_path = "/projects_rg/SCLC_cohorts/Hugo/STAR"
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
         max_length = 500
         threshold = 5
         n_randomizations = 100
         repeats_path = "/projects_rg/SCLC_cohorts/cis_analysis/tables/hg19_repeats.bed"
-        output_path = "/users/genomics/juanluis/test_Junckey"
+        output_path = "/users/genomics/juanluis/SCLC_cohorts/Hugo/epydoor/exonizations"
 
         # 1. Identify the junctions that could generate an exonization
         logger.info("Part1...")
