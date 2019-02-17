@@ -36,15 +36,15 @@ def main():
 
         logger.info("Starting execution")
 
-        introns_path = "/homes/users/jtrincado/scratch/test_Junckey/iso_tpm_introns_George_Peifer_Rudin_Yokota.txt"
-        bam_path = "/homes/users/jtrincado/scratch/test_Junckey/George_and_Peifer"
+        introns_path = "/projects_rg/SCLC_cohorts/Hugo/Kallisto/iso_tpm_introns.txt"
+        bam_path = "/projects_rg/SCLC_cohorts/Hugo/STAR"
         TPM_threshold = 1
         tumor_specific = False
         introns_Normal_path = "/homes/users/jtrincado/scratch/test_Junckey/iso_tpm_introns_Rudin_Normal.txt"
         introns_GTEX_path = "/homes/users/jtrincado/scratch/test_Junckey/chess2.0_assembly_hg19_CrossMap.events_RI_strict.ioe"
-        gtf_path = "/homes/users/jtrincado/scratch/test_Junckey/Homo_sapiens.GRCh37.75.formatted.gtf"
-        gtf_protein_coding_path = "/homes/users/jtrincado/scratch/test_Junckey/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
-        output_path = "/homes/users/jtrincado/scratch/test_Junckey/test2"
+        gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.gtf"
+        gtf_protein_coding_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
+        output_path = "/users/genomics/juanluis/SCLC_cohorts/Hugo/epydoor/IR"
 
         # 1. Get the IR expressed
         logger.info("Part1...")
@@ -81,7 +81,7 @@ def main():
         else:
             output_path_filtered2 = output_path + "/IR_expressed_genes.tab"
 
-        output_path_filtered2 = output_path + "/IR_expressed_genes.tab"
+        # output_path_filtered2 = output_path + "/IR_expressed_genes.tab"
         # 4. Generate random positions for each intron
         logger.info("Part4...")
         generate_random_intronic_positions(output_path_filtered2, gtf_protein_coding_path, 100, output_path + "/random_introns.gtf",
@@ -93,13 +93,17 @@ def main():
         #Just for HYDRA
         # command3 = "for sample in $(ls " + bam_path + "/*/*.sorted.bam | cut -d\"/\" -f7 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
         #                                               "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed " + dir_path + "/coverageBed.sh " + bam_path + "/$(echo $sample)/*.sorted.bam " \
-        #                                                    " " + output_path + "/random_introns.bed " + \
-        #                                             output_path + "/$(echo $sample).coverage_sorted;done"
+        #                                                    " " + output_path + "/random_introns.bed " + output_path + "/$(echo $sample).coverage_sorted;done"
         #Just for MARVIN
-        command3 = "for sample in $(ls " + bam_path + "/*/*.sorted.bam | cut -d\"/\" -f8 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
-                                                      "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed " + dir_path + "/coverageBed.sh " + bam_path + "/$(echo $sample)/*.sorted.bam " \
-                                                                                                                                                                                       " " + output_path + "/random_introns.bed " + \
-                   output_path + "/$(echo $sample).coverage_sorted;done"
+        # command3 = "for sample in $(ls " + bam_path + "/*/*.sorted.bam | cut -d\"/\" -f8 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
+        #                                               "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed " + dir_path + "/coverageBed.sh " + bam_path + "/$(echo $sample)/*.sorted.bam " \
+        #                                                                                                                                                                                " " + output_path + "/random_introns.bed " + \
+        #            output_path + "/$(echo $sample).coverage_sorted;done"
+
+        command3="for sample in $(ls "+bam_path+"/*/*.bam);do " \
+                "sample_id =$(echo $sample | awk -F '/' '{print $(NF-1)}');" \
+                "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed "+dir_path+"/coverageBed.sh $(echo $sample) " \
+                 + output_path + "/random_introns.bed "+output_path+"/$(echo $sample_id).coverage_sorted;done"
         os.system(command3)
         logger.info("Wait until all jobs have finished. Then, go on with part2")
 
