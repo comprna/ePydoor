@@ -87,7 +87,6 @@ def main():
         else:
             output_path_filtered2 = output_path + "/IR_expressed_genes.tab"
 
-        # output_path_filtered2 = output_path + "/IR_expressed_genes.tab"
         # 4. Generate random positions for each intron
         logger.info("Part4...")
         generate_random_intronic_positions(output_path_filtered2, gtf_protein_coding_path, 100, output_path + "/random_introns.gtf",
@@ -96,19 +95,10 @@ def main():
         # 5. Run coverageBed on the samples in the cluster
         logger.info("Part5...")
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        #Just for HYDRA
-        # command3 = "for sample in $(ls " + bam_path + "/*/*.sorted.bam | cut -d\"/\" -f7 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
-        #                                               "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed " + dir_path + "/coverageBed.sh " + bam_path + "/$(echo $sample)/*.sorted.bam " \
-        #                                                    " " + output_path + "/random_introns.bed " + output_path + "/$(echo $sample).coverage_sorted;done"
-        #Just for MARVIN
-        # command3 = "for sample in $(ls " + bam_path + "/*/*.sorted.bam | cut -d\"/\" -f8 | cut -d\"_\" -f1 | cut -d\".\" -f1 | sort | uniq );do " \
-        #                                               "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed " + dir_path + "/coverageBed.sh " + bam_path + "/$(echo $sample)/*.sorted.bam " \
-        #                                                                                                                                                                                " " + output_path + "/random_introns.bed " + \
-        #            output_path + "/$(echo $sample).coverage_sorted;done"
 
         # 5.1. Add an extra chrY line ot the end of the -bed file (if don't, coverageBed will crash)
         with open(output_path + "/random_introns.bed", "a") as file:
-            file.write("chrY	0	0   Exonization_0_Random_0	+	0")
+            file.write("chrY	0	0   Exonization_0_Random_0	+	0\n")
 
         # 5.2. Run a job per sample
         command3="for sample in $(ls "+bam_path+"/*/*.bam);do " \

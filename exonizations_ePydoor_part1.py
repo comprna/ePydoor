@@ -77,7 +77,7 @@ def main():
 
         # 6.1. Add an extra chrY line ot the end of the -bed file (if don't, coverageBed will crash)
         with open(output_path_aux6, "a") as file:
-            file.write("chrY	0	0   Exonization_0_Random_0	+	0")
+            file.write("chrY	0	0   Exonization_0_Random_0	+	0\n")
 
         # 6.2. Run a job per sample
         logger.info("Part6...")
