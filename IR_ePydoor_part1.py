@@ -34,7 +34,7 @@ logger.addHandler(ch)
 def main():
     try:
 
-        logger.info("Starting execution")
+        logger.info("Starting execution IR_ePydoor_part1")
 
         introns_path = "/projects_rg/SCLC_cohorts/Hugo/Kallisto/iso_tpm_introns.txt"
         bam_path = "/projects_rg/SCLC_cohorts/Hugo/STAR"
@@ -46,9 +46,15 @@ def main():
         gtf_protein_coding_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
         output_path = "/users/genomics/juanluis/SCLC_cohorts/Hugo/epydoor/IR"
 
+        # 0. Format the intron file
+        logger.info("Part0...")
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        command0 = "module load R; Rscript " + dir_path + "/lib/IR/format_intron_file.R " + introns_path + " " + output_path + "/IR_formatted.tab"
+        os.system(command0)
+
         # 1. Get the IR expressed
         logger.info("Part1...")
-        extract_significant_IR(introns_path, TPM_threshold, output_path + "/IR_expressed.tab")
+        extract_significant_IR(output_path + "/IR_formatted.tab", TPM_threshold, output_path + "/IR_expressed.tab")
 
         # 2. Obtain the gene ids for the introns.
         logger.info("Part2...")
@@ -100,6 +106,11 @@ def main():
         #                                                                                                                                                                                " " + output_path + "/random_introns.bed " + \
         #            output_path + "/$(echo $sample).coverage_sorted;done"
 
+        # 5.1. Add an extra chrY line ot the end of the -bed file (if don't, coverageBed will crash)
+        with open(output_path + "/random_introns.bed", "a") as file:
+            file.write("chrY	0	0   Exonization_0_Random_0	+	0")
+
+        # 5.2. Run a job per sample
         command3="for sample in $(ls "+bam_path+"/*/*.bam);do " \
                 "sample_id =$(echo $sample | awk -F '/' '{print $(NF-1)}');" \
                 "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed "+dir_path+"/coverageBed.sh $(echo $sample) " \
