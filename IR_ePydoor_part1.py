@@ -112,7 +112,7 @@ def main():
 
         # 5.2. Run a job per sample
         command3="for sample in $(ls "+bam_path+"/*/*.bam);do " \
-                "sample_id =$(echo $sample | awk -F '/' '{print $(NF-1)}');" \
+                "sample_id=$(echo $sample | awk -F '/' '{print $(NF-1)}');" \
                 "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed "+dir_path+"/coverageBed.sh $(echo $sample) " \
                  + output_path + "/random_introns.bed "+output_path+"/$(echo $sample_id).coverage_sorted;done"
         os.system(command3)

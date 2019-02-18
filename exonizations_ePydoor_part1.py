@@ -82,7 +82,7 @@ def main():
         # 6.2. Run a job per sample
         logger.info("Part6...")
         command1="for sample in $(ls "+bam_path+"/*/*.bam);do " \
-                "sample_id =$(echo $sample | awk -F '/' '{print $(NF-1)}');" \
+                "sample_id=$(echo $sample | awk -F '/' '{print $(NF-1)}');" \
                 "echo \"Processing file $sample: \"$(date); sbatch -J $(echo $sample)_coverageBed "+dir_path+"/coverageBed.sh $(echo $sample) " \
                  +output_path_aux6+" "+output_path+"/$(echo $sample_id).coverage_sorted;done"
         os.system(command1)
