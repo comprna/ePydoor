@@ -53,7 +53,7 @@ def extract_number(id):
         return 0
 
 
-def get_coverageBed(input_path, gtf_path, coverage_path, output_path):
+def get_coverageBed(input_path, gtf_path, coverage_path, output_path, sclc_flag):
 
     # args = parser.parse_args()
 
@@ -95,6 +95,11 @@ def get_coverageBed(input_path, gtf_path, coverage_path, output_path):
             #If it's a new sample, load the new file
             if(aux_sample!=new_sample):
                 aux_sample = new_sample
+                # If SCLC samples analysis is executed
+                if (sclc_flag == "True"):
+                    sample_formatted = aux_sample.replace("T", "").replace("X", "").replace(".", "-")
+                else:
+                    sample_formatted = aux_sample.replace(".", "-")
                 logger.info("Processing sample "+aux_sample+"...")
                 #Load the corresponding stringtie file
                 file = coverage_path + "/" + aux_sample + ".coverage_sorted"
@@ -129,7 +134,17 @@ def get_coverageBed(input_path, gtf_path, coverage_path, output_path):
         logger.info("Saved "+output_path)
         logger.info("Done. Exiting program.")
 
+        exit(0)
+
     except Exception as error:
         logger.error('ERROR: ' + repr(error))
         logger.error("Aborting execution")
         sys.exit(1)
+
+if __name__ == '__main__':
+    input_path = sys.argv[1]
+    gtf_path = sys.argv[2]
+    coverage_path = sys.argv[3]
+    output_path = sys.argv[4]
+    sclc_flag = sys.argv[5]
+    get_coverageBed(input_path, gtf_path, coverage_path, output_path, sclc_flag)
