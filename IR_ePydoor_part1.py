@@ -98,7 +98,7 @@ def main():
 
         # 5.1. Add an extra chrY line ot the end of the -bed file (if don't, coverageBed will crash)
         with open(output_path + "/random_introns.bed", "a") as file:
-            file.write("chrY	0	0   Exonization_0_Random_0	+	0\n")
+            file.write("chrY\t0\t0\tExonization_0_Random_0\t+\t0\n")
 
         # 5.2. Run a job per sample
         command3="for sample in $(ls "+bam_path+"/*/*.bam);do " \
