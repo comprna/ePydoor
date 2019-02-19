@@ -41,7 +41,7 @@ logger.addHandler(ch)
 def main():
     try:
 
-        logger.info("Starting execution")
+        logger.info("Starting execution IR_epydoor_part2")
 
         transcript_expression_path = "/homes/users/jtrincado/scratch/test_Junckey/iso_tpm_George_Peifer_Rudin_Yokota.tab"
         gtf_path = "/homes/users/jtrincado/scratch/test_Junckey/Homo_sapiens.GRCh37.75.formatted.gtf"
@@ -57,6 +57,7 @@ def main():
         netMHC_path = "/homes/users/jtrincado/scratch/Software/netMHC-4.0/netMHC"
         netMHC_pan_path = "/homes/users/jtrincado/scratch/Software/netMHCpan-4.0/netMHCpan"
         remove_temp_files = True
+        tumor_specific = False
         output_path = "/homes/users/jtrincado/scratch/test_Junckey/test2"
         name_user = "jtrincado"
         # ONLY FOR MARVIN
@@ -74,8 +75,12 @@ def main():
 
         # 7.1. Get the coverage for each exonization
         logger.info("Part7...")
-        get_coverageBed_adapter(output_path + "/IR_expressed_genes.tab", output_path + "/random_introns.bed",
-                        output_path + "/coverageBed", output_path, name_user)
+        if(tumor_specific):
+            output_path_filtered2 = output_path + "/IR_expressed_genes_filtered2.tab"
+        else:
+            output_path_filtered2 = output_path + "/IR_expressed_genes.tab"
+
+        get_coverageBed_adapter(output_path_filtered2, output_path + "/random_introns.bed",output_path + "/coverageBed", output_path, name_user)
 
         # 7.2. Assemble all pieces into one single file
         command2="awk 'FNR==1 && NR!=1{next;}{print}' "+output_path+"/get_coverageBed_*.tab > "+output_path+"/get_coverageBed_results.tab"

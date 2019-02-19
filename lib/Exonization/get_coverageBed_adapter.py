@@ -79,11 +79,11 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path, na
         dict_jobs = {}
         for sample in unique_sample_ids:
             # Format the sample
+            sample_formatted = sample
+            # Code for SCLC analysis: Remove T's and X's and replace _ by .
             # Only the samples from George or Peifer
-            if(sample[0:2]!="SM" or sample[0]!="X"):
-                continue
             # Remove T's and X's and replace _ by .
-            sample_formatted = sample.replace("T","").replace("X","").replace(".","-")
+            # sample_formatted = sample.replace("T","").replace("X","").replace(".","-")
             # command1="head -1 "+input_path+" > "+output_path+"/input.aux."+sample_formatted+".tab" +";grep \""+sample_formatted+"\" "+input_path+\
             #          " >> "+output_path+"/input.aux."+sample_formatted+".tab"
             command1 = "head -1 " + input_path + " > " + output_path + "/input.aux." + sample_formatted + ".tab" + ";" \
