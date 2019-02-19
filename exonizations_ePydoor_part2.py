@@ -118,7 +118,7 @@ def main():
             output_Rudin_path_aux4 = output_path + "/exonizations_by_sample_Rudin_normal.tab"
             output_Intropolis_path_aux4 = output_path + "/exonizations_by_sample_Intropolis.tab"
             output_path_aux11 = output_path + "/non_mutated_exonizations_filtered.tab"
-            filter_exonizations(output_path + "/non_mutated_exonizations.tab", output_Rudin_path_aux4, output_Intropolis_path_aux4, output_path_aux11, True)
+            filter_exonizations(output_path + "/non_mutated_exonizations.tab", output_Rudin_path_aux4, output_Intropolis_path_aux4, output_path_aux11, False)
             output_path_aux12 = output_path + "/non_mutated_exonizations_filtered2.tab"
             filter_exonizations_CHESS(output_path_aux11, CHESS_SE_path, output_path_aux12)
 

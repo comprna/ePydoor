@@ -34,15 +34,6 @@ def filter_exonizations_CHESS(exonizations_path, CHESS_SE_path, output_path):
     try:
         logger.info("Starting execution")
 
-        # exonizations_path = sys.argv[1]
-        # CHESS_SE_path = sys.argv[2]
-        # output_path = sys.argv[3]
-        # #
-        ## exonizations_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/non_mutated_exonizations_by_sample_filtered.tab"
-        # exonizations_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/non_mutated_exonizations_by_sample_filtered.tab"
-        # CHESS_SE_path = "/projects_rg/SCLC_cohorts/annotation/chess2.0_assembly_hg19_CrossMap.events_SE_strict.ioe"
-        # output_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/non_mutated_exonizations_by_sample_filtered2.tab"
-
         # 1. Load the SE CHESS events, save the central exon
         logger.info("Loading CHESS db...")
         CHESS_event = {}
@@ -114,7 +105,6 @@ def filter_exonizations_CHESS(exonizations_path, CHESS_SE_path, output_path):
 
         outfile.close()
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))
