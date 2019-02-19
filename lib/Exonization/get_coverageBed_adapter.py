@@ -85,10 +85,9 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path, na
             # Only the samples from George or Peifer
             # Remove T's and X's and replace _ by .
             # sample_formatted = sample.replace("T","").replace("X","").replace(".","-")
-            # command1="head -1 "+input_path+" > "+output_path+"/input.aux."+sample_formatted+".tab" +";grep \""+sample_formatted+"\" "+input_path+\
-            #          " >> "+output_path+"/input.aux."+sample_formatted+".tab"
+            # Create a separated input file with only the exonizations associated to sample_formatted
             command1 = "head -1 " + input_path + " > " + output_path + "/input.aux." + sample_formatted + ".tab" + ";" \
-                        "awk '{if ($4==\"" + sample_formatted + "\") print }' " + input_path + " >> " + output_path + "/input.aux." + sample_formatted + ".tab"
+                        "awk '{if ($1==\"" + sample_formatted + "\") print }' " + input_path + " >> " + output_path + "/input.aux." + sample_formatted + ".tab"
             os.system(command1)
             # Create an auxiliary script
             command3 = "module load Python; python "+dir_path+"/get_coverageBed.py " \
