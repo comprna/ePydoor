@@ -78,6 +78,7 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path, na
         # Split the input_path and the gtf_path by sample
         dict_jobs = {}
         for sample in unique_sample_ids:
+            logger.info("Processing "+sample+"...")
             # Format the sample
             sample_formatted = sample
             # Code for SCLC analysis: Remove T's and X's and replace _ by .
