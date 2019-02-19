@@ -5,6 +5,7 @@ IR_ePydoor.py: get significat exonizations
 """
 
 import os
+import pandas as pd
 
 from lib.IR.extract_significant_IR import *
 from lib.IR.IR_associate_gene_ids import *
@@ -96,9 +97,23 @@ def main():
         logger.info("Part5...")
         dir_path = os.path.dirname(os.path.realpath(__file__))
 
-        # 5.1. Add an extra chrY line ot the end of the -bed file (if don't, coverageBed will crash)
-        with open(output_path + "/random_introns.bed", "a") as file:
-            file.write("chrY\t1\t1\tExonization_0_Random_0\t+\t0\n")
+        # 5.1. If there is any chr missing in the bed file, add an extra line with this info
+        introns = pd.read_table(output_path + "/random_introns.bed",names=["chr", "start", "end", "id", "strand", "zero"])
+        chr_unique = introns.chr.unique().tolist()
+        chr_set = ["chr1","chr2","chr3","chr4","chr5","chr6","chr7","chr8","chr9","chr10","chr11","chr12","chr13",
+                   "chr14","chr15","chr16","chr17","chr18","chr19","chr20","chr21","chr22","chr23","chrX","chrY"]
+
+        for element in chr_set:
+            if (element not in chr_unique):
+                with open(output_path + "/random_introns.bed", "a") as file:
+                    file.write(element+"\t1\t1\tExonization_0_Random_0\t+\t0\n")
+
+        #Sort the df by chr
+        introns = pd.read_table(output_path + "/random_introns.bed",names=["chr", "start", "end", "id", "strand", "zero"])
+        #Add a numeric columns associated with the chromosome
+        introns["chr_num"] = introns["chr"].apply(lambda x: x[3:])
+        introns_sorted = introns.sort_values(by=['chr_num'])
+        introns_sorted.to_csv(output_path + "/random_introns.bed", sep="\t", index=False)
 
         # 5.2. Run a job per sample
         command3="for sample in $(ls "+bam_path+"/*/*.bam);do " \
