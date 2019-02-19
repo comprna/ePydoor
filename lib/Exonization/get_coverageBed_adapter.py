@@ -78,9 +78,9 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path, na
         # Split the input_path and the gtf_path by sample
         dict_jobs = {}
         for sample in unique_sample_ids:
-            logger.info("Processing "+sample+"...")
             # Format the sample
             sample_formatted = sample
+            logger.info("Processing "+sample_formatted+"...")
             # Code for SCLC analysis: Remove T's and X's and replace _ by .
             # Only the samples from George or Peifer
             # Remove T's and X's and replace _ by .
@@ -88,8 +88,7 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path, na
             # command1="head -1 "+input_path+" > "+output_path+"/input.aux."+sample_formatted+".tab" +";grep \""+sample_formatted+"\" "+input_path+\
             #          " >> "+output_path+"/input.aux."+sample_formatted+".tab"
             command1 = "head -1 " + input_path + " > " + output_path + "/input.aux." + sample_formatted + ".tab" + ";" \
-                        "awk '{if ($4==\"" + sample + "\") print }' " + input_path + " >> " + output_path + "/input.aux." \
-                       + sample_formatted + ".tab"
+                        "awk '{if ($4==\"" + sample_formatted + "\") print }' " + input_path + " >> " + output_path + "/input.aux." + sample_formatted + ".tab"
             os.system(command1)
             # Create an auxiliary script
             command3 = "module load Python; python "+dir_path+"/get_coverageBed.py " \
