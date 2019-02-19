@@ -79,7 +79,7 @@ def get_coverageBed_adapter(input_path, gtf_path, coverage_path, output_path, na
         dict_jobs = {}
         for sample in unique_sample_ids:
             # Format the sample
-            sample_formatted = sample
+            sample_formatted = sample.rstrip()
             logger.info("Processing "+sample_formatted+"...")
             # Code for SCLC analysis: Remove T's and X's and replace _ by .
             # Only the samples from George or Peifer
