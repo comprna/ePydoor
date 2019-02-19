@@ -66,6 +66,10 @@ def main():
         threshold2 = 10
         name_user = "juanluis"
         output_path = "/users/genomics/juanluis/SCLC_cohorts/Hugo/epydoor/exonizations"
+        # ONLY FOR MARVIN
+        #python2 = "Python/2.7.14-foss-2017b"
+        # ONLY FOR HYDRA
+        python2 = "Python/2.7.11"
 
         # 6. Create the folder, if it doesn't exists
         logger.info("Part6...")
@@ -138,13 +142,16 @@ def main():
 
         # 12. Get the peptide sequence associated
         logger.info("Part11...")
+        output_path_peptide = output_path + "/exonizations_peptide_sequence.fa"
+        output_path_dna = output_path + "/exonizations_fasta_sequence.fa"
         output_path_aux14 = output_path + "/all_exonizations_ORF.tab"
         output_path_aux15 = output_path + "/all_exonizations_ORF_sequences.tab"
         output_path_aux16 = output_path + "/all_exonizations_Interpro.tab"
         output_path_aux17 = output_path + "/all_exonizations_IUPred.tab"
-        get_peptide_sequence(output_path_aux13, transcript_expression_path, gtf_path, codons_gtf_path, output_path_aux14,
-                             output_path_aux15,output_path_aux16,output_path_aux17,mosea,fast_genome,orfs_scripts,interpro,
-                             IUPred,remove_temp_files)
+        get_peptide_sequence(output_path_aux13, transcript_expression_path, gtf_path, codons_gtf_path,
+                             output_path_peptide, output_path_dna, output_path_aux14,
+                             output_path_aux15, output_path_aux16, output_path_aux17, mosea, fast_genome, orfs_scripts,
+                             interpro,IUPred, remove_temp_files, python2)
 
         # 13. Filter the significant results
         logger.info("Part12...")
