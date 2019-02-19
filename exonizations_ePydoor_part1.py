@@ -5,6 +5,7 @@ exonizations_ePydoor.py: get significat exonizations
 """
 
 import os
+import pandas as pd
 
 from lib.Exonization.extract_exonized_junctions import *
 from lib.Exonization.get_reads_exonizations import *
@@ -75,9 +76,32 @@ def main():
 
         # 6. Run coverageBed on the samples in the cluster
 
-        # 6.1. Add an extra chrY line ot the end of the -bed file (if don't, coverageBed will crash)
-        with open(output_path_aux6, "a") as file:
-            file.write("chrY\t0\t0\tExonization_0_Random_0\t+\t0\n")
+        # # 6.1. Add an extra chrY line ot the end of the -bed file (if don't, coverageBed will crash)
+        # with open(output_path_aux6, "a") as file:
+        #     file.write("chrY\t0\t0\tExonization_0_Random_0\t+\t0\n")
+
+        # 6.1. If there is any chr missing in the bed file, add an extra line with this info
+        introns = pd.read_table(output_path_aux6,
+                                names=["chr", "start", "end", "id", "strand", "zero"])
+        chr_unique = introns.chr.unique().tolist()
+        chr_set = ["chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9", "chr10", "chr11",
+                   "chr12", "chr13",
+                   "chr14", "chr15", "chr16", "chr17", "chr18", "chr19", "chr20", "chr21", "chr22", "chr23", "chrX",
+                   "chrY"]
+
+        for element in chr_set:
+            if (element not in chr_unique):
+                with open(output_path_aux6, "a") as file:
+                    file.write(element + "\t1\t1\tExonization_0_Random_0\t+\t0\n")
+
+        # Sort the df by chr
+        introns = pd.read_table(output_path_aux6,names=["chr", "start", "end", "id", "strand", "zero"])
+        # Add a numeric columns associated with the chromosome
+        introns["chr_num"] = introns["chr"].apply(lambda x: x[3:])
+        introns_sorted = introns.sort_values(by=['chr_num'])
+        # remove the last column and save
+        del introns_sorted['chr_num']
+        introns_sorted.to_csv(output_path_aux6, sep="\t", index=False)
 
         # 6.2. Run a job per sample
         logger.info("Part6...")

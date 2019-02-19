@@ -113,6 +113,8 @@ def main():
         #Add a numeric columns associated with the chromosome
         introns["chr_num"] = introns["chr"].apply(lambda x: x[3:])
         introns_sorted = introns.sort_values(by=['chr_num'])
+        # remove the last column and save
+        del introns_sorted['chr_num']
         introns_sorted.to_csv(output_path + "/random_introns.bed", sep="\t", index=False)
 
         # 5.2. Run a job per sample
