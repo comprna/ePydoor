@@ -105,100 +105,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
     try:
         logger.info("Starting execution")
 
-        # exonizations_path = sys.argv[1]
-        # transcript_expression_path = sys.argv[2]
-        # gtf_path = sys.argv[3]
-        # codons_gtf_path = sys.argv[4]
-        # output_peptide_path = sys.argv[5]
-        # output_sequence_path = sys.argv[6]
-        # output_path2 = sys.argv[7]
-        # output_path3 = sys.argv[8]
-        # output_path4 = sys.argv[9]
-        # output_path5 = sys.argv[10]
-        # mosea = sys.argv[11]
-        # fast_genome = sys.argv[12]
-        # orfs_scripts = sys.argv[13]
-        # interpro = sys.argv[14]
-        # IUPred = sys.argv[15]
-        # remove_temp_files = sys.argv[16]
-
-        # exonizations_path = "/projects_rg/SCLC_cohorts/Smart/Exonizations/exonizations_by_sample_coverage.tab"
-        # transcript_expression_path = "/projects_rg/SCLC_cohorts/Smart/Salmon/iso_tpm.txt"
-        # gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.gtf"
-        # codons_gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.codons.gtf"
-        # output_peptide_path = "/projects_rg/SCLC_cohorts/Smart/Exonizations_v2/exonizations_peptide_sequence.fa"
-        # output_sequence_path = "/projects_rg/SCLC_cohorts/Smart/Exonizations_v2/exonizations_fasta_sequence.fa"
-        # output_path2 = "/projects_rg/SCLC_cohorts/Smart/Exonizations_v2/all_exonizations_ORF.tab"
-        # output_path3 = "/projects_rg/SCLC_cohorts/Smart/Exonizations_v2/all_exonizations_ORF_sequences.tab"
-        # output_path4 = "/projects_rg/SCLC_cohorts/Smart/Exonizations_v2/all_exonizations_Interpro.tab"
-        # output_path5 = "/projects_rg/SCLC_cohorts/Smart/Exonizations_v2/all_exonizations_IUPred.tab"
-        # mosea = "/genomics/users/juanluis/Software/MoSEA-master/mosea.py"
-        # fast_genome = "/genomics/users/juanluis/Software/MoSEA-master/test_files/genome/hg19.fa"
-        # orfs_scripts = "/genomics/users/juanluis/comprna/MxFinder/extract_orfs.py"
-        # interpro = "/projects_rg/SCLC_cohorts/soft/interproscan-5.30-69.0/interproscan.sh"
-        # IUPred = "/projects_rg/SCLC_cohorts/soft/IUPred2A"
-        # remove_temp_files = True
-
-        # # 1. Load the exonizations with the gene associated
-        # exonizations_gene = {}
-        # with open(exonizations_path) as f:
-        #     logger.info("Processing exonizations file...")
-        #     next(f)
-        #     for line in f:
-        #         tokens = line.rstrip().split("\t")
-        #         gene = tokens[3]
-        #         exonization = tokens[1]
-        #         if(exonization not in exonizations_gene):
-        #             exonizations_gene[exonization] = gene
-        #         else:
-        #             # logger.info("Repeated exonization " + str(exonization))
-        #             pass
-        #
-        # # 2. Get the principal transcript from each gene (from get_main_isoform.R)
-        # # Only include genes
-        # gene_main_transcript, transcript_tpm = {},{}
-        # with open(main_iso_path) as f:
-        #     logger.info("Processing main isoforms file...")
-        #     next(f)
-        #     for line in f:
-        #         tokens = line.rstrip().split("\t")
-        #         gene = tokens[0]
-        #         transcript = tokens[2]
-        #         tpm = tokens[1]
-        #         if(gene not in gene_main_transcript):
-        #             gene_main_transcript[gene] = transcript
-        #         else:
-        #             logger.info("Repeated gene" + str(gene))
-        #         if(transcript not in transcript_tpm):
-        #             transcript_tpm[transcript] = tpm
-        #         else:
-        #             logger.info("Repeated transcript" + str(transcript))
-
-        # 1. Load the expression associated to each transcript
-        # #Smart version: we are gonna create a dict per cell line
-        # logger.info("Load the expression associated to each transcript...")
-        # CA46_transcript_expression, HL_60_transcript_expression, THP_1_transcript_expression = {},{},{}
-        # with open(transcript_expression_path) as f:
-        #     header = next(f)
-        #     for line in f:
-        #         tokens = line.rstrip().split("\t")
-        #         transcript = tokens[0]
-        #         tpm = tokens[1:]
-        #         # Save the values
-        #         if (transcript not in CA46_transcript_expression):
-        #             CA46_transcript_expression[transcript] = float(tpm[0])
-        #         else:
-        #             logger.info("Repeated transcript " + transcript + " in transcript_expression")
-        #         if (transcript not in HL_60_transcript_expression):
-        #             HL_60_transcript_expression[transcript] = float(tpm[1])
-        #         else:
-        #             logger.info("Repeated transcript " + transcript + " in transcript_expression")
-        #         if (transcript not in THP_1_transcript_expression):
-        #             THP_1_transcript_expression[transcript] = float(tpm[2])
-        #         else:
-        #             logger.info("Repeated transcript " + transcript + " in transcript_expression")
-
-        # Create a dict per cell line
+        # 1. Create a dict per cell line
         logger.info("Load the expression associated to each transcript...")
         transcript_expression = {}
         with open(transcript_expression_path) as f:
@@ -415,16 +322,20 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                 # 5.2.1. Format the exonization exons it in a bed format
                 # remember to substract 1 to the start position
                 exons_associated_with_exonization['start'] = exons_associated_with_exonization['start'].apply(lambda x: str(int(x) - 1))
+                exonization_formatted = exons_associated_with_exonization.apply(lambda x: exonization+":"+x['chr']+":"+
+                                                                                  str(x['start'])+"-"+str(x['end']),axis=1)
                 bed = [("chr", exons_associated_with_exonization['chr']), ("start", exons_associated_with_exonization['start']),
-                ("end", exons_associated_with_exonization['end']), ("id", exonization),
+                ("end", exons_associated_with_exonization['end']), ("id", exonization_formatted),
                 ("strand", exons_associated_with_exonization['strand'])]
                 bed_file = pd.DataFrame.from_items(bed)
                 bed_file['score'] = 0
                 bed_file.to_csv(path1 + "/aux_exonization_Exoniz.bed", sep="\t", index=False, header=False)
                 # Format the reference transcript in a bed format
                 exons_associated['start'] = exons_associated['start'].apply(lambda x: str(int(x) - 1))
+                exonization_formatted = exons_associated.apply(lambda x: exonization+":"+x['chr']+":"+
+                                                                                  str(x['start'])+"-"+str(x['end']),axis=1)
                 bed = [("chr", exons_associated['chr']), ("start", exons_associated['start']),
-                ("end", exons_associated['end']), ("id", exonization),
+                ("end", exons_associated['end']), ("id", exonization_formatted),
                 ("strand", exons_associated['strand'])]
                 bed_file = pd.DataFrame.from_items(bed)
                 bed_file['score'] = 0
@@ -466,9 +377,11 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                     with open(path1 + "/aux_exonization_Exoniz.fa") as f1, open(path1 + "/aux_reference_Exoniz.fa") as f2:
                         for x, y in zip(f1, f2):
                             if (re.search(">", x)):
-                                coordinates = x.split(":")[3]
+                                coordinates = x.split(":")[2]
                                 start_coordinates = coordinates.split("-")[0]
                                 end_coordinates = coordinates.split("-")[1][:-4]
+                                # start_coordinates = x.split(";")[1]
+                                # end_coordinates = x.split(";")[2]
                                 if (int(start_coordinates) <= int(start_codon) <= int(end_coordinates)):
                                     cont_start_codon = counter
                                 counter += 1
@@ -502,9 +415,11 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                 # If its header, pass the line
                                 if (re.search(">", line)):
                                     cont2 += 1
-                                    coordinates = line.split(":")[3]
+                                    coordinates = line.split(":")[2]
                                     start_coordinates = coordinates.split("-")[0]
                                     end_coordinates = coordinates.split("-")[1][:-4]
+                                    # start_coordinates = line.split(";")[1]
+                                    # end_coordinates = line.split(";")[2]
                                     offset1 = -1
                                     offset2 = -1
                                     pass
@@ -547,9 +462,11 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                 # If its header, pass the line
                                 if (re.search(">", line)):
                                     cont2 += 1
-                                    coordinates = line.split(":")[3]
+                                    coordinates = line.split(":")[2]
                                     start_coordinates = coordinates.split("-")[0]
                                     end_coordinates = coordinates.split("-")[1][:-4]
+                                    # start_coordinates = line.split(";")[1]
+                                    # end_coordinates = line.split(";")[2]
                                     offset1 = -1
                                     offset2 = -1
                                     pass
@@ -614,30 +531,8 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                     command1 = "module load Python/2.7.11; python " + orfs_scripts + " " + path1 + \
                                "/aux_sequence_total_EX_Exoniz.fa" + " 50 > " + path1 + "/aux_sequence_total_EX_ORF_Exoniz.fa" \
                                + " ; module unload Python/2.7.11"
-                    # print(command1)
                     os.system(command1)
 
-                    # # 5.3.2.2. Get the ORF with the shortest length that includes the sequence_similar. Check if both peptides has the same ORF
-                    # # Check the file from the end
-                    # # If the gene is in reverse, get the rev_compl from the sequence_similar
-                    # if (exonization_strand == "-"):
-                    #     my_seq = Seq(sequence_similar)
-                    #     sequence_similar = my_seq.reverse_complement()
-                    #
-                    # for line in reversed(list(open(path1 + "/aux_sequence_total_EX_ORF_Exoniz.fa"))):
-                    #     if (re.search(">", line)):
-                    #         pass
-                    #     else:
-                    #         if (re.search(str(sequence_similar), line.rstrip())):
-                    #             ORF_EX = line.rstrip()
-                    #             break
-
-                    ########################
-                    # TEST
-                    # 5.3.2.2. Get the ORF with the shortest length that starts with the sequence_similar. If there is
-                    # no ORF with the starting similar sequence, then there is no stop codon (ribosome stalling)
-                    # Check the file from the end
-                    # If the gene is in reverse, get the rev_compl from the sequence_similar
                     if (exonization_strand == "-"):
                         my_seq = Seq(sequence_similar)
                         sequence_similar = my_seq.reverse_complement()
@@ -657,8 +552,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                         # No stop codon
                         Stalling[exonization] = True
                         continue
-
-                        ########################
 
                     # 5.3.3. Get the translation from the ORFs (reference and exonization)
                     ORF_EX_f = ORF_EX.replace("T", "U")
@@ -735,10 +628,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                                                  "\t"+str(end)+"\n")
 
                     # 5.5. If there is a peptide change, check if the exonized sequence will go to NMD
-                    # if(exonization not in peptide_change or exonization not in NMD):
-                    #     peptide_change[exonization] = (not peptide_reference==peptide_exonizations)
-                    # else:
-                    #     raise Exception("Repeated exonization "+exonization)
                     peptide_change[exonization] = (not peptide_reference==peptide_exonizations)
                     if(peptide_reference==peptide_exonizations):
                         NMD[exonization] = False
@@ -756,9 +645,11 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                 # Count the lines with a header
                                 if (re.search(">", line)):
                                     n_exons += 1
-                                    coordinates = line.split(":")[3]
+                                    coordinates = line.split(":")[2]
                                     start_coordinates = coordinates.split("-")[0]
                                     end_coordinates = coordinates.split("-")[1][:-4]
+                                    # start_coordinates = line.split(";")[1]
+                                    # end_coordinates = line.split(";")[2]
                                     if (int(start_coordinates) <= int(start_codon) <= int(end_coordinates)):
                                         flag_start_codon = True
 
@@ -775,9 +666,11 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                 # If its header, pass the line
                                 if (re.search(">", line)):
                                     cont3 += 1
-                                    coordinates = line.split(":")[3]
+                                    coordinates = line.split(":")[2]
                                     start_coordinates = coordinates.split("-")[0]
                                     end_coordinates = coordinates.split("-")[1][:-4]
+                                    # start_coordinates = line.split(";")[1]
+                                    # end_coordinates = line.split(";")[2]
                                     offset1 = -1
                                     offset2 = -1
                                     pass
@@ -893,3 +786,24 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
         logger.error('ERROR: ' + repr(error))
         logger.error("Aborting execution")
         sys.exit(1)
+
+# if __name__ == '__main__':
+    # exonizations_path = sys.argv[1]
+    # transcript_expression_path = sys.argv[2]
+    # gtf_path = sys.argv[3]
+    # codons_gtf_path = sys.argv[4]
+    # output_peptide_path = sys.argv[5]
+    # output_sequence_path = sys.argv[6]
+    # output_path2 = sys.argv[7]
+    # output_path3 = sys.argv[8]
+    # output_path4 = sys.argv[9]
+    # output_path5 = sys.argv[10]
+    # mosea = sys.argv[11]
+    # fast_genome = sys.argv[12]
+    # orfs_scripts = sys.argv[13]
+    # interpro = sys.argv[14]
+    # IUPred = sys.argv[15]
+    # remove_temp_files = sys.argv[16]
+    # get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path, codons_gtf_path, output_peptide_path,
+    #                      output_sequence_path, output_path2, output_path3, output_path4, output_path5, mosea,
+    #                      fast_genome, orfs_scripts, interpro, IUPred, remove_temp_files, python2)

@@ -142,6 +142,7 @@ def main():
 
         # 12. Get the peptide sequence associated
         logger.info("Part11...")
+        output_path_aux13 = output_path + "/all_exonizations.tab"
         output_path_peptide = output_path + "/exonizations_peptide_sequence.fa"
         output_path_dna = output_path + "/exonizations_fasta_sequence.fa"
         output_path_aux14 = output_path + "/all_exonizations_ORF.tab"
