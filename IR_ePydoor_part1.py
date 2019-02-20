@@ -113,11 +113,12 @@ def main():
         #Add a numeric columns associated with the chromosome
         introns["chr_num"] = introns["chr"].apply(lambda x: x[3:].rstrip())
         #X tranform it to 23 and Y to 24
-        introns["chr_num"] = introns["chr_num"].map({'X': 23, 'Y': 24})
-        introns.chr_num = introns.chr_num.astype(int)
-        introns.start = introns.start.astype(int)
-        introns.end = introns.end.astype(int)
-        introns_sorted = introns.sort_values(by=['chr_num', 'start', 'end'])
+        introns["chr_num"] = introns["chr_num"].replace('X', 23)
+        introns["chr_num"] = introns["chr_num"].replace('Y', 24)
+        introns.chr_num = pd.to_numeric(introns.chr_num, errors='coerce')
+        introns.start = pd.to_numeric(introns.start, errors='coerce')
+        introns.end = pd.to_numeric(introns.end, errors='coerce')
+        introns_sorted = introns.sort_values(by=['chr_num','start','end'])
         # remove the last column and save
         del introns_sorted['chr_num']
         introns_sorted.to_csv(output_path + "/random_introns.bed", sep="\t", index=False)
