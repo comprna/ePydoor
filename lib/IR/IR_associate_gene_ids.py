@@ -36,14 +36,6 @@ def IR_associate_gene_ids(introns_path, gtf_path, output_path):
     try:
         logger.info("Starting execution")
 
-        # introns_path = sys.argv[1]
-        # gtf_path = sys.argv[2]
-        # output_path = sys.argv[3]
-        #
-        # introns_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v3/tables/event_zscores_signif_enriched_coverage_significant_CULO.tab"
-        # gtf_path = "/genomics/users/juanluis/FastQTL_analysis/annotation/Homo_sapiens.GRCh37.75.formatted.gtf"
-        # output_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v3/tables/event_zscores_signif_enriched_coverage_significant_CULO2.tab"
-
         # 1. Load the introns file
         logger.info("Reading introns file...")
         introns_file = pd.read_table(introns_path, delimiter="\t")

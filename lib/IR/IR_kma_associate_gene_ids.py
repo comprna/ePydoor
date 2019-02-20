@@ -31,38 +31,12 @@ ch.setFormatter(formatter)
 # add ch to logger
 logger.addHandler(ch)
 
-# description = \
-#     "Description:\n\n" + \
-#     "with the list of event_zscores, we are gonna recover the mutations falling on each event \n" \
-#     "and check if this associations are unique"
-#
-# parser = ArgumentParser(description=description, formatter_class=RawTextHelpFormatter,
-#                         add_help=True)
-# parser.add_argument("-i", "--introns", required=True,
-#                     help="Input file with the introns")
-# parser.add_argument("-g", "--gtf", required=True,
-#                     help="Gtf")
-# parser.add_argument("-o", "--output", required=True, help="Output file")
-
 
 def IR_kma_associate_gene_ids(introns_path, gtf_path, output_path):
 
-    # args = parser.parse_args()
 
     try:
         logger.info("Starting execution")
-
-        # introns_path = sys.argv[1]
-        # gtf_path = sys.argv[2]
-        # output_path = sys.argv[3]
-
-        # introns_path = "/projects_rg/SCLC_cohorts/Breast_cancer_cell_lines/ePydoor/IR/IR_significant.txt"
-        # gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
-        # output_path = "/projects_rg/SCLC_cohorts/Breast_cancer_cell_lines/ePydoor/IR/IR_significant_genes.txt"
-
-        # introns_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v3/tables/event_zscores_signif_enriched_coverage_significant_CULO.tab"
-        # gtf_path = "/genomics/users/juanluis/FastQTL_analysis/annotation/Homo_sapiens.GRCh37.75.formatted.gtf"
-        # output_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v3/tables/event_zscores_signif_enriched_coverage_significant_CULO2.tab"
 
         # 1. Load the introns file
         logger.info("Reading introns file...")
@@ -75,13 +49,6 @@ def IR_kma_associate_gene_ids(introns_path, gtf_path, output_path):
             {'chr': chr.tolist(), 'start': start.tolist(), 'end': end.tolist(), 'id': introns_file['Event_id'].tolist(),
              'reads': 0, 'strand': strand.tolist()})
 
-        # chr = introns_file['IR'].apply(lambda x: x.split(":")[0])
-        # start = introns_file['IR'].apply(lambda x: x.split(":")[1].split("-")[0])
-        # end = introns_file['IR'].apply(lambda x: x.split(":")[1].split("-")[1].split("(")[0])
-        # strand = introns_file['IR'].apply(lambda x: x.split("(")[1].split(")")[0])
-        # input_bedtools = pd.DataFrame(
-        #     {'chr': chr.tolist(), 'start': start.tolist(), 'end': end.tolist(), 'id': introns_file['IR'].tolist(),
-        #      'reads': 0, 'strand': strand.tolist()})
         columns = ['chr','start','end','id','reads','strand']
         input_bedtools2 = input_bedtools[columns]
 
