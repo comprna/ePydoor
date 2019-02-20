@@ -757,7 +757,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
 
         # 7. Run Interpro
         logger.info("Run Interpro...")
-        command3 = interpro + " -i " + path1 + "/Exonizations_peptide_sequence_Interpro.temp -f tsv -o " + output_path4
+        command3 = "module load Java; "+interpro + " -i " + path1 + "/Exonizations_peptide_sequence_Interpro.temp -f tsv -o " + output_path4
         os.system(command3)
 
         logger.info("Saved "+output_sequence_path)
