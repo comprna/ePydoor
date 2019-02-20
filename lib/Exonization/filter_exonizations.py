@@ -74,7 +74,7 @@ def filter_exonizations(exonizations_path, rudin_path, intropolis_path, output_p
             merge1_f = merge1[~merge1.Sample_id_y.notnull()]
 
             # Remove the extra columns
-            df = merge1_f.iloc[:, 0:12].copy()
+            df = merge1_f.iloc[:, 0:16].copy()
             df.to_csv(output_path, sep="\t", index=False, header=True)
             logger.info("Saved " + output_path)
             logger.info("Done. Exiting program.")

@@ -101,7 +101,7 @@ def main():
         introns = pd.read_table(output_path + "/random_introns.bed",names=["chr", "start", "end", "id", "strand", "zero"])
         chr_unique = introns.chr.unique().tolist()
         chr_set = ["chr1","chr2","chr3","chr4","chr5","chr6","chr7","chr8","chr9","chr10","chr11","chr12","chr13",
-                   "chr14","chr15","chr16","chr17","chr18","chr19","chr20","chr21","chr22","chr23","chrX","chrY"]
+                   "chr14","chr15","chr16","chr17","chr18","chr19","chr20","chr21","chr22","chrX","chrY"]
 
         for element in chr_set:
             if (element not in chr_unique):
@@ -111,8 +111,13 @@ def main():
         #Sort the df by chr
         introns = pd.read_table(output_path + "/random_introns.bed",names=["chr", "start", "end", "id", "strand", "zero"])
         #Add a numeric columns associated with the chromosome
-        introns["chr_num"] = introns["chr"].apply(lambda x: x[3:])
-        introns_sorted = introns.sort_values(by=['chr_num'])
+        introns["chr_num"] = introns["chr"].apply(lambda x: x[3:].rstrip())
+        #X tranform it to 23 and Y to 24
+        introns["chr_num"] = introns["chr_num"].map({'X': 23, 'Y': 24})
+        introns.chr_num = introns.chr_num.astype(int)
+        introns.start = introns.start.astype(int)
+        introns.end = introns.end.astype(int)
+        introns_sorted = introns.sort_values(by=['chr_num', 'start', 'end'])
         # remove the last column and save
         del introns_sorted['chr_num']
         introns_sorted.to_csv(output_path + "/random_introns.bed", sep="\t", index=False)
