@@ -780,8 +780,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
             os.remove(path1 + "/Exonizations_peptide_sequence_IUPred.temp")
             os.remove(path1 + "/Exonizations_peptide_sequence_IUPred.temp.out")
 
-        exit(0)
-
     except Exception as error:
         logger.error('ERROR: ' + repr(error))
         logger.error("Aborting execution")
