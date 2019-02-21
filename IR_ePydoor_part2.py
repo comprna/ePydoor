@@ -43,27 +43,27 @@ def main():
 
         logger.info("Starting execution IR_epydoor_part2")
 
-        transcript_expression_path = "/homes/users/jtrincado/scratch/test_Junckey/iso_tpm_George_Peifer_Rudin_Yokota.tab"
-        gtf_path = "/homes/users/jtrincado/scratch/test_Junckey/Homo_sapiens.GRCh37.75.formatted.gtf"
-        codons_gtf_path = "/homes/users/jtrincado/scratch/test_Junckey/Homo_sapiens.GRCh37.75.codons.gtf"
-        mosea = "/homes/users/jtrincado/scratch/Software/MoSEA-master/mosea.py"
-        fasta_genome = "/homes/users/jtrincado/scratch/Software/MoSEA-master/test_files/genome/hg19.fa"
-        orfs_scripts = "/homes/users/jtrincado/scratch/Software/MxFinder/extract_orfs.py"
-        interpro = "/homes/users/jtrincado/scratch/Software/interproscan-5.30-69.0/interproscan.sh"
-        IUPred = "/homes/users/jtrincado/scratch/Software/IUPred2A"
-        HLAclass_path = "/homes/users/jtrincado/scratch/test_Junckey/PHLAT_summary_ClassI_all_samples.out"
-        HLAtypes_path = "/homes/users/jtrincado/scratch/test_Junckey/NetMHC-4.0_HLA_types_accepted.tab"
-        HLAtypes_pan_path = "/homes/users/jtrincado/scratch/test_Junckey/NetMHCpan-4.0_HLA_types_accepted.tab"
-        netMHC_path = "/homes/users/jtrincado/scratch/Software/netMHC-4.0/netMHC"
-        netMHC_pan_path = "/homes/users/jtrincado/scratch/Software/netMHCpan-4.0/netMHCpan"
+        transcript_expression_path = "/projects_rg/SCLC_cohorts/Hugo/Salmon/iso_tpm.txt"
+        gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
+        codons_gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.codons.gtf"
+        mosea = "/genomics/users/juanluis/Software/MoSEA-master/mosea.py"
+        fasta_genome = "/genomics/users/juanluis/Software/MoSEA-master/test_files/genome/hg19.fa"
+        orfs_scripts = "/genomics/users/juanluis/comprna/MxFinder/extract_orfs.py"
+        interpro = "/projects_rg/SCLC_cohorts/soft/interproscan-5.33-72.0/interproscan.sh"
+        IUPred = "/projects_rg/SCLC_cohorts/soft/IUPred2A"
+        HLAclass_path = "/projects_rg/SCLC_cohorts/Hugo/Supplementary/HLA_type_Hugo_formatted.tab"
+        HLAtypes_path = "/projects_rg/SCLC_cohorts/tables/NetMHC-4.0_HLA_types_accepted.tab"
+        HLAtypes_pan_path = "/projects_rg/SCLC_cohorts/tables/NetMHCpan-4.0_HLA_types_accepted.tab"
+        netMHC_path = "/projects_rg/SCLC_cohorts/soft/netMHC-4.0/netMHC"
+        netMHC_pan_path = "/projects_rg/SCLC_cohorts/soft/netMHCpan-4.0/netMHCpan"
         remove_temp_files = True
         tumor_specific = False
-        output_path = "/homes/users/jtrincado/scratch/test_Junckey/test2"
-        name_user = "jtrincado"
+        name_user = "juanluis"
+        output_path = "/users/genomics/juanluis/SCLC_cohorts/Hugo/epydoor/IR"
         # ONLY FOR MARVIN
-        python2 = "Python/2.7.14-foss-2017b"
+        #python2 = "Python/2.7.14-foss-2017b"
         # ONLY FOR HYDRA
-        #python2 = "Python/2.7.11"
+        python2 = "Python/2.7.11"
 
         # 6. Create the folder, if it doesn't exists
         logger.info("Part6...")

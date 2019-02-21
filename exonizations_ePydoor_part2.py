@@ -53,7 +53,7 @@ def main():
         repeats_path = "/projects_rg/SCLC_cohorts/cis_analysis/tables/hg19_repeats.bed"
         CHESS_SE_path = "/projects_rg/SCLC_cohorts/annotation/chess2.0_assembly_hg19_CrossMap.events_SE_strict.ioe"
         mosea = "/genomics/users/juanluis/Software/MoSEA-master/mosea.py"
-        fast_genome = "/genomics/users/juanluis/Software/MoSEA-master/test_files/genome/hg19.fa"
+        fasta_genome = "/genomics/users/juanluis/Software/MoSEA-master/test_files/genome/hg19.fa"
         orfs_scripts = "/genomics/users/juanluis/comprna/MxFinder/extract_orfs.py"
         interpro = "/projects_rg/SCLC_cohorts/soft/interproscan-5.33-72.0/interproscan.sh"
         IUPred = "/projects_rg/SCLC_cohorts/soft/IUPred2A"
@@ -151,7 +151,7 @@ def main():
         output_path_aux17 = output_path + "/all_exonizations_IUPred.tab"
         get_peptide_sequence(output_path_aux13, transcript_expression_path, gtf_path, codons_gtf_path,
                              output_path_peptide, output_path_dna, output_path_aux14,
-                             output_path_aux15, output_path_aux16, output_path_aux17, mosea, fast_genome, orfs_scripts,
+                             output_path_aux15, output_path_aux16, output_path_aux17, mosea, fasta_genome, orfs_scripts,
                              interpro,IUPred, remove_temp_files, python2)
 
         # 13. Filter the significant results
