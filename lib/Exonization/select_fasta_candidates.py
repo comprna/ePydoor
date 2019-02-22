@@ -136,7 +136,6 @@ def select_fasta_candidates(input_list_path, input_sequence_path, output_sequenc
         logger.info("Saved "+output_sequence_path)
         logger.info("Saved also same file in pieces in "+output_sequence_pieces_path)
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))

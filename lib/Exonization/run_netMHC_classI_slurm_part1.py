@@ -36,54 +36,6 @@ def run_netMHC_classI_slurm_part1(input_list_path, HLAclass_path, HLAtypes_path,
     try:
         logger.info("Starting execution")
 
-        # input_list_path = sys.argv[1]
-        # HLAclass_path = sys.argv[2]
-        # HLAtypes_path = sys.argv[3]
-        # input_sequence_pieces_path = sys.argv[4]
-        # output_netMHC_path = sys.argv[5]
-        # output_peptides_path = sys.argv[6]
-        # output_peptides_all_path = sys.argv[7]
-        # output_peptides_path2 = sys.argv[8]
-        # output_peptides_all_path2 = sys.argv[9]
-        # output_list_path = sys.argv[10]
-        # netMHC_path = sys.argv[11]
-
-        # input_list_path = "/projects_rg/SCLC_cohorts/Smart/Exonizations_v2/all_exonizations_ORF_filtered.tab"
-        # HLAclass_path = "/projects_rg/SCLC_cohorts/Smart/PHLAT/PHLAT_summary_ClassI.out"
-        # HLAtypes_path = "/projects_rg/SCLC_cohorts/tables/NetMHC-4.0_HLA_types_accepted.tab"
-        # input_sequence_pieces_path = "/projects_rg/SCLC_cohorts/Smart/Exonizations_v2/exonization_fasta_files_v2"
-        # output_netMHC_path = "/users/genomics/juanluis/SCLC_cohorts/cis_analysis/netMHC-4.0_exonizations/exonizations_NetMHC-4.0_files"
-        # output_peptides_path = "/users/genomics/juanluis/SCLC_cohorts/cis_analysis/netMHC-4.0_exonizations/exonizations_NetMHC-4.0_neoantigens_type_3.tab"
-        # output_peptides_all_path = "/users/genomics/juanluis/SCLC_cohorts/cis_analysis/netMHC-4.0_exonizations/exonizations_NetMHC-4.0_neoantigens_type_3_all.tab"
-        # output_peptides_path2 = "/users/genomics/juanluis/SCLC_cohorts/cis_analysis/netMHC-4.0_exonizations/exonizations_NetMHC-4.0_neoantigens_type_2.tab"
-        # output_peptides_all_path2 = "/users/genomics/juanluis/SCLC_cohorts/cis_analysis/netMHC-4.0_exonizations/exonizations_NetMHC-4.0_neoantigens_type_2_all.tab"
-        # output_list_path = "/users/genomics/juanluis/SCLC_cohorts/cis_analysis/netMHC-4.0_exonizations/exonizations_NetMHC-4.0_junctions_ORF_filtered_neoantigens.tab"
-        # netMHC_path = "/users/genomics/juanluis/Software/netMHC-4.0/netMHC"
-
-        # input_list_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/all_exonizations_ORF_filtered_peptide_change.tab"
-        # HLAclass_path = "/projects_rg/SCLC_cohorts/tables/PHLAT_summary_ClassI_all_samples.out"
-        # HLAtypes_path = "/projects_rg/SCLC_cohorts/tables/NetMHC-4.0_HLA_types_accepted.tab"
-        # input_sequence_pieces_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/exonization_fasta_files"
-        # output_netMHC_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/exonizations_NetMHC-4.0_files"
-        # output_peptides_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/exonizations_NetMHC-4.0_neoantigens_type_3.tab"
-        # output_peptides_all_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/exonizations_NetMHC-4.0_neoantigens_type_3_all.tab"
-        # output_peptides_path2 = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/exonizations_NetMHC-4.0_neoantigens_type_2.tab"
-        # output_peptides_all_path2 = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/exonizations_NetMHC-4.0_neoantigens_type_2_all.tab"
-        # output_list_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/exonizations_NetMHC-4.0_junctions_ORF_filtered_neoantigens.tab"
-        # netMHC_path = "/projects_rg/SCLC_cohorts/soft/netMHC-4.0/netMHC"
-
-        # input_list_path = "/projects_rg/SCLC_cohorts/Breast_cancer_cell_lines/ePydoor/Exonizations/all_exonizations_ORF_filtered.tab"
-        # HLAclass_path = "/projects_rg/SCLC_cohorts/Breast_cancer_cell_lines/tables/seq2HLA_summary_ClassI.out"
-        # HLAtypes_path = "/projects_rg/SCLC_cohorts/tables/NetMHC-4.0_HLA_types_accepted.tab"
-        # input_sequence_pieces_path = "/projects_rg/SCLC_cohorts/Breast_cancer_cell_lines/ePydoor/Exonizations/exonization_fasta_files_v2"
-        # output_netMHC_path = "/users/genomics/juanluis/SCLC_cohorts/cis_analysis/netMHC-4.0_exonizations/exonizations_NetMHC-4.0_files"
-        # output_peptides_path = "/users/genomics/juanluis/SCLC_cohorts/cis_analysis/netMHC-4.0_exonizations/exonizations_NetMHC-4.0_neoantigens_type_3.tab"
-        # output_peptides_all_path = "/users/genomics/juanluis/SCLC_cohorts/cis_analysis/netMHC-4.0_exonizations/exonizations_NetMHC-4.0_neoantigens_type_3_all.tab"
-        # output_peptides_path2 = "/users/genomics/juanluis/SCLC_cohorts/cis_analysis/netMHC-4.0_exonizations/exonizations_NetMHC-4.0_neoantigens_type_2.tab"
-        # output_peptides_all_path2 = "/users/genomics/juanluis/SCLC_cohorts/cis_analysis/netMHC-4.0_exonizations/exonizations_NetMHC-4.0_neoantigens_type_2_all.tab"
-        # output_list_path = "/users/genomics/juanluis/SCLC_cohorts/cis_analysis/netMHC-4.0_exonizations/exonizations_NetMHC-4.0_junctions_ORF_filtered_neoantigens.tab"
-        # netMHC_path = "/users/genomics/juanluis/Software/netMHC-4.0/netMHC"
-
         # Load the list of accepted HLA types
         logger.info("Load the list of accepted HLA types")
         HLA_accepted_types = set()
@@ -180,7 +132,7 @@ def run_netMHC_classI_slurm_part1(input_list_path, HLAclass_path, HLAtypes_path,
                         # Output this to an auxiliary script
                         open_peptides_file = open(path1 + "/aux.sh", "w")
                         open_peptides_file.write("#!/bin/sh\n")
-                        open_peptides_file.write("#SBATCH --partition=normal\n")
+                        open_peptides_file.write("#SBATCH --partition=bigmem,long,normal,short,lowmem\n")
                         open_peptides_file.write("#SBATCH --mem 2000\n")
                         open_peptides_file.write("#SBATCH -e " + path1 + "/" + index + "_" + x + ".err" + "\n")
                         open_peptides_file.write("#SBATCH -o " + path1 + "/" + index + "_" + x + ".out" + "\n")
@@ -194,7 +146,6 @@ def run_netMHC_classI_slurm_part1(input_list_path, HLAclass_path, HLAtypes_path,
 
         logger.info("When all the jobs have finished, run part2.")
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))
