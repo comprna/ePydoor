@@ -165,7 +165,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
         index_DNA_ref, index_DNA_ex, index_AA_ref, index_AA_ex = {}, {}, {}, {}
         exonization_transcript = {}
         path1 = "/".join(output_peptide_path.split("/")[:-1])
-        logger.info("path1: "+path1)
         outFile_peptide = open(output_peptide_path, 'w')
         outFile_sequence = open(output_sequence_path, 'w')
         outFile_peptide_Interpro = open(path1 + "/IR_peptide_sequence_Interpro.temp", 'w')
