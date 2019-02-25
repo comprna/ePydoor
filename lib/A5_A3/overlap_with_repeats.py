@@ -33,10 +33,6 @@ def overlap_with_repeats(input_path, repeats_path, output_path):
     try:
         logger.info("Starting execution")
 
-        # input_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_A5_A3_junctions_reads.tab"
-        # repeats_path = "/projects_rg/SCLC_cohorts/cis_analysis/tables/hg19_repeats.bed"
-        # output_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_A5_A3_junctions_reads_repeatitions.tab"
-
         # Transform the alt exon cordinates to bed file
         logger.info("Formatting bed files...")
         junction_reads = pd.read_table(input_path, delimiter="\t")
@@ -99,7 +95,6 @@ def overlap_with_repeats(input_path, repeats_path, output_path):
         os.remove(path1 + "/aux2.bed")
 
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))

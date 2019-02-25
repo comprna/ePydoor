@@ -33,14 +33,6 @@ def get_reads_exonizations(exonization_file, readCounts_file, output_file):
     try:
         logger.info("Starting execution")
 
-        # exonization_file = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_A5_A3_junctions.tab"
-        # readCounts_file = "/projects_rg/SCLC_cohorts/Rudin/STAR/v1/normal_readCounts.tab"
-        # output_file = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_A5_A3_junctions_Rudin_normal_reads.tab"
-
-        # exonization_file = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_A5_A3_junctions.tab"
-        # readCounts_file = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_George_Peifer_Rudin_Yokota.tab"
-        # output_file = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_A5_A3_junctions_reads.tab"
-
         # Load the readCounts
         junction_reads, junction_reads1, junction_reads2 = {},{},{}
         cont = 0
@@ -104,7 +96,6 @@ def get_reads_exonizations(exonization_file, readCounts_file, output_file):
 
         logger.info("Saved "+output_file)
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))

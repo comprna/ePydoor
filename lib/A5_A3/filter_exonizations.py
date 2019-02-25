@@ -32,15 +32,8 @@ def filter_exonizations(exonizations_path, rudin_path, intropolis_path, output_p
 
     try:
         logger.info("Starting execution")
-        #
-        ## exonizations_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_A5_A3_junctions_by_sample.tab"
-        # exonizations_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/non_mutated_new_A5_A3_junctions.tab"
-        # rudin_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_A5_A3_junctions_by_sample_Rudin_normal.tab"
-        # intropolis_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_A5_A3_junctions_by_sample_Intropolis.tab"
-        # output_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/non_mutated_new_A5_A3_junctions_filtered.tab"
-        # flag_Rudin = "Rudin"
 
-        if(flag_Rudin!="No_Rudin"):
+        if(flag_Rudin):
 
             #Load the eoxnizations
             exonizations = pd.read_table(exonizations_path, delimiter="\t", )
@@ -61,7 +54,6 @@ def filter_exonizations(exonizations_path, rudin_path, intropolis_path, output_p
             df.to_csv(output_path, sep="\t", index=False, header=True)
             logger.info("Saved "+output_path)
             logger.info("Done. Exiting program.")
-            exit(0)
 
         else:
 
@@ -80,7 +72,6 @@ def filter_exonizations(exonizations_path, rudin_path, intropolis_path, output_p
             df.to_csv(output_path, sep="\t", index=False, header=True)
             logger.info("Saved " + output_path)
             logger.info("Done. Exiting program.")
-            exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))

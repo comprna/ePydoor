@@ -99,13 +99,6 @@ def compare_reads_random_junctions(input_path, readCounts_path, gtf_path, output
     try:
         logger.info("Starting execution")
 
-        #
-        ## input_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_A5_A3_junctions_ORF_filtered.tab"
-        # input_path =  "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_A5_A3_junctions_by_sample.tab"
-        # readCounts_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_George_Peifer_Rudin_Yokota.tab"
-        # gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
-        # output_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_A5_A3_junctions_by_sample_coverage.tab"
-
         # Load the gtf file
         gene_exons, gene_strand, gene_chr = {}, {}, {}
         cont = 0
@@ -278,7 +271,6 @@ def compare_reads_random_junctions(input_path, readCounts_path, gtf_path, output
 
         logger.info("Saved " + output_path)
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))

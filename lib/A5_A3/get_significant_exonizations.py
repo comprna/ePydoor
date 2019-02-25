@@ -33,18 +33,6 @@ def get_significant_exonizations(exonization_file, threshold, output_file):
     try:
         logger.info("Starting execution")
 
-        # exonization_file = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_A5_A3_junctions_reads_repeatitions.tab"
-        # threshold = 10
-        # output_file = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_A5_A3_junctions_by_sample.tab"
-        #
-        # exonization_file = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_A5_A3_junctions_Rudin_normal_reads.tab"
-        # threshold = 10
-        # output_file = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_A5_A3_junctions_by_sample_Rudin_normal.tab"
-        #
-        # exonization_file = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_A5_A3_Intropolis_junctions_reads.tab"
-        # threshold = 10
-        # output_file = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_A5_A3_junctions_by_sample_Intropolis.tab"
-
         # Load the reads with the exonizations
         exonizations_reads = pd.read_table(exonization_file, delimiter="\t")
 
@@ -67,7 +55,6 @@ def get_significant_exonizations(exonization_file, threshold, output_file):
         f.close()
         logger.info("Saved "+ output_file)
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))

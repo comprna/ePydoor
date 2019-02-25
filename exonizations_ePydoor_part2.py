@@ -63,6 +63,7 @@ def main():
         netMHC_path = "/projects_rg/SCLC_cohorts/soft/netMHC-4.0/netMHC"
         netMHC_pan_path = "/projects_rg/SCLC_cohorts/soft/netMHCpan-4.0/netMHCpan"
         remove_temp_files = True
+        flag_Rudin = False
         threshold2 = 10
         name_user = "juanluis"
         output_path = "/users/genomics/juanluis/SCLC_cohorts/Hugo/epydoor/exonizations"
@@ -122,7 +123,7 @@ def main():
             output_Rudin_path_aux4 = output_path + "/exonizations_by_sample_Rudin_normal.tab"
             output_Intropolis_path_aux4 = output_path + "/exonizations_by_sample_Intropolis.tab"
             output_path_aux11 = output_path + "/non_mutated_exonizations_filtered.tab"
-            filter_exonizations(output_path + "/non_mutated_exonizations.tab", output_Rudin_path_aux4, output_Intropolis_path_aux4, output_path_aux11, False)
+            filter_exonizations(output_path + "/non_mutated_exonizations.tab", output_Rudin_path_aux4, output_Intropolis_path_aux4, output_path_aux11, flag_Rudin)
             output_path_aux12 = output_path + "/non_mutated_exonizations_filtered2.tab"
             filter_exonizations_CHESS(output_path_aux11, CHESS_SE_path, output_path_aux12)
 

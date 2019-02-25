@@ -108,11 +108,6 @@ def extract_exonized_junctions(input_path, gtf_path, max_length, output_path):
     try:
         logger.info("Starting execution")
 
-        # input_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_George_Peifer_Rudin_Yokota.tab"
-        # gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
-        # max_length = 500  # max length of the new exon created
-        # output_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/new_A5_A3_junctions.tab"
-
         # Load the gtf file
         gene_exons, gene_strand, gene_chr = {}, {}, {}
         cont = 0

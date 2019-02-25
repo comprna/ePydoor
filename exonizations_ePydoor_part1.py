@@ -76,10 +76,6 @@ def main():
 
         # 6. Run coverageBed on the samples in the cluster
 
-        # # 6.1. Add an extra chrY line ot the end of the -bed file (if don't, coverageBed will crash)
-        # with open(output_path_aux6, "a") as file:
-        #     file.write("chrY\t0\t0\tExonization_0_Random_0\t+\t0\n")
-
         # 6.1. If there is any chr missing in the bed file, add an extra line with this info
         introns = pd.read_table(output_path_aux6,
                                 names=["chr", "start", "end", "id", "strand", "zero"])

@@ -101,23 +101,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
     try:
         logger.info("Starting execution")
 
-        # exonizations_path = sys.argv[1]
-        # transcript_expression_path = sys.argv[2]
-        # gtf_path = sys.argv[3]
-        # codons_gtf_path = sys.argv[4]
-        # output_peptide_path = sys.argv[5]
-        # output_sequence_path = sys.argv[6]
-        # output_path2 = sys.argv[7]
-        # output_path3 = sys.argv[8]
-        # output_path4 = sys.argv[9]
-        # output_path5 = sys.argv[10]
-        # mosea = sys.argv[11]
-        # fast_genome = sys.argv[12]
-        # orfs_scripts = sys.argv[13]
-        # interpro = sys.argv[14]
-        # IUPred = sys.argv[15]
-        # remove_temp_files = sys.argv[16]
-
         # 0. Load the exonizations with the gene associated
         exonizations_gene, exonizations_event_type = {}, {}
         with open(exonizations_path) as f:
@@ -385,33 +368,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                     if (transcript_id not in transcript_start_codon or transcript_id not in transcript_stop_codon):
                         continue
                     else:
-                        # # 5.3.1.1. Check how many initial exons are similar. We will do this in order to obtain the part of the ORF
-                        # # reference that should be in common with the ORF exonization
-                        # cont_same_exons = 0
-                        # cont_start_codon = 0
-                        # counter = 0
-                        # if (can_exon_strand == "+"):
-                        #     start_codon = transcript_start_codon[transcript_id][0]
-                        # else:
-                        #     start_codon = transcript_start_codon[transcript_id][1]
-                        # with open(path1 + "/aux_exonization_A5_A3.fa") as f1, open(path1 + "/aux_reference_A5_A3.fa") as f2:
-                        #     for x, y in zip(f1, f2):
-                        #         if (re.search(">", y)):
-                        #             coordinates = y.split(":")[3]
-                        #             start_coordinates = coordinates.split("-")[0]
-                        #             end_coordinates = coordinates.split("-")[1][:-4]
-                        #             if (int(start_coordinates) <= int(start_codon) <= int(end_coordinates)):
-                        #                 cont_start_codon = counter
-                        #             counter += 1
-                        #         if (re.search(">", x) and re.search(">", y) and x == y):
-                        #             continue
-                        #         # Save the sequence if they are the same exon
-                        #         elif (not re.search(">", x) and not re.search(">", y) and x == y):
-                        #             cont_same_exons += 1
-                        #         # If the exons are different, stop the loop
-                        #         else:
-                        #             break
-
                         # 5.3.1.1. Check if the start codon exists in the aberrant transcript. Also, obtain the similar sequence
                         cont_same_exons = 0
                         cont_start_codon = 0
@@ -734,51 +690,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                 # If there is no ORF from the previous step, go to 5.3.2.2.2
                                 if (ORF_EX == ""):
                                     sequence_similar = ""
-                            # if(sequence_similar==""):       #5.3.2.2.2
-                            #     # 5.3.2.2.2.1. Get the smaller ORF more upstream
-                            #     ORF_upstream_val = 999999999
-                            #     ORF_length = 999999999
-                            #     flag_seq = False
-                            #     with open(path1 + "/aux_sequence_total_EX_ORF_A5_A3.fa") as f:
-                            #         for line in f:
-                            #             # If its header, pass the line
-                            #             if (re.search(">", line)):
-                            #                 lengths = line.split(":")[1]
-                            #                 if(ORF_upstream_val>int(lengths.split("-")[0])):
-                            #                     ORF_upstream_val = int(lengths.split("-")[0])
-                            #                     ORF_length = int(lengths.split("-")[1]) - int(lengths.split("-")[0])
-                            #                     flag_seq = True
-                            #                 elif(ORF_upstream_val==int(lengths.split("-")[0]) and
-                            #                              ORF_length>int(lengths.split("-")[1]) - int(lengths.split("-")[0])):
-                            #                     ORF_length = int(lengths.split("-")[1]) - int(lengths.split("-")[0])
-                            #                 pass
-                            #             else:
-                            #                 if(flag_seq):
-                            #                     ORF_EX = line.rstrip()
-                            #                 break
                             if (sequence_similar == ""):  # 5.3.2.2.2
-                                # # 5.3.2.2.2.1. Get the relative position of the start codon
-                                # relative_pos = 0
-                                # with open(path1 + "/aux_exonization_A5_A3.fa") as f:
-                                #     for line in f:
-                                #         # If it is not header, pass the line
-                                #         if (re.search(">", line)):
-                                #             coordinates = line.split(":")[3]
-                                #             start_coordinates = int(coordinates.split("-")[0])
-                                #             end_coordinates = int(coordinates.split("-")[1][:-4])
-                                #             exon_length = end_coordinates - start_coordinates
-                                #             if (start_coordinates < int(start_codon) < start_coordinates):
-                                #                 if (can_exon_strand == "+"):
-                                #                     relative_pos = (int(start_codon)-start_coordinates) + relative_pos
-                                #                 else:
-                                #                     relative_pos = (end_coordinates-int(start_codon)) + relative_pos
-                                #                 break
-                                #             else:
-                                #                 relative_pos += exon_length
-                                #         else:
-                                #             pass
-
-                                # TEST
                                 # 5.3.2.2.2.1. Get the relative position of the start codon
                                 relative_pos = 0
                                 with open(path1 + "/aux_exonization_A5_A3.fa") as f:
@@ -1087,8 +999,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
             os.remove(path1 + "/A5_A3_peptide_sequence_Interpro.temp")
             os.remove(path1 + "/A5_A3_peptide_sequence_IUPred.temp")
             os.remove(path1 + "/A5_A3_peptide_sequence_IUPred.temp.out")
-
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))

@@ -34,11 +34,6 @@ def filter_exonizations_CHESS(exonization_path, CHESS_A5_path, CHESS_A3_path, ou
     try:
         logger.info("Starting execution")
 
-        # exonization_path = "/projects_rg/SCLC_cohorts/Smart/A5_A3/new_A5_A3_junctions_by_sample_coverage_filtered.tab"
-        # CHESS_A5_path = "/projects_rg/SCLC_cohorts/annotation/chess2.0_assembly_hg19_CrossMap.events_A5_strict.ioe"
-        # CHESS_A3_path = "/projects_rg/SCLC_cohorts/annotation/chess2.0_assembly_hg19_CrossMap.events_A3_strict.ioe"
-        # output_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/non_mutated_new_A5_A3_junctions_filtered2.tab"
-
         # 1. Load the A5/A3 CHESS events,
         logger.info("Loading CHESS db...")
         CHESS_event_A5 = {}
@@ -201,7 +196,6 @@ def filter_exonizations_CHESS(exonization_path, CHESS_A5_path, CHESS_A3_path, ou
 
         outfile.close()
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))
