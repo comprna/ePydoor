@@ -39,11 +39,6 @@ def main():
 
         logger.info("Starting execution")
 
-        # readcounts_path = sys.argv[1]
-        # gtf_path = sys.argv[2]
-        # max_length = sys.argv[3]
-        # output_path = sys.argv[4]
-
         readcounts_path = "/projects_rg/SCLC_cohorts/Hugo/STAR/readCounts.tab"
         transcript_expression_path = "/projects_rg/SCLC_cohorts/George/tables/iso_tpm_George_Peifer_Rudin_Yokota.tab"
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
@@ -54,7 +49,6 @@ def main():
         repeats_path = "/projects_rg/SCLC_cohorts/cis_analysis/tables/hg19_repeats.bed"
         mutations_path = "/projects_rg/babita/TCGA/mutation/mut_pipeline/juanlu_sclc/src_files/SCLC_mutations_sorted.bed.mut.out"
         CHESS_SE_path = "/projects_rg/SCLC_cohorts/annotation/chess2.0_assembly_hg19_CrossMap.events_SE_strict.ioe"
-        output_path = "/users/genomics/juanluis/SCLC_cohorts/Hugo/epydoor/exonizations"
         tumor_specific = True
         mosea = "/genomics/users/juanluis/Software/MoSEA-master/mosea.py"
         fasta_genome = "/genomics/users/juanluis/Software/MoSEA-master/test_files/genome/hg19.fa"
@@ -63,6 +57,8 @@ def main():
         IUPred = "/projects_rg/SCLC_cohorts/soft/IUPred2A"
         remove_temp_files = True
         flag_Rudin = False
+        output_path = "/users/genomics/juanluis/SCLC_cohorts/Hugo/epydoor/A5_A3"
+
 
         # 1. Identify the junctions that could generate an alternative splice site
         logger.info("Part1...")
