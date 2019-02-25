@@ -45,17 +45,18 @@ def main():
 
         logger.info("Starting execution")
 
-        HLAclass_path = "/homes/users/jtrincado/scratch/test_Junckey/PHLAT_summary_ClassI_all_samples.out"
-        HLAtypes_path = "/homes/users/jtrincado/scratch/test_Junckey/NetMHC-4.0_HLA_types_accepted.tab"
-        HLAtypes_pan_path = "/homes/users/jtrincado/scratch/test_Junckey/NetMHCpan-4.0_HLA_types_accepted.tab"
-        netMHC_path = "/homes/users/jtrincado/scratch/Software/netMHC-4.0/netMHC"
-        netMHC_pan_path = "/homes/users/jtrincado/scratch/Software/netMHCpan-4.0/netMHCpan"
-        output_path = "/homes/users/jtrincado/scratch/test_Junckey/test2"
+        HLAclass_path = "/projects_rg/SCLC_cohorts/Hugo/Supplementary/HLA_type_Hugo_formatted.tab"
+        HLAtypes_path = "/projects_rg/SCLC_cohorts/tables/NetMHC-4.0_HLA_types_accepted.tab"
+        HLAtypes_pan_path = "/projects_rg/SCLC_cohorts/tables/NetMHCpan-4.0_HLA_types_accepted.tab"
+        netMHC_path = "/projects_rg/SCLC_cohorts/soft/netMHC-4.0/netMHC"
+        netMHC_pan_path = "/projects_rg/SCLC_cohorts/soft/netMHCpan-4.0/netMHCpan"
+        output_path = "/users/genomics/juanluis/SCLC_cohorts/Hugo/epydoor/exonizations"
 
 
         #17. Run netMHC-4.0_part2
         logger.info("Part16...")
-        run_netMHC_classI_slurm_part2(output_path + "/all_exonizations_ORF_filtered_peptide_change.tab", HLAclass_path,
+        output_path_aux19 = output_path + "/all_exonizations_filtered_peptide_change.tab"
+        run_netMHC_classI_slurm_part2(output_path_aux19, HLAclass_path,
                                       HLAtypes_path,
                                       output_path + "/exonization_fasta_files",
                                       output_path + "/exonizations_NetMHC-4.0_files",
@@ -68,7 +69,7 @@ def main():
 
         #18. Run netMHCpan-4.0_part2
         logger.info("Part17...")
-        run_netMHCpan_classI_slurm_part2(output_path + "/all_exonizations_ORF_filtered_peptide_change.tab",
+        run_netMHCpan_classI_slurm_part2(output_path_aux19,
                                          HLAclass_path, HLAtypes_pan_path,
                                          output_path + "/exonization_fasta_files",
                                          output_path + "/exonizations_NetMHCpan-4.0_files",
