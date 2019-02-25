@@ -172,7 +172,7 @@ def main():
 
         # 15. Run netMHC-4.0_part1
         logger.info("Part14...")
-        if not os.path.exists(output_path + "/exonization_NetMHC-4.0_files"):
+        if not os.path.exists(output_path + "/exonizations_NetMHC-4.0_files"):
             os.makedirs(output_path + "/exonizations_NetMHC-4.0_files")
         run_netMHC_classI_slurm_part1(output_path_aux19, HLAclass_path, HLAtypes_path,
                                       output_path + "/exonization_fasta_files",output_path + "/exonizations_NetMHC-4.0_files", output_path + "/exonizations_NetMHC-4.0_neoantigens_type_3.tab",
@@ -182,7 +182,7 @@ def main():
 
         # 16. Run netMHCpan-4.0_part1
         logger.info("Part15...")
-        if not os.path.exists(output_path + "/exonization_NetMHCpan-4.0_files"):
+        if not os.path.exists(output_path + "/exonizations_NetMHCpan-4.0_files"):
             os.makedirs(output_path + "/exonizations_NetMHCpan-4.0_files")
         run_netMHCpan_classI_slurm_part1(output_path_aux19, HLAclass_path, HLAtypes_pan_path,
                                       output_path + "/exonization_fasta_files",output_path + "/exonizations_NetMHCpan-4.0_files", output_path + "/exonizations_NetMHCpan-4.0_neoantigens_type_3.tab",
