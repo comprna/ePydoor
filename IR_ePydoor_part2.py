@@ -84,13 +84,13 @@ def main():
 
         # 7.2. Assemble all pieces into one single file
         logger.info("Part7.2...")
-        command2="awk 'FNR==1 && NR!=1{next;}{print}' "+output_path+"/get_coverageBed_*.tab > "+output_path+"/get_coverageBed_results.tab"
+        command2="awk 'FNR==1 && NR!=1{next;}{print}' "+output_path+"/get_coverageBed_*.tab > "+output_path+"/IR_coverage.tab"
         os.system(command2)
 
         # 7.3. Get the introns with a significant p_value
         logger.info("Part7.3...")
-        command3="head -n1 "+output_path+"/get_coverageBed_results.tab > "+output_path+"/IR_significant_introns.tab; " \
-                   "awk '{ if ($7 <= 0.05) print }' "+output_path+"/get_coverageBed_results.tab >> "+output_path+"/IR_significant_introns.tab"
+        command3="head -n1 "+output_path+"/IR_coverage.tab > "+output_path+"/IR_significant_introns.tab; " \
+                   "awk '{ if ($7 <= 0.05) print }' "+output_path+"/IR_coverage.tab >> "+output_path+"/IR_significant_introns.tab"
         os.system(command3)
 
         # 8. Get the peptide sequence associated
