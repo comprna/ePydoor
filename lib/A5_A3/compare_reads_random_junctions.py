@@ -213,7 +213,7 @@ def compare_reads_random_junctions(input_path, readCounts_path, gtf_path, output
             readCounts_pos = header2.index("ReadCounts")
             for line in f:
                 cont += 1
-                logger.info(str(cont))
+                # logger.info(str(cont))
                 tokens = line.rstrip().split("\t")
                 alt_junction = tokens[alt_junction_pos]
                 sample_id = tokens[sample_id_pos].strip()
