@@ -35,6 +35,7 @@ def filter_exonizations(exonizations_path, rudin_path, intropolis_path, output_p
 
         if(flag_Rudin):
 
+            logger.info("Filter out Rudin samples")
             #Load the eoxnizations
             exonizations = pd.read_table(exonizations_path, delimiter="\t", )
             #Load the Rudin exons
@@ -57,6 +58,7 @@ def filter_exonizations(exonizations_path, rudin_path, intropolis_path, output_p
 
         else:
 
+            logger.info("Do not use Rudin samples")
             # Load the exonizations
             exonizations = pd.read_table(exonizations_path, delimiter="\t")
             # Load the Intropolis exons

@@ -99,6 +99,7 @@ def main():
         if(tumor_specific):
 
             # Get also the significant A5_A3 from Rudin and Intropolis
+            logger.info("Part8.1...")
             output_Rudin_path_aux2 = output_path + "/new_A5_A3_junctions_Rudin_normal_reads.tab"
             readCounts_Rudin_path = "/projects_rg/SCLC_cohorts/Rudin/STAR/v1/normal_readCounts.tab"
             get_reads_exonizations(output_path+"/new_A5_A3_junctions.tab", readCounts_Rudin_path, output_Rudin_path_aux2)
@@ -107,6 +108,7 @@ def main():
             output_Rudin_path_aux4 = output_path + "/A5_A3_by_sample_Rudin_normal.tab"
             get_significant_exonizations(output_Rudin_path_aux3, threshold2, output_Rudin_path_aux4)
 
+            logger.info("Part8.2...")
             output_Intropolis_path_aux2 = output_path + "/new_A5_A3_junctions_Intropolis_reads.tab"
             get_reads_exonizations(output_path+"/new_A5_A3_junctions.tab", readcounts_path, output_Intropolis_path_aux2)
             output_Intropolis_path_aux3 = output_path + "/new_A5_A3_junctions_Intropolis_reads_repeatitions.tab"
@@ -114,6 +116,7 @@ def main():
             output_Intropolis_path_aux4 = output_path + "/A5_A3_by_sample_Intropolis.tab"
             get_significant_exonizations(output_Intropolis_path_aux3, threshold2, output_Intropolis_path_aux4)
 
+            logger.info("Part8.3...")
             output_Rudin_path_aux4 = output_path + "/A5_A3_by_sample_Rudin_normal.tab"
             output_Intropolis_path_aux4 = output_path + "/A5_A3_by_sample_Intropolis.tab"
             output_path_aux11 = output_path + "/non_mutated_A5_A3_filtered.tab"
@@ -122,7 +125,7 @@ def main():
             filter_exonizations_CHESS(output_path_aux11, CHESS_SE_path, output_path_aux12)
 
             # 9. Join the mutated and non_mutated cases
-            logger.info("Part8...")
+            logger.info("Part8.4...")
             output_path_aux13 = output_path + "/all_A5_A3.tab"
             command3 = "cat " + output_path + "/A5_A3_mutated.tab" + " > " + output_path_aux13 + ";tail -n+2 " + output_path_aux12 + " >> " + output_path_aux13
             os.system(command3)
