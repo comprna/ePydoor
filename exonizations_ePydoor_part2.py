@@ -174,7 +174,7 @@ def main():
         logger.info("Part14...")
         if not os.path.exists(output_path + "/exonization_NetMHC-4.0_files"):
             os.makedirs(output_path + "/exonizations_NetMHC-4.0_files")
-        run_netMHC_classI_slurm_part1(output_path + "/all_exonizations_ORF_filtered_peptide_change.tab", HLAclass_path, HLAtypes_path,
+        run_netMHC_classI_slurm_part1(output_path_aux19, HLAclass_path, HLAtypes_path,
                                       output_path + "/exonization_fasta_files",output_path + "/exonizations_NetMHC-4.0_files", output_path + "/exonizations_NetMHC-4.0_neoantigens_type_3.tab",
                                       output_path + "/exonizations_NetMHC-4.0_neoantigens_type_3_all.tab", output_path + "/exonizations_NetMHC-4.0_neoantigens_type_2.tab",
                                       output_path + "/exonizations_NetMHC-4.0_neoantigens_type_2_all.tab", output_path + "/exonizations_NetMHC-4.0_junctions_ORF_neoantigens.tab",
@@ -184,7 +184,7 @@ def main():
         logger.info("Part15...")
         if not os.path.exists(output_path + "/exonization_NetMHCpan-4.0_files"):
             os.makedirs(output_path + "/exonizations_NetMHCpan-4.0_files")
-        run_netMHCpan_classI_slurm_part1(output_path + "/all_exonizations_ORF_filtered_peptide_change.tab", HLAclass_path, HLAtypes_pan_path,
+        run_netMHCpan_classI_slurm_part1(output_path_aux19, HLAclass_path, HLAtypes_pan_path,
                                       output_path + "/exonization_fasta_files",output_path + "/exonizations_NetMHCpan-4.0_files", output_path + "/exonizations_NetMHCpan-4.0_neoantigens_type_3.tab",
                                       output_path + "/exonizations_NetMHCpan-4.0_neoantigens_type_3_all.tab", output_path + "/exonizations_NetMHCpan-4.0_neoantigens_type_2.tab",
                                       output_path + "/exonizations_NetMHCpan-4.0_neoantigens_type_2_all.tab", output_path + "/exonizations_NetMHCpan-4.0_junctions_ORF_neoantigens.tab",
