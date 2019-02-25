@@ -35,14 +35,6 @@ def format_to_SPADA(input_path1, input_path2, input_path3, input_path4, output_p
     try:
         logger.info("Starting execution")
 
-        # input_path1 = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/all_exonizations_ORF.tab"
-        # input_path2 = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/all_exonizations_ORF_sequences.tab"
-        # input_path3 = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/all_exonizations_Interpro.tab"
-        # input_path4 = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/all_exonizations_IUPred.tab"
-        # output_path1 = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/all_exonizations_formatted_SPADA.tab"
-        # output_path2 = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/all_exonizations_formatted_SPADA.fasta"
-        # output_path3 = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering_v2/all_exonizations_formatted_SPADA_features.tab"
-
         # 1. Load the exonizations with the gene associated
         peptide_ref, peptide_change = {}, {}
         cont = 0
@@ -134,7 +126,6 @@ def format_to_SPADA(input_path1, input_path2, input_path3, input_path4, output_p
         logger.info("Saved "+output_path2)
         logger.info("Saved "+output_path3)
         logger.info("Done. Exiting program.")
-        exit(0)
 
     except Exception as error:
         logger.error('ERROR: ' + repr(error))
