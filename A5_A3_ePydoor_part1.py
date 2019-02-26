@@ -48,7 +48,8 @@ def main():
         threshold2 = 10
         repeats_path = "/projects_rg/SCLC_cohorts/cis_analysis/tables/hg19_repeats.bed"
         mutations_path = "/projects_rg/babita/TCGA/mutation/mut_pipeline/juanlu_sclc/src_files/SCLC_mutations_sorted.bed.mut.out"
-        CHESS_SE_path = "/projects_rg/SCLC_cohorts/annotation/chess2.0_assembly_hg19_CrossMap.events_SE_strict.ioe"
+        CHESS_A5_path = "/projects_rg/SCLC_cohorts/annotation/chess2.0_assembly_hg19_CrossMap.events_A5_strict.ioe"
+        CHESS_A3_path = "/projects_rg/SCLC_cohorts/annotation/chess2.0_assembly_hg19_CrossMap.events_A3_strict.ioe"
         tumor_specific = True
         mosea = "/genomics/users/juanluis/Software/MoSEA-master/mosea.py"
         fasta_genome = "/genomics/users/juanluis/Software/MoSEA-master/test_files/genome/hg19.fa"
@@ -119,10 +120,10 @@ def main():
             logger.info("Part8.3...")
             output_Rudin_path_aux4 = output_path + "/A5_A3_by_sample_Rudin_normal.tab"
             output_Intropolis_path_aux4 = output_path + "/A5_A3_by_sample_Intropolis.tab"
-            output_path_aux11 = output_path + "/non_mutated_A5_A3_filtered.tab"
-            filter_exonizations(output_path + "/non_mutated_A5_A3.tab", output_Rudin_path_aux4, output_Intropolis_path_aux4, output_path_aux11, flag_Rudin)
-            output_path_aux12 = output_path + "/non_mutated_A5_A3_filtered2.tab"
-            filter_exonizations_CHESS(output_path_aux11, CHESS_SE_path, output_path_aux12)
+            output_path_aux11 = output_path + "/A5_A3_non_mutated_filtered.tab"
+            filter_exonizations(output_path + "/A5_A3_non_mutated.tab", output_Rudin_path_aux4, output_Intropolis_path_aux4, output_path_aux11, flag_Rudin)
+            output_path_aux12 = output_path + "/A5_A3_non_mutated_filtered2.tab"
+            filter_exonizations_CHESS(output_path_aux11, CHESS_A5_path, CHESS_A3_path, output_path_aux12)
 
             # 9. Join the mutated and non_mutated cases
             logger.info("Part8.4...")
