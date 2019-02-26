@@ -54,7 +54,7 @@ def main():
         mosea = "/genomics/users/juanluis/Software/MoSEA-master/mosea.py"
         fasta_genome = "/genomics/users/juanluis/Software/MoSEA-master/test_files/genome/hg19.fa"
         orfs_scripts = "/genomics/users/juanluis/comprna/MxFinder/extract_orfs.py"
-        interpro = "/projects_rg/SCLC_cohorts/soft/interproscan-5.30-69.0/interproscan.sh"
+        interpro = "/projects_rg/SCLC_cohorts/soft/interproscan-5.33-72.0/interproscan.sh"
         IUPred = "/projects_rg/SCLC_cohorts/soft/IUPred2A"
         remove_temp_files = True
         flag_Rudin = False

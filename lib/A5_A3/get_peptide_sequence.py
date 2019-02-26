@@ -865,6 +865,10 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                             else:
                                 # Count the number of the exons in the file. Also check if the start codon is in on any
                                 # of the exons
+                                if (can_exon_strand == "+"):
+                                    start_codon = transcript_start_codon[transcript_id][0]
+                                else:
+                                    start_codon = transcript_start_codon[transcript_id][1]
                                 n_exons = 0
                                 flag_start_codon = False
                                 with open(path1 + "/aux_exonization_A5_A3.fa") as f:
@@ -882,6 +886,10 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                 cont3 = 0
                                 flag_start, flag_end = False, False
                                 ORF_counter_positions = len(ORF_EX)
+                                if (can_exon_strand == "+"):
+                                    start_codon = transcript_start_codon[transcript_id][0]
+                                else:
+                                    start_codon = transcript_start_codon[transcript_id][1]
                                 with open(path1 + "/aux_exonization_A5_A3.fa") as f:
                                     for line in f:
                                         # If its header, pass the line
