@@ -40,7 +40,7 @@ def main():
         introns_path = "/projects_rg/SCLC_cohorts/Hugo/Kallisto/iso_tpm_introns.txt"
         bam_path = "/projects_rg/SCLC_cohorts/Hugo/STAR"
         TPM_threshold = 1
-        tumor_specific = False
+        tumor_specific = True
         introns_Normal_path = "/homes/users/jtrincado/scratch/test_Junckey/iso_tpm_introns_Rudin_Normal.txt"
         introns_GTEX_path = "/homes/users/jtrincado/scratch/test_Junckey/chess2.0_assembly_hg19_CrossMap.events_RI_strict.ioe"
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.gtf"
