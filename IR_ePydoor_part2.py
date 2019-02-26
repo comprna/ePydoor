@@ -57,7 +57,7 @@ def main():
         netMHC_path = "/projects_rg/SCLC_cohorts/soft/netMHC-4.0/netMHC"
         netMHC_pan_path = "/projects_rg/SCLC_cohorts/soft/netMHCpan-4.0/netMHCpan"
         remove_temp_files = True
-        tumor_specific = False
+        tumor_specific = True
         name_user = "juanluis"
         output_path = "/users/genomics/juanluis/SCLC_cohorts/Hugo/epydoor/IR"
         # ONLY FOR MARVIN
