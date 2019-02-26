@@ -41,8 +41,9 @@ def main():
         bam_path = "/projects_rg/SCLC_cohorts/Hugo/STAR"
         TPM_threshold = 1
         tumor_specific = True
+        flag_Rudin = False
         introns_Normal_path = "/homes/users/jtrincado/scratch/test_Junckey/iso_tpm_introns_Rudin_Normal.txt"
-        introns_GTEX_path = "/homes/users/jtrincado/scratch/test_Junckey/chess2.0_assembly_hg19_CrossMap.events_RI_strict.ioe"
+        introns_GTEX_path = "/projects_rg/SCLC_cohorts/annotation/chess2.0_assembly_hg19_CrossMap.events_RI_strict.ioe"
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.gtf"
         gtf_protein_coding_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
         output_path = "/users/genomics/juanluis/SCLC_cohorts/Hugo/epydoor/IR"
@@ -74,16 +75,23 @@ def main():
         # 3. Get the IR tumor specific
         if(tumor_specific):
 
-            #Get the significant introns for the set of normal
-            extract_significant_IR(introns_Normal_path, TPM_threshold, output_path + "/IR_expressed_Normal.tab")
+            if(flag_Rudin):
+                #Get the significant introns for the set of normal
+                extract_significant_IR(introns_Normal_path, TPM_threshold, output_path + "/IR_expressed_Normal.tab")
 
-            #Filter by a set of Normal
-            output_path_filtered = output_path + "/IR_expressed_genes_filtered.tab"
-            filter_IR(output_path + "/IR_expressed_genes.tab", output_path + "/IR_expressed_Normal.tab", output_path_filtered)
+                #Filter by a set of Normal
+                output_path_filtered = output_path + "/IR_expressed_genes_filtered.tab"
+                filter_IR(output_path + "/IR_expressed_genes.tab", output_path + "/IR_expressed_Normal.tab", output_path_filtered)
 
-            # Filter by a set of Normal (GTEX)
-            output_path_filtered2 = output_path + "/IR_expressed_genes_filtered2.tab"
-            filter_IR_CHESS(output_path_filtered, introns_GTEX_path, output_path_filtered2)
+                # Filter by a set of Normal (GTEX)
+                output_path_filtered2 = output_path + "/IR_expressed_genes_filtered2.tab"
+                filter_IR_CHESS(output_path_filtered, introns_GTEX_path, output_path_filtered2)
+
+            else:
+                # Filter by a set of Normal (GTEX)
+                output_path_filtered2 = output_path + "/IR_expressed_genes_filtered2.tab"
+                filter_IR_CHESS(output_path + "/IR_expressed_genes.tab", introns_GTEX_path, output_path_filtered2)
+
 
         else:
             output_path_filtered2 = output_path + "/IR_expressed_genes.tab"
