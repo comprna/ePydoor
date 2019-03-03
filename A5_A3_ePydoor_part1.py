@@ -15,6 +15,9 @@ from lib.A5_A3.check_mutations_nearby import *
 from lib.A5_A3.filter_exonizations import *
 from lib.A5_A3.filter_exonizations_CHESS import *
 from lib.A5_A3.get_peptide_sequence import *
+from lib.A5_A3.select_fasta_candidates import *
+from lib.A5_A3.run_netMHC_classI_slurm_part1 import *
+from lib.A5_A3.run_netMHCpan_classI_slurm_part1 import *
 
 # create logger
 logger = logging.getLogger(__name__)
@@ -43,6 +46,7 @@ def main():
         transcript_expression_path = "/projects_rg/SCLC_cohorts/George/tables/iso_tpm_George_Peifer_Rudin_Yokota.tab"
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
         codons_gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.codons.gtf"
+        conversion_names = "/projects_rg/SCLC_cohorts/tables/Ensembl_gene_conversion.txt"
         max_length = 500
         threshold = 5
         threshold2 = 10
@@ -56,6 +60,11 @@ def main():
         orfs_scripts = "/genomics/users/juanluis/comprna/MxFinder/extract_orfs.py"
         interpro = "/projects_rg/SCLC_cohorts/soft/interproscan-5.33-72.0/interproscan.sh"
         IUPred = "/projects_rg/SCLC_cohorts/soft/IUPred2A"
+        HLAclass_path = "/projects_rg/SCLC_cohorts/Hugo/Supplementary/HLA_type_Hugo_formatted.tab"
+        HLAtypes_path = "/projects_rg/SCLC_cohorts/tables/NetMHC-4.0_HLA_types_accepted.tab"
+        HLAtypes_pan_path = "/projects_rg/SCLC_cohorts/tables/NetMHCpan-4.0_HLA_types_accepted.tab"
+        netMHC_path = "/projects_rg/SCLC_cohorts/soft/netMHC-4.0/netMHC"
+        netMHC_pan_path = "/projects_rg/SCLC_cohorts/soft/netMHCpan-4.0/netMHCpan"
         remove_temp_files = True
         flag_Rudin = False
         output_path = "/users/genomics/juanluis/SCLC_cohorts/Hugo/epydoor/A5_A3"
@@ -67,17 +76,17 @@ def main():
         output_path_aux = output_path+"/new_A5_A3_junctions.tab"
         extract_exonized_junctions(readcounts_path, gtf_path, max_length, output_path_aux)
 
-        # 2. Given the list with the possible exonizations, get the reads associate to each of them
+        # 2. Given the list with the possible A5_A3, get the reads associate to each of them
         logger.info("Part2...")
         output_path_aux2 = output_path+"/new_A5_A3_junctions_reads.tab"
         get_reads_exonizations(output_path_aux, readcounts_path, output_path_aux2)
 
-        # 3. find the overlap between the nex exonizations and repeatitions (RepeatMasker)
+        # 3. find the overlap between the nex A5_A3 and repeatitions (RepeatMasker)
         logger.info("Part3...")
         output_path_aux3 = output_path + "/new_A5_A3_junctions_reads_repeatitions.tab"
         overlap_with_repeats(output_path_aux2, repeats_path, output_path_aux3)
 
-        # 4. given the table of the exonizations with the reads counts,get those that are over a threshold
+        # 4. given the table of the A5_A3 with the reads counts,get those that are over a threshold
         logger.info("Part4...")
         get_significant_exonizations(output_path_aux3, threshold, output_path + "/A5_A3_by_sample.tab")
 
@@ -86,7 +95,7 @@ def main():
         logger.info("Part5...")
         compare_reads_random_junctions(output_path + "/A5_A3_by_sample.tab", readcounts_path, gtf_path, output_path + "/A5_A3_by_sample_coverage.tab")
 
-        # 6. Check if in the exonizations there are mutations nearby
+        # 6. Check if in the A5_A3 there are mutations nearby
         logger.info("Part6...")
         check_mutations_nearby(output_path + "/A5_A3_by_sample_coverage.tab", mutations_path, 200, output_path + "/A5_A3_by_sample_coverage_mut.tab")
 
@@ -142,9 +151,51 @@ def main():
         # 10. Get the peptide sequence associated
         logger.info("Part9...")
         get_peptide_sequence(output_path_aux13, transcript_expression_path, gtf_path, codons_gtf_path,
-                             output_path + "/IR_peptide_sequence.fa", output_path + "/IR_fasta_sequence.fa",
-                             output_path + "/IR_ORF.tab", output_path + "/IR_ORF_sequences.tab", output_path + "/IR_Interpro.tab",
-                             output_path + "/IR_IUPred.tab", mosea, fasta_genome, orfs_scripts, interpro,IUPred, remove_temp_files)
+                             output_path + "/A5_A3_peptide_sequence.fa", output_path + "/A5_A3_fasta_sequence.fa",
+                             output_path + "/A5_A3_ORF.tab", output_path + "/A5_A3_ORF_sequences.tab", output_path + "/A5_A3_Interpro.tab",
+                             output_path + "/A5_A3_IUPred.tab", mosea, fasta_genome, orfs_scripts, interpro,IUPred, remove_temp_files)
+
+        # 11. Filter the relevant results
+        command4 = "module load R; Rscript " + dir_path + "/lib/A5_A3/filter_results.R " + output_path + "/A5_A3_ORF.tab " \
+                   + conversion_names + " " + output_path + "/A5_A3_ORF_filtered.tab " + output_path + "/A5_A3_ORF_filtered_peptide_change.tab"
+        os.system(command4)
+
+        # 12. Select the fasta candidates for being run to the epitope analysis
+        logger.info("Part10...")
+        # Create the folder, if it doesn't exists
+        if not os.path.exists(output_path + "/A5_A3_fasta_files"):
+            os.makedirs(output_path + "/A5_A3_fasta_files")
+        select_fasta_candidates(output_path + "/A5_A3_ORF_filtered_peptide_change.tab",
+                                output_path + "/A5_A3_peptide_sequence.fa", output_path + "/A5_A3_peptide_sequence_filtered.fa",
+                                output_path + "/A5_A3_fasta_files")
+
+        # 13. Run netMHC-4.0_part1
+        logger.info("Part11...")
+        if not os.path.exists(output_path + "/A5_A3_NetMHC-4.0_files"):
+            os.makedirs(output_path + "/A5_A3_NetMHC-4.0_files")
+        run_netMHC_classI_slurm_part1(output_path + "/A5_A3_ORF_filtered_peptide_change.tab", HLAclass_path, HLAtypes_path,
+                                      output_path + "/A5_A3_fasta_files",
+                                      output_path + "/A5_A3_NetMHC-4.0_files",
+                                      output_path + "/A5_A3_NetMHC-4.0_neoantigens_type_3.tab",
+                                      output_path + "/A5_A3_NetMHC-4.0_neoantigens_type_3_all.tab",
+                                      output_path + "/A5_A3_NetMHC-4.0_neoantigens_type_2.tab",
+                                      output_path + "/A5_A3_NetMHC-4.0_neoantigens_type_2_all.tab",
+                                      output_path + "/A5_A3_NetMHC-4.0_junctions_ORF_neoantigens.tab",
+                                      netMHC_path)
+
+        # 14. Run netMHCpan-4.0_part1
+        logger.info("Part12...")
+        if not os.path.exists(output_path + "/A5_A3_NetMHCpan-4.0_files"):
+            os.makedirs(output_path + "/A5_A3_NetMHCpan-4.0_files")
+        run_netMHCpan_classI_slurm_part1(output_path + "/A5_A3_ORF_filtered_peptide_change.tab", HLAclass_path, HLAtypes_pan_path,
+                                         output_path + "/A5_A3_fasta_files",
+                                         output_path + "/A5_A3_NetMHCpan-4.0_files",
+                                         output_path + "/A5_A3_NetMHCpan-4.0_neoantigens_type_3.tab",
+                                         output_path + "/A5_A3_NetMHCpan-4.0_neoantigens_type_3_all.tab",
+                                         output_path + "/A5_A3_NetMHCpan-4.0_neoantigens_type_2.tab",
+                                         output_path + "/A5_A3_NetMHCpan-4.0_neoantigens_type_2_all.tab",
+                                         output_path + "/A5_A3_NetMHCpan-4.0_junctions_ORF_neoantigens.tab",
+                                         netMHC_pan_path)
 
         logger.info("Wait until all jobs have finished. Then, go on with part2")
 
