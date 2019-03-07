@@ -328,17 +328,24 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                     path1 = "/".join(output_peptide_path.split("/")[:-1])
                     exons_associated_with_exonization['start'] = exons_associated_with_exonization['start'].apply(
                         lambda x: str(int(x) - 1))
+                    # Include in the id the start and end of the exon
+                    id_formatted = exons_associated_with_exonization.apply(
+                        lambda x: id + ":" + x['chr'] + ":" +
+                                  str(x['start']) + "-" + str(x['end']), axis=1)
                     bed = [("chr", exons_associated_with_exonization['chr']),
                            ("start", exons_associated_with_exonization['start']),
-                           ("end", exons_associated_with_exonization['end']), ("id", id),
+                           ("end", exons_associated_with_exonization['end']), ("id", id_formatted),
                            ("strand", exons_associated_with_exonization['strand'])]
                     bed_file = pd.DataFrame.from_items(bed)
                     bed_file['score'] = 0
                     bed_file.to_csv(path1 + "/aux_exonization_A5_A3.bed", sep="\t", index=False, header=False)
                     # Format the reference transcript in a bed format
                     exons_associated['start'] = exons_associated['start'].apply(lambda x: str(int(x) - 1))
+                    id_formatted = exons_associated.apply(lambda x: id + ":" + x['chr'] + ":" +
+                                                                             str(x['start']) + "-" + str(x['end']),
+                                                                   axis=1)
                     bed = [("chr", exons_associated['chr']), ("start", exons_associated['start']),
-                           ("end", exons_associated['end']), ("id", id),
+                           ("end", exons_associated['end']), ("id", id_formatted),
                            ("strand", exons_associated['strand'])]
                     bed_file = pd.DataFrame.from_items(bed)
                     bed_file['score'] = 0
@@ -384,7 +391,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                             for x, y in zip(f1, f2):
                                 if (re.search(">", x) and re.search(">", y)):
                                     if (x == y):
-                                        coordinates = y.split(":")[3]
+                                        coordinates = y.split(":")[2]
                                         start_coordinates = coordinates.split("-")[0]
                                         end_coordinates = coordinates.split("-")[1][:-4]
                                         if (int(start_coordinates) <= int(start_codon) <= int(end_coordinates)):
@@ -403,25 +410,23 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                             # counter += 1
                                     else:
                                         # Get the offset relative to the shorter exon
-                                        aberrant_coordinates = x.split(":")[3]
+                                        aberrant_coordinates = x.split(":")[2]
                                         aberrant_start_coordinates = aberrant_coordinates.split("-")[0]
                                         aberrant_end_coordinates = aberrant_coordinates.split("-")[1][:-4]
                                         # aberrant_length = int(aberrant_start_coordinates )- int(aberrant_end_coordinates)
                                         aberrant_length = int(aberrant_end_coordinates) - int(aberrant_start_coordinates)
-                                        ref_coordinates = y.split(":")[3]
+                                        ref_coordinates = y.split(":")[2]
                                         ref_start_coordinates = ref_coordinates.split("-")[0]
                                         ref_end_coordinates = ref_coordinates.split("-")[1][:-4]
                                         # ref_length = int(ref_start_coordinates )- int(ref_end_coordinates)
                                         ref_length = int(ref_end_coordinates) - int(ref_start_coordinates)
                                         if (event_type == "New_donor"):  # A5 event
-                                            if (
-                                            flag_save_sequence):  # the start codon was already found. Save the sequence until the discrepancy point
+                                            if (flag_save_sequence):  # the start codon was already found. Save the sequence until the discrepancy point
                                                 flag_save_sequence = True
                                                 flag_exit = True
                                                 flag_interval = True
                                                 if (aberrant_length < ref_length):
-                                                    offset = (
-                                                    int(aberrant_end_coordinates), int(aberrant_start_coordinates))
+                                                    offset = (int(aberrant_end_coordinates), int(aberrant_start_coordinates))
                                                     # The sequence to be save comes from the aberrant exon
                                                     sequence_line = "x"
                                                 else:
@@ -456,8 +461,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                                     break
 
                                         else:  # A3 event
-                                            if (
-                                            flag_save_sequence):  # the start codon was already found. It will be necessary to caluclate a new sc
+                                            if (flag_save_sequence):  # the start codon was already found. It will be necessary to caluclate a new sc
                                                 break
                                                 # if (can_exon_strand == "+"):
                                                 #     if (aberrant_length < ref_length):
@@ -540,7 +544,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                         # If its header, pass the line
                                         if (re.search(">", line)):
                                             cont2 += 1
-                                            coordinates = line.split(":")[3]
+                                            coordinates = line.split(":")[2]
                                             start_coordinates = coordinates.split("-")[0]
                                             end_coordinates = coordinates.split("-")[1][:-4]
                                             offset1 = -1
@@ -576,7 +580,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                             if (flag_start and flag_end):
                                                 break
                             else:  # can_exon_strand=="-"
-
                                 start_codon = transcript_start_codon[transcript_id][1]
                                 stop_codon = transcript_stop_codon[transcript_id][0]
                                 with open(path1 + "/aux_reference_A5_A3.fa") as f:
@@ -589,7 +592,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                         # If its header, pass the line
                                         if (re.search(">", line)):
                                             cont2 += 1
-                                            coordinates = line.split(":")[3]
+                                            coordinates = line.split(":")[2]
                                             start_coordinates = coordinates.split("-")[0]
                                             end_coordinates = coordinates.split("-")[1][:-4]
                                             offset1 = -1
@@ -697,7 +700,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                     for line in f:
                                         # If it is not header, pass the line
                                         if (re.search(">", line)):
-                                            coordinates = line.split(":")[3]
+                                            coordinates = line.split(":")[2]
                                             start_coordinates = int(coordinates.split("-")[0])
                                             end_coordinates = int(coordinates.split("-")[1][:-4])
                                             exon_length = end_coordinates - start_coordinates
@@ -765,7 +768,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                     for line in f:
                                         # If it is not header, pass the line
                                         if (re.search(">", line)):
-                                            coordinates = line.split(":")[3]
+                                            coordinates = line.split(":")[2]
                                             start_coordinates = int(coordinates.split("-")[0])
                                             end_coordinates = int(coordinates.split("-")[1][:-4])
                                             aux_length = end_coordinates - start_coordinates
@@ -855,10 +858,6 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                                                          "\t" + str(end) + "\n")
 
                             # 5.5. If there is a peptide change, check if the exonized sequence will go to NMD
-                            # if (id not in peptide_change or id not in NMD):
-                            #     peptide_change[id] = (not peptide_reference == peptide_exonizations)
-                            # else:
-                            #     raise Exception("Repeated A5_A3 junction " + id)
                             peptide_change[id] = (not peptide_reference == peptide_exonizations)
                             if (peptide_reference == peptide_exonizations):
                                 NMD[id] = False
@@ -876,7 +875,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                         # Count the lines with a header
                                         if (re.search(">", line)):
                                             n_exons += 1
-                                            coordinates = line.split(":")[3]
+                                            coordinates = line.split(":")[2]
                                             start_coordinates = coordinates.split("-")[0]
                                             end_coordinates = coordinates.split("-")[1][:-4]
                                             if (int(start_coordinates) <= int(start_codon) <= int(end_coordinates)):
@@ -895,7 +894,7 @@ def get_peptide_sequence(exonizations_path, transcript_expression_path, gtf_path
                                         # If its header, pass the line
                                         if (re.search(">", line)):
                                             cont3 += 1
-                                            coordinates = line.split(":")[3]
+                                            coordinates = line.split(":")[2]
                                             start_coordinates = coordinates.split("-")[0]
                                             end_coordinates = coordinates.split("-")[1][:-4]
                                             offset1 = -1
