@@ -44,11 +44,11 @@ def main():
 
         logger.info("Starting execution")
 
-        HLAclass_path = "/homes/users/jtrincado/scratch/test_Junckey/PHLAT_summary_ClassI_all_samples.out"
-        HLAtypes_path = "/homes/users/jtrincado/scratch/test_Junckey/NetMHC-4.0_HLA_types_accepted.tab"
-        HLAtypes_pan_path = "/homes/users/jtrincado/scratch/test_Junckey/NetMHCpan-4.0_HLA_types_accepted.tab"
-        netMHC_path = "/homes/users/jtrincado/scratch/Software/netMHC-4.0/netMHC"
-        netMHC_pan_path = "/homes/users/jtrincado/scratch/Software/netMHCpan-4.0/netMHCpan"
+        HLAclass_path = "/projects_rg/SCLC_cohorts/Hugo/Supplementary/HLA_type_Hugo_formatted.tab"
+        HLAtypes_path = "/projects_rg/SCLC_cohorts/tables/NetMHC-4.0_HLA_types_accepted.tab"
+        HLAtypes_pan_path = "/projects_rg/SCLC_cohorts/tables/NetMHCpan-4.0_HLA_types_accepted.tab"
+        netMHC_path = "/projects_rg/SCLC_cohorts/soft/netMHC-4.0/netMHC"
+        netMHC_pan_path = "/projects_rg/SCLC_cohorts/soft/netMHCpan-4.0/netMHCpan"
         output_path = "/homes/users/jtrincado/scratch/test_Junckey/test2"
 
         #13. Run netMHC-4.0_part2
