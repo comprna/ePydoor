@@ -55,7 +55,7 @@ def get_offset_A3(line):
         offset_A3 = line[8]-line["original_start"]
     return offset_A3
 
-def filter_neoskipping(neoskipping_path, mutations_path, window, output_path):
+def check_mutations_nearby(neoskipping_path, mutations_path, window, output_path):
 
     try:
         logger.info("Starting execution")
