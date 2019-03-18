@@ -34,7 +34,7 @@ def filter_neoskipping(neoskipping_path, rudin_path, intropolis_path, output_pat
     try:
         logger.info("Starting execution")
 
-        if(flag_Rudin!="No_Rudin"):
+        if(flag_Rudin):
 
             #Load the neoskipping
             neoskipping = pd.read_table(neoskipping_path, delimiter="\t")
@@ -54,7 +54,6 @@ def filter_neoskipping(neoskipping_path, rudin_path, intropolis_path, output_pat
             df.to_csv(output_path, sep="\t", index=False, header=True)
             logger.info("Saved "+output_path)
             logger.info("Done. Exiting program.")
-            exit(0)
 
         else:
 
