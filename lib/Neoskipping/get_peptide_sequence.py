@@ -313,16 +313,22 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
                     # 5.2.1. Format the neoskipping exons it in a bed format
                     # remember to substract 1 to the start position
                     exons_associated_with_neoskipping['start'] = exons_associated_with_neoskipping['start'].apply(lambda x: str(int(x) - 1))
+                    # Include in the id the start and end of the exon
+                    id_formatted = exons_associated_with_neoskipping.apply(lambda x: id + ":" + x['chr'] + ":" +
+                                                                            str(x['start']) + "-" + str(x['end']), axis=1)
                     bed = [("chr", exons_associated_with_neoskipping['chr']), ("start", exons_associated_with_neoskipping['start']),
-                    ("end", exons_associated_with_neoskipping['end']), ("id", neoskipping),
+                    ("end", exons_associated_with_neoskipping['end']), ("id", id_formatted),
                     ("strand", exons_associated_with_neoskipping['strand'])]
                     bed_file = pd.DataFrame.from_items(bed)
                     bed_file['score'] = 0
                     bed_file.to_csv(path1 + "/aux_neoskipping_Exoniz.bed", sep="\t", index=False, header=False)
                     # Format the reference transcript in a bed format
                     exons_associated['start'] = exons_associated['start'].apply(lambda x: str(int(x) - 1))
+                    id_formatted = exons_associated.apply(lambda x: id + ":" + x['chr'] + ":" +
+                                                                             str(x['start']) + "-" + str(x['end']),
+                                                                   axis=1)
                     bed = [("chr", exons_associated['chr']), ("start", exons_associated['start']),
-                    ("end", exons_associated['end']), ("id", neoskipping),
+                    ("end", exons_associated['end']), ("id", id_formatted),
                     ("strand", exons_associated['strand'])]
                     bed_file = pd.DataFrame.from_items(bed)
                     bed_file['score'] = 0
