@@ -246,7 +246,8 @@ def extract_neoskipping_junctions_Intropolis(input_path_George, input_path_Intro
                             reads2 = junction_reads_Intropolis[junction_aux2]
                             total_reads.append(reads2)
                         else:
-                            logger.info("Junction " + x + " not in junction_reads_Intropolis")
+                            pass
+                            # logger.info("Junction " + x + " not in junction_reads_Intropolis")
                     # Get the mean
                     if(len(total_reads)!=0):
                         mean_reads = np.mean(total_reads)
@@ -256,7 +257,8 @@ def extract_neoskipping_junctions_Intropolis(input_path_George, input_path_Intro
                                       ";".join(total_junctions)+"\t"+str(neoskipped_read)+"\t"+str(mean_reads)+"\n")
 
             else:
-                logger.info("Junction "+neoskipping_junction+" not in junction_reads")
+                pass
+                # logger.info("Junction "+neoskipping_junction+" not in junction_reads")
 
         output_file.close()
 

@@ -76,6 +76,7 @@ def main():
         # 2. Get the tumor specific neoskipping events
         if(tumor_specific):
 
+            logger.info("Part2...")
             # Get also the significant neoskipping from Rudin and Intropolis
             output_Rudin_path_aux = output_path + "/new_Neoskipping_junctions_Rudin_normal_reads.tab"
             readCounts_Rudin_path = "/projects_rg/SCLC_cohorts/Rudin/STAR/v1/normal_readCounts.tab"
@@ -93,13 +94,16 @@ def main():
             output_path2 = output_path+"/new_Neoskipping_junctions.tab"
 
         # 3. Get the mutations nearby
+        logger.info("Part3...")
         check_mutations_nearby(output_path2,mutations_path,200,output_path+"/new_Neoskipping_junctions_mut.tab")
 
         # 4. Get the gene ids
+        logger.info("Part4...")
         command1="module load R; Rscript "+dir_path+"/lib/Neoskipping/get_Gene_ids_BiomaRt.R " + output_path+"/new_Neoskipping_junctions_mut.tab "+output_path+"/new_Neoskipping_junctions_mut2.tab"
         os.system(command1)
 
         # 5. Get the peptide sequences
+        logger.info("Part5...")
         output_path_peptide = output_path + "/neoskipping_peptide_sequence.fa"
         output_path_dna = output_path + "/neoskipping_fasta_sequence.fa"
         output_path_aux14 = output_path + "/all_neoskipping_ORF.tab"
