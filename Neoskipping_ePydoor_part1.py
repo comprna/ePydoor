@@ -37,7 +37,7 @@ def main():
         logger.info("Starting execution")
 
         readcounts_path = "/projects_rg/SCLC_cohorts/Hugo/STAR/readCounts.tab"
-        transcript_expression_path = "/projects_rg/SCLC_cohorts/George/tables/iso_tpm_George_Peifer_Rudin_Yokota.tab"
+        transcript_expression_path = "/projects_rg/SCLC_cohorts/Hugo/Salmon/iso_tpm.txt"
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
         codons_gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.codons.gtf"
         conversion_names = "/projects_rg/SCLC_cohorts/tables/Ensembl_gene_conversion.txt"
