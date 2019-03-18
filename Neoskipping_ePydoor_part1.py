@@ -60,7 +60,7 @@ def main():
         netMHC_pan_path = "/projects_rg/SCLC_cohorts/soft/netMHCpan-4.0/netMHCpan"
         remove_temp_files = True
         flag_Rudin = False
-        output_path = "/users/genomics/juanluis/SCLC_cohorts/Hugo/epydoor/A5_A3"
+        output_path = "/users/genomics/juanluis/SCLC_cohorts/Hugo/epydoor/neoskipping"
         # ONLY FOR MARVIN
         #python2 = "Python/2.7.14-foss-2017b"
         # ONLY FOR HYDRA
