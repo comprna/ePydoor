@@ -716,7 +716,7 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
                         command4 = "module load "+python2+" ; python " + IUPred + "/iupred2a.py " + path1 + \
                                    "/Neoskippings_peptide_sequence_IUPred.temp long > " + path1 + \
                                    "/Neoskippings_peptide_sequence_IUPred.temp.out; " \
-                                                                                "module unload Python;"
+                                                                                "module unload "+python2+";"
                         os.system(command4)
 
                         # Process the output of IUPred
