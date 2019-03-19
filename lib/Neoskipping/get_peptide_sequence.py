@@ -314,7 +314,7 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
                     # remember to substract 1 to the start position
                     exons_associated_with_neoskipping['start'] = exons_associated_with_neoskipping['start'].apply(lambda x: str(int(x) - 1))
                     # Include in the id the start and end of the exon
-                    id_formatted = exons_associated_with_neoskipping.apply(lambda x: id + ":" + x['chr'] + ":" +
+                    id_formatted = exons_associated_with_neoskipping.apply(lambda x: neoskipping + ":" + x['chr'] + ":" +
                                                                             str(x['start']) + "-" + str(x['end']), axis=1)
                     bed = [("chr", exons_associated_with_neoskipping['chr']), ("start", exons_associated_with_neoskipping['start']),
                     ("end", exons_associated_with_neoskipping['end']), ("id", id_formatted),
@@ -324,7 +324,7 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
                     bed_file.to_csv(path1 + "/aux_neoskipping_Exoniz.bed", sep="\t", index=False, header=False)
                     # Format the reference transcript in a bed format
                     exons_associated['start'] = exons_associated['start'].apply(lambda x: str(int(x) - 1))
-                    id_formatted = exons_associated.apply(lambda x: id + ":" + x['chr'] + ":" +
+                    id_formatted = exons_associated.apply(lambda x: neoskipping + ":" + x['chr'] + ":" +
                                                                              str(x['start']) + "-" + str(x['end']),
                                                                    axis=1)
                     bed = [("chr", exons_associated['chr']), ("start", exons_associated['start']),
@@ -370,7 +370,7 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
                         with open(path1 + "/aux_neoskipping_Exoniz.fa") as f1, open(path1 + "/aux_reference_Exoniz.fa") as f2:
                             for x, y in zip(f1, f2):
                                 if (re.search(">", x)):
-                                    coordinates = x.split(":")[3]
+                                    coordinates = x.split(":")[2]
                                     start_coordinates = coordinates.split("-")[0]
                                     end_coordinates = coordinates.split("-")[1][:-4]
                                     if (int(start_coordinates) <= int(start_codon) <= int(end_coordinates)):
@@ -412,7 +412,7 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
                                     # If its header, pass the line
                                     if (re.search(">", line)):
                                         cont2 += 1
-                                        coordinates = line.split(":")[3]
+                                        coordinates = line.split(":")[2]
                                         start_coordinates = coordinates.split("-")[0]
                                         end_coordinates = coordinates.split("-")[1][:-4]
                                         offset1 = -1
@@ -459,7 +459,7 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
                                     # If its header, pass the line
                                     if (re.search(">", line)):
                                         cont2 += 1
-                                        coordinates = line.split(":")[3]
+                                        coordinates = line.split(":")[2]
                                         start_coordinates = coordinates.split("-")[0]
                                         end_coordinates = coordinates.split("-")[1][:-4]
                                         offset1 = -1
@@ -602,7 +602,7 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
                                 for line in f:
                                     # If it is not header, pass the line
                                     if (re.search(">", line)):
-                                        coordinates = line.split(":")[3]
+                                        coordinates = line.split(":")[2]
                                         start_coordinates = int(coordinates.split("-")[0])
                                         end_coordinates = int(coordinates.split("-")[1][:-4])
                                         exon_length = end_coordinates - start_coordinates
@@ -657,7 +657,7 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
                                 for line in f:
                                     # If it is not header, pass the line
                                     if (re.search(">", line)):
-                                        coordinates = line.split(":")[3]
+                                        coordinates = line.split(":")[2]
                                         start_coordinates = int(coordinates.split("-")[0])
                                         end_coordinates = int(coordinates.split("-")[1][:-4])
                                         aux_length = end_coordinates - start_coordinates
@@ -766,7 +766,7 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
                                     # Count the lines with a header
                                     if (re.search(">", line)):
                                         n_exons += 1
-                                        coordinates = line.split(":")[3]
+                                        coordinates = line.split(":")[2]
                                         start_coordinates = coordinates.split("-")[0]
                                         end_coordinates = coordinates.split("-")[1][:-4]
                                         if (int(start_coordinates) <= int(start_codon) <= int(end_coordinates)):
@@ -781,7 +781,7 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
                                     # If its header, pass the line
                                     if (re.search(">", line)):
                                         cont3 += 1
-                                        coordinates = line.split(":")[3]
+                                        coordinates = line.split(":")[2]
                                         start_coordinates = coordinates.split("-")[0]
                                         end_coordinates = coordinates.split("-")[1][:-4]
                                         offset1 = -1
