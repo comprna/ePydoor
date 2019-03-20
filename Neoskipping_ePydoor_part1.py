@@ -115,6 +115,8 @@ def main():
                              output_path_aux15, output_path_aux16, output_path_aux17, mosea, fasta_genome, orfs_scripts,
                              interpro, IUPred, remove_temp_files, python2)
 
+        # 6. Filter the cases for running netMHC
+
         logger.info("Wait until all jobs have finished. Then, go on with part2")
 
         exit(0)
