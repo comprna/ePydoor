@@ -43,7 +43,7 @@ def main():
 
         logger.info("Starting execution IR_epydoor_part2")
 
-        transcript_expression_path = "/projects_rg/SCLC_cohorts/Hugo/Salmon/iso_tpm.txt"
+        transcript_expression_path = "/projects_rg/SCLC_cohorts/Snyder/Salmon/iso_tpm.txt"
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
         codons_gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.codons.gtf"
         mosea = "/genomics/users/juanluis/Software/MoSEA-master/mosea.py"
@@ -51,7 +51,7 @@ def main():
         orfs_scripts = "/genomics/users/juanluis/comprna/MxFinder/extract_orfs.py"
         interpro = "/projects_rg/SCLC_cohorts/soft/interproscan-5.33-72.0/interproscan.sh"
         IUPred = "/projects_rg/SCLC_cohorts/soft/IUPred2A"
-        HLAclass_path = "/projects_rg/SCLC_cohorts/Hugo/Supplementary/HLA_type_Hugo_formatted.tab"
+        HLAclass_path = "/projects_rg/SCLC_cohorts/Snyder/Supplementary/HLA_type_Snyder_formatted.tab"
         HLAtypes_path = "/projects_rg/SCLC_cohorts/tables/NetMHC-4.0_HLA_types_accepted.tab"
         HLAtypes_pan_path = "/projects_rg/SCLC_cohorts/tables/NetMHCpan-4.0_HLA_types_accepted.tab"
         netMHC_path = "/projects_rg/SCLC_cohorts/soft/netMHC-4.0/netMHC"
@@ -59,7 +59,7 @@ def main():
         remove_temp_files = True
         tumor_specific = True
         name_user = "juanluis"
-        output_path = "/users/genomics/juanluis/SCLC_cohorts/Hugo/epydoor/IR"
+        output_path = "/users/genomics/juanluis/SCLC_cohorts/Snyder/epydoor/IR"
         # ONLY FOR MARVIN
         #python2 = "Python/2.7.14-foss-2017b"
         # ONLY FOR HYDRA

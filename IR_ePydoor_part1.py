@@ -37,8 +37,8 @@ def main():
 
         logger.info("Starting execution IR_ePydoor_part1")
 
-        introns_path = "/projects_rg/SCLC_cohorts/Hugo/Kallisto/iso_tpm_introns.txt"
-        bam_path = "/projects_rg/SCLC_cohorts/Hugo/STAR"
+        introns_path = "/projects_rg/SCLC_cohorts/Snyder/Kallisto/iso_tpm_introns.txt"
+        bam_path = "/projects_rg/SCLC_cohorts/Snyder/STAR"
         TPM_threshold = 1
         tumor_specific = True
         flag_Rudin = False
@@ -46,7 +46,7 @@ def main():
         introns_GTEX_path = "/projects_rg/SCLC_cohorts/annotation/chess2.0_assembly_hg19_CrossMap.events_RI_strict.ioe"
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.gtf"
         gtf_protein_coding_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
-        output_path = "/users/genomics/juanluis/SCLC_cohorts/Hugo/epydoor/IR"
+        output_path = "/users/genomics/juanluis/SCLC_cohorts/Snyder/epydoor/IR"
 
         # 0. Format the intron file
         logger.info("Part0...")

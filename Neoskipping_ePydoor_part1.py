@@ -39,8 +39,8 @@ def main():
 
         logger.info("Starting execution")
 
-        readcounts_path = "/projects_rg/SCLC_cohorts/Hugo/STAR/readCounts.tab"
-        transcript_expression_path = "/projects_rg/SCLC_cohorts/Hugo/Salmon/iso_tpm.txt"
+        readcounts_path = "/projects_rg/SCLC_cohorts/Snyder/STAR/readCounts.tab"
+        transcript_expression_path = "/projects_rg/SCLC_cohorts/Snyder/Salmon/iso_tpm.txt"
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
         codons_gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.codons.gtf"
         conversion_names = "/projects_rg/SCLC_cohorts/tables/Ensembl_gene_conversion.txt"
@@ -56,14 +56,14 @@ def main():
         orfs_scripts = "/genomics/users/juanluis/comprna/MxFinder/extract_orfs.py"
         interpro = "/projects_rg/SCLC_cohorts/soft/interproscan-5.33-72.0/interproscan.sh"
         IUPred = "/projects_rg/SCLC_cohorts/soft/IUPred2A"
-        HLAclass_path = "/projects_rg/SCLC_cohorts/Hugo/Supplementary/HLA_type_Hugo_formatted.tab"
+        HLAclass_path = "/projects_rg/SCLC_cohorts/Snyder/Supplementary/HLA_type_Snyder_formatted.tab"
         HLAtypes_path = "/projects_rg/SCLC_cohorts/tables/NetMHC-4.0_HLA_types_accepted.tab"
         HLAtypes_pan_path = "/projects_rg/SCLC_cohorts/tables/NetMHCpan-4.0_HLA_types_accepted.tab"
         netMHC_path = "/projects_rg/SCLC_cohorts/soft/netMHC-4.0/netMHC"
         netMHC_pan_path = "/projects_rg/SCLC_cohorts/soft/netMHCpan-4.0/netMHCpan"
         remove_temp_files = True
         flag_Rudin = False
-        output_path = "/users/genomics/juanluis/SCLC_cohorts/Hugo/epydoor/neoskipping"
+        output_path = "/users/genomics/juanluis/SCLC_cohorts/Snyder/epydoor/neoskipping"
         # ONLY FOR MARVIN
         #python2 = "Python/2.7.14-foss-2017b"
         # ONLY FOR HYDRA
