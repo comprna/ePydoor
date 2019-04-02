@@ -49,7 +49,7 @@ def main():
         HLAtypes_pan_path = "/projects_rg/SCLC_cohorts/tables/NetMHCpan-4.0_HLA_types_accepted.tab"
         netMHC_path = "/projects_rg/SCLC_cohorts/soft/netMHC-4.0/netMHC"
         netMHC_pan_path = "/projects_rg/SCLC_cohorts/soft/netMHCpan-4.0/netMHCpan"
-        output_path = "/homes/users/jtrincado/scratch/test_Junckey/test2"
+        output_path = "/users/genomics/juanluis/SCLC_cohorts/Hugo/epydoor/IR"
 
         #13. Run netMHC-4.0_part2
         logger.info("Part13...")
