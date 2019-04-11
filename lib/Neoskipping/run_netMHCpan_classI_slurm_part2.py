@@ -125,8 +125,8 @@ def run_netMHCpan_classI_slurm_part2(input_list_path, HLAclass_path, HLAtypes_pa
                 logger.info("Index: " + str(cont))
                 tokens1 = line.rstrip().split("\t")
                 index = tokens1[0]
-                exonization = tokens1[2]
-                sample = tokens1[1].rstrip()
+                exonization = tokens1[3]
+                sample = tokens1[2].rstrip()
                 results_by_exon = []
                 # Get the HLA types associated. Run netMHC for each HLA type
                 if (sample in HLA_samples):

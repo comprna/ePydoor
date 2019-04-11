@@ -29,6 +29,7 @@ ch.setFormatter(formatter)
 # add ch to logger
 logger.addHandler(ch)
 
+
 def run_netMHC_classI_slurm_part2(input_list_path, HLAclass_path, HLAtypes_path, input_sequence_pieces_path, output_netMHC_path,
                                   output_peptides_path,output_peptides_all_path,output_peptides_path2, output_peptides_all_path2,
                                   output_list_path,netMHC_path):
@@ -124,8 +125,8 @@ def run_netMHC_classI_slurm_part2(input_list_path, HLAclass_path, HLAtypes_path,
                 logger.info("Index: " + str(cont))
                 tokens1 = line.rstrip().split("\t")
                 index = tokens1[0]
-                exonization = tokens1[2]
-                sample = tokens1[1].rstrip()
+                exonization = tokens1[3]
+                sample = tokens1[2].rstrip()
                 results_by_exon = []
                 # Get the HLA types associated. Run netMHC for each HLA type
                 if (sample in HLA_samples):
