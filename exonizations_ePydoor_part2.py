@@ -57,7 +57,7 @@ def main():
         orfs_scripts = "/genomics/users/juanluis/comprna/MxFinder/extract_orfs.py"
         interpro = "/projects_rg/SCLC_cohorts/soft/interproscan-5.33-72.0/interproscan.sh"
         IUPred = "/projects_rg/SCLC_cohorts/soft/IUPred2A"
-        HLAclass_path = "/projects_rg/SCLC_cohorts/Snyder/Supplementary/HLA_type_Snyder_formatted.tab"
+        HLAclass_path = "/projects_rg/SCLC_cohorts/Snyder/Suppl/HLA_type_Snyder_formatted.tab"
         HLAtypes_path = "/projects_rg/SCLC_cohorts/tables/NetMHC-4.0_HLA_types_accepted.tab"
         HLAtypes_pan_path = "/projects_rg/SCLC_cohorts/tables/NetMHCpan-4.0_HLA_types_accepted.tab"
         netMHC_path = "/projects_rg/SCLC_cohorts/soft/netMHC-4.0/netMHC"
