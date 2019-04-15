@@ -317,16 +317,16 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
 
                     # 5.2.2. Get the sequence from Mosea
                     # logger.info("Obtaining fasta neoskipping sequence...")
-                    command1 = python2 + " " + mosea + " getfasta --bedfile " + \
+                    command1 = "module load " + python2 + " ; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
                                path1 + "/aux_neoskipping_Exoniz.bed --genome " + fast_genome + " --output " + path1 + \
-                               "/aux_neoskipping_Exoniz.fa"
+                               "/aux_neoskipping_Exoniz.fa" + "; module unload " + python2
                     # print(command1)
                     os.system(command1)
 
                     # logger.info("Obtaining fasta reference sequence...")
-                    command2 = python2 + " " + mosea + " getfasta --bedfile " + \
+                    command2 = "module load " + python2 + " ; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
                                path1 + "/aux_reference_Exoniz.bed --genome " + fast_genome + " --output " + path1 + \
-                               "/aux_reference_Exoniz.fa"
+                               "/aux_reference_Exoniz.fa" + "; module unload " + python2
                     # print(command2)
                     os.system(command2)
 
@@ -514,9 +514,9 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
 
                         # 5.3.2.1. Run extract_orfs.py for obtaining all possible ORFs in the sequence
                         # logger.info("Obtaining ORFs...")
-                        command1 = python2 + " " + orfs_scripts + " " + path1 + \
-                                   "/aux_sequence_total_EX_Exoniz.fa" + " 50 > " + path1 + "/aux_sequence_total_EX_ORF_Exoniz.fa"
-
+                        command1 = "module load " + python2 + " ; python " + orfs_scripts + " " + path1 + \
+                                   "/aux_sequence_total_EX_Exoniz.fa" + " 50 > " + path1 + "/aux_sequence_total_EX_ORF_Exoniz.fa" \
+                                   + " ; module unload " + python2
                         # print(command1)
                         os.system(command1)
 
