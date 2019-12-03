@@ -884,4 +884,3 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
         logger.error('ERROR: ' + repr(error))
         logger.error("Aborting execution")
         sys.exit(1)
-

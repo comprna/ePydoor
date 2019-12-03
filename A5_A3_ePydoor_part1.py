@@ -69,7 +69,6 @@ def main():
         flag_Rudin = False
         output_path = "/users/genomics/juanluis/SCLC_cohorts/SCLC/epydoor/A5_A3"
 
-
         # 1. Identify the junctions that could generate an alternative splice site
         logger.info("Part1...")
         dir_path = os.path.dirname(os.path.realpath(__file__))

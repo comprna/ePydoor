@@ -33,7 +33,11 @@ def main():
 
         logger.info("Starting execution")
 
+<<<<<<< HEAD
         HLAclass_path = "/projects_rg/SCLC_cohorts/Smart/PHLAT/PHLAT_summary_ClassI.out"
+=======
+        HLAclass_path = "/projects_rg/SCLC_cohorts/Snyder/Suppl/HLA_type_Snyder_formatted.tab"        
+>>>>>>> 0569d9df7b55003223c4bf18c45b471381fec093
         HLAtypes_path = "/projects_rg/SCLC_cohorts/tables/NetMHC-4.0_HLA_types_accepted.tab"
         HLAtypes_pan_path = "/projects_rg/SCLC_cohorts/tables/NetMHCpan-4.0_HLA_types_accepted.tab"
         netMHC_path = "/projects_rg/SCLC_cohorts/soft/netMHC-4.0/netMHC"
