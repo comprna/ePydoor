@@ -45,8 +45,8 @@ def main():
         logger.info("Starting execution exonizations_ePydoor_part2")
 
         tumor_specific = True
-        readcounts_path = "/projects_rg/SCLC_cohorts/Snyder/STAR/readCounts.tab"
-        transcript_expression_path = "/projects_rg/SCLC_cohorts/Snyder/Salmon/iso_tpm.txt"
+        readcounts_path = "/projects_rg/SCLC_cohorts/Smart/STAR/readCounts.tab"
+        transcript_expression_path = "/projects_rg/SCLC_cohorts/Smart/Salmon/iso_tpm.txt"
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
         codons_gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.codons.gtf"
         mutations_path = "/projects_rg/babita/TCGA/mutation/mut_pipeline/juanlu_sclc/src_files/SCLC_mutations_sorted.bed.mut.out"
@@ -55,9 +55,9 @@ def main():
         mosea = "/genomics/users/juanluis/Software/MoSEA-master/mosea.py"
         fasta_genome = "/genomics/users/juanluis/Software/MoSEA-master/test_files/genome/hg19.fa"
         orfs_scripts = "/genomics/users/juanluis/comprna/MxFinder/extract_orfs.py"
-        interpro = "/projects_rg/SCLC_cohorts/soft/interproscan-5.33-72.0/interproscan.sh"
+        interpro = "/soft/EB_repo/bio/sequence/programs/noarch/interproscan/5.33-72.0/interproscan.sh"
         IUPred = "/projects_rg/SCLC_cohorts/soft/IUPred2A"
-        HLAclass_path = "/projects_rg/SCLC_cohorts/Snyder/Supplementary/HLA_type_Snyder_formatted.tab"
+        HLAclass_path = "/projects_rg/SCLC_cohorts/Smart/PHLAT/PHLAT_summary_ClassI.out"
         HLAtypes_path = "/projects_rg/SCLC_cohorts/tables/NetMHC-4.0_HLA_types_accepted.tab"
         HLAtypes_pan_path = "/projects_rg/SCLC_cohorts/tables/NetMHCpan-4.0_HLA_types_accepted.tab"
         netMHC_path = "/projects_rg/SCLC_cohorts/soft/netMHC-4.0/netMHC"
@@ -66,7 +66,7 @@ def main():
         flag_Rudin = False
         threshold2 = 10
         name_user = "juanluis"
-        output_path = "/users/genomics/juanluis/SCLC_cohorts/Snyder/epydoor/exonizations"
+        output_path = "/users/genomics/juanluis/SCLC_cohorts/Smart/epydoor/exonizations"
         # ONLY FOR MARVIN
         #python2 = "Python/2.7.14-foss-2017b"
         # ONLY FOR HYDRA

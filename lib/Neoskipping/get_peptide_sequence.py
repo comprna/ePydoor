@@ -84,25 +84,6 @@ def check_neoskipping(neoskipping, exons):
     else:  # Only 1 exon in the df, no neoskipping possible
         return False
 
-# def get_expression(sample_id,transcript_id,CA46,HL_60,THP_1):
-#     if(sample_id=="CA46"):
-#         if(transcript_id in CA46):
-#             return CA46[transcript_id]
-#         else:
-#             return -1
-#     elif(sample_id=="HL-60"):
-#         if(transcript_id in HL_60):
-#             return HL_60[transcript_id]
-#         else:
-#             return -1
-#     elif(sample_id == "THP-1"):
-#         if (transcript_id in THP_1):
-#             return THP_1[transcript_id]
-#         else:
-#             return -1
-#     else:
-#         return -1
-
 def get_expression(sample_id,transcript_id,transcript_expression):
     if (transcript_id in transcript_expression[sample_id]):
         return transcript_expression[sample_id][transcript_id]
@@ -336,16 +317,16 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
 
                     # 5.2.2. Get the sequence from Mosea
                     # logger.info("Obtaining fasta neoskipping sequence...")
-                    command1 = "module load "+python2+" ; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
+                    command1 = "module load " + python2 + " ; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
                                path1 + "/aux_neoskipping_Exoniz.bed --genome " + fast_genome + " --output " + path1 + \
-                               "/aux_neoskipping_Exoniz.fa" + "; module unload "+python2
+                               "/aux_neoskipping_Exoniz.fa" + "; module unload " + python2
                     # print(command1)
                     os.system(command1)
 
                     # logger.info("Obtaining fasta reference sequence...")
-                    command2 = "module load "+python2+" ; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
+                    command2 = "module load " + python2 + " ; module load BEDTools; python " + mosea + " getfasta --bedfile " + \
                                path1 + "/aux_reference_Exoniz.bed --genome " + fast_genome + " --output " + path1 + \
-                               "/aux_reference_Exoniz.fa" + "; module unload "+python2
+                               "/aux_reference_Exoniz.fa" + "; module unload " + python2
                     # print(command2)
                     os.system(command2)
 
@@ -370,7 +351,9 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
                         with open(path1 + "/aux_neoskipping_Exoniz.fa") as f1, open(path1 + "/aux_reference_Exoniz.fa") as f2:
                             for x, y in zip(f1, f2):
                                 if (re.search(">", x)):
-                                    coordinates = x.split(":")[2]
+                                    # coordinates = x.split(":")[2]
+                                    # Take the last coordinates. These are the ones that MoSEA have used for obtaining the sequence
+                                    coordinates = x.split(":")[-1]
                                     start_coordinates = coordinates.split("-")[0]
                                     end_coordinates = coordinates.split("-")[1][:-4]
                                     if (int(start_coordinates) <= int(start_codon) <= int(end_coordinates)):
@@ -412,7 +395,9 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
                                     # If its header, pass the line
                                     if (re.search(">", line)):
                                         cont2 += 1
-                                        coordinates = line.split(":")[2]
+                                        # coordinates = line.split(":")[2]
+                                        #Take the last coordinates. These are the ones that MoSEA have used for obtaining the sequence
+                                        coordinates = line.split(":")[-1]
                                         start_coordinates = coordinates.split("-")[0]
                                         end_coordinates = coordinates.split("-")[1][:-4]
                                         offset1 = -1
@@ -459,7 +444,9 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
                                     # If its header, pass the line
                                     if (re.search(">", line)):
                                         cont2 += 1
-                                        coordinates = line.split(":")[2]
+                                        # coordinates = line.split(":")[2]
+                                        #Take the last coordinates. These are the ones that MoSEA have used for obtaining the sequence
+                                        coordinates = line.split(":")[-1]
                                         start_coordinates = coordinates.split("-")[0]
                                         end_coordinates = coordinates.split("-")[1][:-4]
                                         offset1 = -1
@@ -527,26 +514,11 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
 
                         # 5.3.2.1. Run extract_orfs.py for obtaining all possible ORFs in the sequence
                         # logger.info("Obtaining ORFs...")
-                        command1 = "module load "+python2+" ; python " + orfs_scripts + " " + path1 + \
+                        command1 = "module load " + python2 + " ; python " + orfs_scripts + " " + path1 + \
                                    "/aux_sequence_total_EX_Exoniz.fa" + " 50 > " + path1 + "/aux_sequence_total_EX_ORF_Exoniz.fa" \
-                                   + " ; module unload "+python2
+                                   + " ; module unload " + python2
                         # print(command1)
                         os.system(command1)
-
-                        # # 5.3.2.2. Get the ORF with the shortest length that includes the sequence_similar. Check if both peptides has the same ORF
-                        # # Check the file from the end
-                        # # If the gene is in reverse, get the rev_compl from the sequence_similar
-                        # if (neoskipping_strand == "-"):
-                        #     my_seq = Seq(sequence_similar)
-                        #     sequence_similar = my_seq.reverse_complement()
-                        #
-                        # for line in reversed(list(open(path1 + "/aux_sequence_total_EX_ORF_Exoniz.fa"))):
-                        #     if (re.search(">", line)):
-                        #         pass
-                        #     else:
-                        #         if (re.search(str(sequence_similar), line.rstrip())):
-                        #             ORF_EX = line.rstrip()
-                        #             break
 
                         # 5.3.2.2. Get the ORF of the exonizations. 2 options:
                         #   - 5.3.2.2.1: The start codon of the reference it exists also in the exonization. Then take the
@@ -572,37 +544,15 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
                             if (ORF_EX == ""):
                                 sequence_similar = ""
                         if (sequence_similar == ""):  # 5.3.2.2.2
-                            # # 5.3.2.2.2.1. Get the smaller ORF more upstream
-                            # ORF_upstream_val = 999999999
-                            # ORF_length = 999999999
-                            # flag_seq = False
-                            # with open(path1 + "/aux_sequence_total_EX_ORF_Exoniz.fa") as f:
-                            #     for line in f:
-                            #         # If its header, pass the line
-                            #         if (re.search(">", line)):
-                            #             lengths = line.split(":")[1]
-                            #             if (ORF_upstream_val > int(lengths.split("-")[0])):
-                            #                 ORF_upstream_val = int(lengths.split("-")[0])
-                            #                 ORF_length = int(lengths.split("-")[1]) - int(lengths.split("-")[0])
-                            #                 flag_seq = True
-                            #             elif (ORF_upstream_val == int(lengths.split("-")[0]) and
-                            #                           ORF_length > int(lengths.split("-")[1]) - int(
-                            #                           lengths.split("-")[0])):
-                            #                 ORF_length = int(lengths.split("-")[1]) - int(lengths.split("-")[0])
-                            #             pass
-                            #         else:
-                            #             if (flag_seq):
-                            #                 ORF_EX = line.rstrip()
-                            #             break
-
-                            # TEST
                             # 5.3.2.2.2.1. Get the relative position of the start codon
                             relative_pos = 0
                             with open(path1 + "/aux_neoskipping_Exoniz.fa") as f:
                                 for line in f:
                                     # If it is not header, pass the line
                                     if (re.search(">", line)):
-                                        coordinates = line.split(":")[2]
+                                        # coordinates = line.split(":")[2]
+                                        #Take the last coordinates. These are the ones that MoSEA have used for obtaining the sequence
+                                        coordinates = line.split(":")[-1]
                                         start_coordinates = int(coordinates.split("-")[0])
                                         end_coordinates = int(coordinates.split("-")[1][:-4])
                                         exon_length = end_coordinates - start_coordinates
@@ -657,7 +607,9 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
                                 for line in f:
                                     # If it is not header, pass the line
                                     if (re.search(">", line)):
-                                        coordinates = line.split(":")[2]
+                                        # coordinates = line.split(":")[2]
+                                        #Take the last coordinates. These are the ones that MoSEA have used for obtaining the sequence
+                                        coordinates = line.split(":")[-1]
                                         start_coordinates = int(coordinates.split("-")[0])
                                         end_coordinates = int(coordinates.split("-")[1][:-4])
                                         aux_length = end_coordinates - start_coordinates
@@ -766,7 +718,9 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
                                     # Count the lines with a header
                                     if (re.search(">", line)):
                                         n_exons += 1
-                                        coordinates = line.split(":")[2]
+                                        # coordinates = line.split(":")[2]
+                                        #Take the last coordinates. These are the ones that MoSEA have used for obtaining the sequence
+                                        coordinates = line.split(":")[-1]
                                         start_coordinates = coordinates.split("-")[0]
                                         end_coordinates = coordinates.split("-")[1][:-4]
                                         if (int(start_coordinates) <= int(start_codon) <= int(end_coordinates)):
@@ -781,7 +735,9 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
                                     # If its header, pass the line
                                     if (re.search(">", line)):
                                         cont3 += 1
-                                        coordinates = line.split(":")[2]
+                                        # coordinates = line.split(":")[2]
+                                        #Take the last coordinates. These are the ones that MoSEA have used for obtaining the sequence
+                                        coordinates = line.split(":")[-1]
                                         start_coordinates = coordinates.split("-")[0]
                                         end_coordinates = coordinates.split("-")[1][:-4]
                                         offset1 = -1
@@ -928,3 +884,4 @@ def get_peptide_sequence(neoskipping_path, transcript_expression_path, gtf_path,
         logger.error('ERROR: ' + repr(error))
         logger.error("Aborting execution")
         sys.exit(1)
+

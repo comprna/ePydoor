@@ -37,26 +37,27 @@ def main():
 
         logger.info("Starting execution IR_ePydoor_part1")
 
-        introns_path = "/projects_rg/SCLC_cohorts/Snyder/Kallisto/iso_tpm_introns.txt"
-        bam_path = "/projects_rg/SCLC_cohorts/Snyder/STAR"
+        introns_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v5/tables/iso_tpm_introns_George_Peifer_Rudin_Yokota.txt"
+        bam_path = "/projects_rg/SCLC_cohorts/George/STAR/all_bams"
         TPM_threshold = 1
         tumor_specific = True
         flag_Rudin = False
-        introns_Normal_path = "/homes/users/jtrincado/scratch/test_Junckey/iso_tpm_introns_Rudin_Normal.txt"
+        introns_Normal_path = "/projects_rg/SCLC_cohorts/cis_analysis/v5/SCLC_v5/tables/iso_tpm_introns_Rudin_Normal.txt"
         introns_GTEX_path = "/projects_rg/SCLC_cohorts/annotation/chess2.0_assembly_hg19_CrossMap.events_RI_strict.ioe"
         gtf_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.gtf"
         gtf_protein_coding_path = "/projects_rg/SCLC_cohorts/annotation/Homo_sapiens.GRCh37.75.formatted.only_protein_coding.gtf"
-        output_path = "/users/genomics/juanluis/SCLC_cohorts/Snyder/epydoor/IR"
+        output_path = "/users/genomics/juanluis/SCLC_cohorts/SCLC/epydoor/IR"
 
         # 0. Format the intron file
         logger.info("Part0...")
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        command0 = "module load R; Rscript " + dir_path + "/lib/IR/format_intron_file.R " + introns_path + " " + output_path + "/IR_formatted.tab"
-        os.system(command0)
+        # command0 = "module load R; Rscript " + dir_path + "/lib/IR/format_intron_file.R " + introns_path + " " + output_path + "/IR_formatted.tab"
+        # os.system(command0)
 
         # 1. Get the IR expressed
         logger.info("Part1...")
-        extract_significant_IR(output_path + "/IR_formatted.tab", TPM_threshold, output_path + "/IR_expressed.tab")
+        # extract_significant_IR(output_path + "/IR_formatted.tab", TPM_threshold, output_path + "/IR_expressed.tab")
+        extract_significant_IR(introns_path, TPM_threshold, output_path + "/IR_expressed.tab")
 
         # 2. Obtain the gene ids for the introns.
         logger.info("Part2...")
