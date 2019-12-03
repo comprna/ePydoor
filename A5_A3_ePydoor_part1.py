@@ -4,7 +4,6 @@
 A5_A3_ePydoor.py: get significant alternative splice site events
 """
 
-import os
 
 from lib.A5_A3.extract_exonized_junctions import *
 from lib.A5_A3.get_reads_exonizations import *
@@ -18,6 +17,9 @@ from lib.A5_A3.get_peptide_sequence import *
 from lib.A5_A3.select_fasta_candidates import *
 from lib.A5_A3.run_netMHC_classI_slurm_part1 import *
 from lib.A5_A3.run_netMHCpan_classI_slurm_part1 import *
+from itertools import chain, islice
+import inspect,os
+
 
 # create logger
 logger = logging.getLogger(__name__)
@@ -36,6 +38,12 @@ ch.setFormatter(formatter)
 # add ch to logger
 logger.addHandler(ch)
 
+def chunks(iterable, n):
+   "chunks(ABCDE,2) => AB CD E"
+   iterable = iter(iterable)
+   while True:
+       yield chain([next(iterable)], islice(iterable, n-1))
+
 
 def main():
     try:
@@ -50,6 +58,7 @@ def main():
         max_length = 500
         threshold = 5
         threshold2 = 10
+        size_chunks = 100
         repeats_path = "/projects_rg/SCLC_cohorts/cis_analysis/tables/hg19_repeats.bed"
         mutations_path = "/projects_rg/babita/TCGA/mutation/mut_pipeline/juanlu_sclc/src_files/SCLC_mutations_sorted.bed.mut.out"
         CHESS_A5_path = "/projects_rg/SCLC_cohorts/annotation/chess2.0_assembly_hg19_CrossMap.events_A5_strict.ioe"
@@ -68,6 +77,7 @@ def main():
         remove_temp_files = True
         flag_Rudin = False
         output_path = "/users/genomics/juanluis/SCLC_cohorts/SCLC/epydoor/A5_A3"
+        name_user = "juanluis"
 
         # 1. Identify the junctions that could generate an alternative splice site
         logger.info("Part1...")
@@ -148,11 +158,78 @@ def main():
             os.system(command3)
 
         # 10. Get the peptide sequence associated
-        logger.info("Part9...")
-        get_peptide_sequence(output_path_aux13, transcript_expression_path, gtf_path, codons_gtf_path,
-                             output_path + "/A5_A3_peptide_sequence.fa", output_path + "/A5_A3_fasta_sequence.fa",
-                             output_path + "/A5_A3_ORF.tab", output_path + "/A5_A3_ORF_sequences.tab", output_path + "/A5_A3_Interpro.tab",
-                             output_path + "/A5_A3_IUPred.tab", mosea, fasta_genome, orfs_scripts, interpro,IUPred, remove_temp_files)
+
+        # 10.1. Split the input file into n pieces. Run a job per piece. When all jobs have finished, we will assemble all the pieces
+        logger.info("get_peptide_sequence: Split the file into pieces and run get_peptide_sequence by chunk")
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+
+        with open(output_path_aux13) as f_aux:
+            header = f_aux.readline().strip()
+
+        dict_jobs = {}
+        with open(output_path_aux13) as bigfile:
+            for i, lines in enumerate(chunks(bigfile, size_chunks)):
+                file_split = '{}.{}'.format(output_path_aux13, i)
+                f = open(file_split, 'w')
+                #Output the header, if it's not the first chunk
+                if(i!=0):
+                    f.writelines(header)
+                with f:
+                    f.writelines(lines)
+                #Run a job per file
+                logger.info("Processing " + "chunk_" + i + "...")
+                command1 = "module load Python; python " + dir_path + "/get_peptide_sequence.py " + output_path_aux13 + " " + \
+                transcript_expression_path + " " + gtf_path + " " + codons_gtf_path + " " + output_path + "/A5_A3_peptide_sequence.fa " + \
+                output_path + "/A5_A3_fasta_sequence.fa " + output_path + "/A5_A3_ORF.tab " + output_path + "/A5_A3_ORF_sequences.tab " + \
+                output_path + "/A5_A3_Interpro.tab " + output_path + "/A5_A3_IUPred.tab " + mosea + " " + fasta_genome + " " + \
+                orfs_scripts + " " + interpro + " " + IUPred + " " + remove_temp_files
+                open_peptides_file = open(output_path + "/aux.sh", "w")
+                open_peptides_file.write("#!/bin/sh\n")
+                open_peptides_file.write("#SBATCH --partition=normal\n")
+                open_peptides_file.write("#SBATCH --mem 3000\n")
+                open_peptides_file.write(
+                    "#SBATCH -e " + output_path + "/" + "get_peptide_sequence" + "_chunk_" + i + ".err" + "\n")
+                open_peptides_file.write(
+                    "#SBATCH -o " + output_path + "/" + "get_peptide_sequence" + "_chunk_" + i + ".out" + "\n")
+                open_peptides_file.write(command1 + ";\n")
+                open_peptides_file.close()
+                command2 = "sbatch -J " + "get_peptide_sequence" + "_chunk_" + i + " " + output_path + "/aux.sh; sleep 0.5;"
+                # os.system(command2)
+                job_message = subprocess.check_output(command2, shell=True)
+                # Get the job id and store it
+                job_id = (str(job_message).rstrip().split(" ")[-1])[:-3]
+                dict_jobs[job_id] = 1
+
+        logger.info("get_peptide_sequence: Waiting for all the jobs to finished...")
+        flag_exit = False
+        while (not flag_exit):
+            # Initialize the dictionary with the pending jobs in the cluster
+            pending_jobs = {}
+            os.system("sleep 10")
+            p = subprocess.Popen(["squeue", "-u", name_user], stdout=subprocess.PIPE)
+            # Skip the first line (the header)
+            line = p.stdout.readline()
+            for line in p.stdout:
+                flag_exit = True
+                # Get the id of the job
+                job_id_aux = str(line).rstrip().split()[1]
+                # Save the id of the jobs
+                pending_jobs[job_id_aux] = 1
+                # If there is any job on the cluster on dict_jobs, break the loop and wait for another 10 seconds
+                # to check the status of the jobs in the cluster
+                if (job_id_aux in dict_jobs):
+                    flag_exit = False
+                    break
+
+        logger.info("get_peptide_sequence:All jobs finished.\n\n")
+
+
+        # # 10. Get the peptide sequence associated
+        # logger.info("Part10...")
+        # get_peptide_sequence(output_path_aux13, transcript_expression_path, gtf_path, codons_gtf_path,
+        #                      output_path + "/A5_A3_peptide_sequence.fa", output_path + "/A5_A3_fasta_sequence.fa",
+        #                      output_path + "/A5_A3_ORF.tab", output_path + "/A5_A3_ORF_sequences.tab", output_path + "/A5_A3_Interpro.tab",
+        #                      output_path + "/A5_A3_IUPred.tab", mosea, fasta_genome, orfs_scripts, interpro,IUPred, remove_temp_files)
 
         # 11. Filter the relevant results
         command4 = "module load R; Rscript " + dir_path + "/lib/A5_A3/filter_results.R " + output_path + "/A5_A3_ORF.tab " \
